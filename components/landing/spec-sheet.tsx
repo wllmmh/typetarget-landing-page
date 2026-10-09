@@ -56,11 +56,6 @@ const rows: Row[] = [
       "Stored in this browser only, sent only to the provider they belong to, and never shown again once saved.",
   },
   {
-    label: "Your own typing",
-    value:
-      "New text goes in after what's already there and leaves your edits alone, so you can annotate as it runs.",
-  },
-  {
     label: "Permissions",
     value:
       "No access to every site. It only acts on a tab when you right-click it or open the popup there.",

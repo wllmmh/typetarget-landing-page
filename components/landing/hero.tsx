@@ -2,7 +2,10 @@ import Image from "next/image"
 import { ArrowDownIcon, GithubLogoIcon } from "@phosphor-icons/react/ssr"
 
 import { Button } from "@/components/ui/button"
+import { TypingAnimation } from "@/components/ui/typing-animation"
 import { REPO_URL } from "@/lib/site"
+
+const HEADLINE = "Speech to text typed anywhere."
 
 const steps = [
   {
@@ -31,14 +34,24 @@ export const Hero = () => (
     >
       <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
         <h1 className="display min-w-0 lg:col-span-7">
-          Any tab&rsquo;s audio, typed anywhere.
+          <span className="sr-only">{HEADLINE}</span>
+          {/* The hidden copy reserves the final height so the layout doesn't shift while typing. */}
+          <span aria-hidden className="grid">
+            <span className="invisible col-start-1 row-start-1">{HEADLINE}</span>
+            <TypingAnimation
+              className="col-start-1 row-start-1 leading-[inherit] tracking-[inherit]"
+              duration={40}
+              startOnView={false}
+              cursorStyle="line"
+            >
+              {HEADLINE}
+            </TypingAnimation>
+          </span>
         </h1>
         <div className="flex min-w-0 flex-col gap-6 lg:col-span-5">
           <p className="text-base leading-relaxed text-pretty text-muted-foreground">
-            TypeTarget is a free browser extension that listens to a tab, whether
-            that&rsquo;s a meeting, a lecture or a video, and types what&rsquo;s
-            said, live, into any text field you pick. That can be your notes, a
-            chat box, or the prompt box of any AI chat.
+            TypeTarget is a free browser extension that listens to your browser tab, whether
+            that&rsquo;s a meeting, a lecture or a video and transcribes, into any text field, using any AI model you pick.
           </p>
           <div className="flex flex-wrap gap-3">
             <Button

@@ -81,8 +81,8 @@ const llm: Group = {
       body: "Turn a lecture into flashcards, a summary or practice questions as it happens.",
     },
     {
-      title: "Fact-check a talk",
-      body: "Flag claims in a debate, a pitch or a keynote while it's still going.",
+      title: "Live commentary",
+      body: "Annotate claims in a debate, a pitch or a keynote while it's still going.",
     },
     {
       title: "Summaries",
@@ -156,9 +156,8 @@ export const UseCases = () => (
         Wherever there&rsquo;s a text box.
       </h2>
       <p className="text-base leading-relaxed text-muted-foreground">
-        TypeTarget doesn&rsquo;t care what&rsquo;s on the other side of the
-        cursor, so the list of things it&rsquo;s good for is long. Here are some
-        places to point it.
+        TypeTarget doesn&rsquo;t store your notes, and it never sees them. You
+        just tell it where to write. Here are some places to point it.
       </p>
     </div>
 

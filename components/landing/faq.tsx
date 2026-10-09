@@ -3,23 +3,15 @@ import { PlusIcon } from "@phosphor-icons/react/ssr"
 const questions = [
   {
     q: "Does it transcribe my own voice?",
-    a: "No. TypeTarget hears what the tab plays, so on a call that's the other people. It doesn't use your microphone.",
+    a: "No. TypeTarget hears what you hear, not what you say. It doesn't use your microphone.",
   },
   {
     q: "Do I need an API key?",
-    a: "Not to start. Local Whisper needs no key, but on most computers it can't keep up live. A Gemini or Groq key, which you get free from those providers, gives you live transcription on any machine.",
+    a: "Not to start. Local Whisper needs no key, but performance is dependent on your hardware. A Gemini or Groq key, which you get free from those providers, gives you live transcription on any machine.",
   },
   {
     q: "Where does my audio go?",
     a: "With Local Whisper, nowhere: it's transcribed inside your browser. With Gemini or Groq, it goes only to that provider, using your own key. It never goes to TypeTarget.",
-  },
-  {
-    q: "Can the site I'm typing into see it?",
-    a: "That site sees the text arrive, just as it would see your own typing, so only pick fields on sites you trust with the transcript. It never learns which tab you're listening to. Every other site can't tell TypeTarget is installed.",
-  },
-  {
-    q: "Does it send messages in AI chats for me?",
-    a: "No. It types into the box and stops there. You press Enter when you want a reply.",
   },
   {
     q: "Which browsers does it work in?",
