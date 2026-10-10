@@ -196,9 +196,14 @@ export function TypingAnimation({
     currentCharIndex >= currentWordGraphemes.length &&
     phase !== "deleting"
 
+  // Hidden while waiting out `delay`, so sequenced typers hand the cursor off.
+  const isWaitingToStart =
+    delay > 0 && displayedText === "" && phase === "typing"
+
   const shouldShowCursor =
     showCursor &&
     !isComplete &&
+    !isWaitingToStart &&
     (hasMultipleWords || loop || currentCharIndex < currentWordGraphemes.length)
 
   const getCursorChar = () => {

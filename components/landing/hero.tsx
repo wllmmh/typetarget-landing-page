@@ -1,28 +1,63 @@
 import Image from "next/image"
 import { ArrowDownIcon, GithubLogoIcon } from "@phosphor-icons/react/ssr"
 
+import { ContextMenuAnimation } from "@/components/mock-context-menu/context-menu-animation"
+import { BlurFade } from "@/components/ui/blur-fade"
 import { Button } from "@/components/ui/button"
 import { TypingAnimation } from "@/components/ui/typing-animation"
 import { REPO_URL } from "@/lib/site"
 
 const HEADLINE = "Speech to text typed anywhere."
+const INTRO =
+  "TypeTarget is a free browser extension that listens to your browser tab, and transcribes the audio directly into any text field, using any AI model you pick."
+const NOTE =
+  "Free · MIT licensed · Chrome 116+ · Not on the Chrome Web Store yet, so you load it yourself. It takes a minute."
+
+// Per-character speeds (ms). Each block starts typing once the previous one finishes.
+const HEADLINE_SPEED = 25
+const INTRO_SPEED = 7
+const NOTE_SPEED = 5
+const INTRO_DELAY = HEADLINE.length * HEADLINE_SPEED + 150
+const NOTE_DELAY = INTRO_DELAY + INTRO.length * INTRO_SPEED + 150
+const FADE_DURATION = 0.25
 
 const steps = [
   {
     n: "1",
     title: "Right-click the tab you want heard.",
     body: "A meeting, a lecture, a stream, a video. Choose TypeTarget → Listen to this tab.",
-    src: "/listen-to-tab.webp",
-    height: 800,
-    alt: "A video call in a browser tab, with the right-click menu open on TypeTarget → Listen to this tab.",
+    media: (
+      <ContextMenuAnimation
+        cursorStart={{ x: 64, y: 274 }}
+        label="A video call in a browser tab. The pointer right-clicks, opens the TypeTarget menu and clicks Listen to this tab."
+        background={
+          <Image
+            src="/listen-to-tab-background.webp"
+            alt=""
+            fill
+            loading="eager"
+            fetchPriority="high"
+            sizes="(min-width: 1024px) 760px, 100vw"
+            className="object-cover"
+          />
+        }
+      />
+    ),
   },
   {
     n: "2",
     title: "Right-click where the words should go.",
     body: "In any browser tab, Select TypeTarget → Type to new file or Type to this field to inject the transcription directly into a page text input.",
-    src: "/type-to-field.webp",
-    height: 660,
-    alt: "A TypeTarget text box with a green outline and a 0:01 timer, filling with transcribed speech, and the TypeTarget menu open.",
+    media: (
+      <Image
+        src="/type-to-field.webp"
+        alt="A TypeTarget text box with a green outline and a 0:01 timer, filling with transcribed speech, and the TypeTarget menu open."
+        width={1280}
+        height={660}
+        loading="lazy"
+        className="h-auto w-full"
+      />
+    ),
   },
 ] as const
 
@@ -32,15 +67,17 @@ export const Hero = () => (
       id="top"
       className="mx-auto max-w-6xl scroll-mt-16 px-4 pt-16 md:px-8 md:pt-24"
     >
-      <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
-        <h1 className="display min-w-0 lg:col-span-7">
+      <div className="flex flex-col gap-8">
+        <h1 className="display min-w-0">
           <span className="sr-only">{HEADLINE}</span>
           {/* The hidden copy reserves the final height so the layout doesn't shift while typing. */}
           <span aria-hidden className="grid">
-            <span className="invisible col-start-1 row-start-1">{HEADLINE}</span>
+            <span className="invisible col-start-1 row-start-1">
+              {HEADLINE}
+            </span>
             <TypingAnimation
               className="col-start-1 row-start-1 leading-[inherit] tracking-[inherit]"
-              duration={40}
+              duration={HEADLINE_SPEED}
               startOnView={false}
               cursorStyle="line"
             >
@@ -48,33 +85,62 @@ export const Hero = () => (
             </TypingAnimation>
           </span>
         </h1>
-        <div className="flex min-w-0 flex-col gap-6 lg:col-span-5">
+        <div className="flex max-w-xl min-w-0 flex-col gap-6">
           <p className="text-base leading-relaxed text-pretty text-muted-foreground">
-            TypeTarget is a free browser extension that listens to your browser tab, whether
-            that&rsquo;s a meeting, a lecture or a video and transcribes, into any text field, using any AI model you pick.
+            <span className="sr-only">{INTRO}</span>
+            <span aria-hidden className="grid">
+              <span className="invisible col-start-1 row-start-1">{INTRO}</span>
+              <TypingAnimation
+                className="col-start-1 row-start-1 leading-[inherit] tracking-[inherit]"
+                duration={INTRO_SPEED}
+                delay={INTRO_DELAY}
+                startOnView={false}
+                cursorStyle="line"
+              >
+                {INTRO}
+              </TypingAnimation>
+            </span>
           </p>
           <div className="flex flex-wrap gap-3">
-            <Button
-              size="lg"
-              nativeButton={false}
-              render={<a href="#install" />}
+            <BlurFade delay={INTRO_DELAY / 1000} duration={FADE_DURATION}>
+              <Button
+                size="lg"
+                nativeButton={false}
+                render={<a href="#install" />}
+              >
+                <ArrowDownIcon data-icon="inline-start" className="size-4" />
+                Install
+              </Button>
+            </BlurFade>
+            <BlurFade
+              delay={INTRO_DELAY / 1000 + 0.05}
+              duration={FADE_DURATION}
             >
-              <ArrowDownIcon data-icon="inline-start" className="size-4" />
-              Install
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              nativeButton={false}
-              render={<a href={REPO_URL} />}
-            >
-              <GithubLogoIcon data-icon="inline-start" className="size-4" />
-              Source
-            </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                nativeButton={false}
+                render={<a href={REPO_URL} />}
+              >
+                <GithubLogoIcon data-icon="inline-start" className="size-4" />
+                Source
+              </Button>
+            </BlurFade>
           </div>
           <p className="text-xs text-muted-foreground">
-            Free · MIT licensed · Chrome 116+ · Not on the Chrome Web Store yet,
-            so you load it yourself. It takes a minute.
+            <span className="sr-only">{NOTE}</span>
+            <span aria-hidden className="grid">
+              <span className="invisible col-start-1 row-start-1">{NOTE}</span>
+              <TypingAnimation
+                className="col-start-1 row-start-1 leading-[inherit] tracking-[inherit]"
+                duration={NOTE_SPEED}
+                delay={NOTE_DELAY}
+                startOnView={false}
+                cursorStyle="line"
+              >
+                {NOTE}
+              </TypingAnimation>
+            </span>
           </p>
         </div>
       </div>
@@ -88,32 +154,26 @@ export const Hero = () => (
         How it works
       </h2>
       <ol className="flex flex-col gap-16 md:gap-24">
-        {steps.map(({ n, title, body, src, height, alt }, index) => (
+        {steps.map(({ n, title, body, media }) => (
           <li key={n}>
-            <figure className="grid gap-6 lg:grid-cols-12 lg:gap-12">
-              <figcaption className="flex min-w-0 flex-col gap-3 lg:col-span-4 lg:pt-2">
-                <span className="text-2xl font-semibold text-primary tabular-nums">
-                  {n}
-                </span>
-                <h3 className="text-xl font-semibold tracking-tight text-balance">
-                  {title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {body}
-                </p>
-              </figcaption>
-              <div className="min-w-0 border bg-muted lg:col-span-8">
-                <Image
-                  src={src}
-                  alt={alt}
-                  width={1280}
-                  height={height}
-                  loading={index === 0 ? "eager" : "lazy"}
-                  fetchPriority={index === 0 ? "high" : "auto"}
-                  className="h-auto w-full"
-                />
-              </div>
-            </figure>
+            <BlurFade inView duration={FADE_DURATION}>
+              <figure className="grid gap-6 lg:grid-cols-12 lg:gap-12">
+                <figcaption className="flex min-w-0 flex-col gap-3 lg:col-span-4 lg:pt-2">
+                  <span className="text-2xl font-semibold text-primary tabular-nums">
+                    {n}
+                  </span>
+                  <h3 className="text-xl font-semibold tracking-tight text-balance">
+                    {title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {body}
+                  </p>
+                </figcaption>
+                <div className="min-w-0 border bg-muted lg:col-span-8">
+                  {media}
+                </div>
+              </figure>
+            </BlurFade>
           </li>
         ))}
       </ol>

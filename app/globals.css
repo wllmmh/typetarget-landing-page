@@ -8,6 +8,8 @@
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+/* OS theme, regardless of the page theme. For mocks of native browser UI. */
+@custom-variant system-dark (@media (prefers-color-scheme: dark));
 
 @theme inline {
     --font-heading: var(--font-mono);
