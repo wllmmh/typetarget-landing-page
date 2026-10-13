@@ -1,6 +1,11 @@
 import Image from "next/image"
 import { ArrowDownIcon, GithubLogoIcon } from "@phosphor-icons/react/ssr"
 
+import {
+  MuteButton,
+  MuteProvider,
+  MutableVideo,
+} from "@/components/landing/mutable-video"
 import { TypeToFieldAnimation } from "@/components/landing/type-to-field-animation"
 import { ContextMenuAnimation } from "@/components/mock-context-menu/context-menu-animation"
 import { BlurFade } from "@/components/ui/blur-fade"
@@ -39,22 +44,39 @@ const steps = [
     title: "Right-click the tab you want heard.",
     body: "A meeting, a lecture, a stream, a video. Choose TypeTarget → Listen to this tab.",
     media: (
-      <ContextMenuAnimation
-        cursorStart={{ x: 64, y: 274 }}
-        startDelay={STEPS_START}
-        label="A video call in a browser tab. The pointer right-clicks, opens the TypeTarget menu and clicks Listen to this tab."
-        background={
-          <Image
-            src="/listen-to-tab-background.webp"
-            alt=""
-            fill
-            loading="eager"
-            fetchPriority="high"
-            sizes="(min-width: 1024px) 760px, 100vw"
-            className="object-cover"
+      <MuteProvider>
+        <div className="relative">
+          <ContextMenuAnimation
+            cursorStart={{ x: 64, y: 274 }}
+            startDelay={STEPS_START}
+            label="A video call in a browser tab. The pointer right-clicks, opens the TypeTarget menu and clicks Listen to this tab."
+            background={
+              <>
+                {/* Sits under the video: it's what shows if the video fails to load, or with reduced motion. */}
+                <Image
+                  src="/listen-to-tab-background.webp"
+                  alt=""
+                  fill
+                  loading="eager"
+                  fetchPriority="high"
+                  sizes="(min-width: 1024px) 760px, 100vw"
+                  className="object-cover"
+                />
+                <MutableVideo
+                  src="/listen-to-tab-background.mp4"
+                  poster="/listen-to-tab-background.webp"
+                  autoPlay
+                  loop
+                  playsInline
+                  aria-hidden
+                  className="absolute inset-0 size-full object-cover motion-reduce:hidden"
+                />
+              </>
+            }
           />
-        }
-      />
+          <MuteButton className="absolute right-3 bottom-3" />
+        </div>
+      </MuteProvider>
     ),
   },
   {

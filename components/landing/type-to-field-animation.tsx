@@ -12,7 +12,7 @@ import { TypingAnimation } from "@/components/ui/typing-animation"
 import { cn } from "@/lib/utils"
 
 const FIELD_TEXT =
-  "Audio from the tab being listened to automatically gets written into any text field."
+  "What would you do with unlimited free AI transcriptions?"
 const FIELD_TYPE_SPEED = 25
 // Let the text finish typing, then hold on it briefly before the loop restarts.
 const LOOP_DELAY = FIELD_TEXT.length * FIELD_TYPE_SPEED + 1000
