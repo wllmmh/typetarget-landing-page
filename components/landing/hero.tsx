@@ -15,7 +15,7 @@ import { REPO_URL } from "@/lib/site"
 
 const HEADLINE = "Speech to text typed anywhere."
 const INTRO =
-  "TypeTarget is a free browser extension that listens to your browser tab, and transcribes the audio directly into any text field, using any AI model you pick."
+  "TypeTarget is a free browser extension that transcribes your audio directly into any text field you tell it to, using an AI model of your choice."
 const NOTE =
   "Free · MIT licensed · Chrome 116+ · Not on the Chrome Web Store yet, so you load it yourself. It takes a minute."
 

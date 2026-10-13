@@ -25,6 +25,14 @@ const notes: Group = {
       title: "Podcasts and videos",
       body: "Pull a transcript for show notes, a blog draft or a quote you need exact.",
     },
+    {
+      title: "Call notes into a CRM",
+      body: "Sales or support calls, typed straight into the notes field of the record.",
+    },
+    {
+      title: "Its own notepad",
+      body: "Type to new file opens a box on any page. Save it as a .txt file when you're done.",
+    },
   ],
 }
 
@@ -73,10 +81,6 @@ const llm: Group = {
       body: "A tutor that corrects, explains or quizzes you on the audio you're listening to.",
     },
     {
-      title: "Interview practice",
-      body: "Play a mock interview and have the AI critique the answers.",
-    },
-    {
       title: "Study aid",
       body: "Turn a lecture into flashcards, a summary or practice questions as it happens.",
     },
@@ -87,29 +91,6 @@ const llm: Group = {
     {
       title: "Summaries",
       body: "Feed it a long stream or podcast and ask what you missed.",
-    },
-  ],
-}
-
-const elsewhere: Group = {
-  heading: "Any other text field",
-  intro: "If the page has a text box, TypeTarget can write into it.",
-  items: [
-    {
-      title: "Call notes into a CRM",
-      body: "Sales or support calls, typed straight into the notes field of the record.",
-    },
-    {
-      title: "Email drafts",
-      body: "Quote what was said word for word, without rewinding.",
-    },
-    {
-      title: "Search boxes",
-      body: "Search for the name or phrase you just heard.",
-    },
-    {
-      title: "Its own scratch box",
-      body: "Type to new file opens a box on any page. Save it as a .txt file when you're done.",
     },
   ],
 }
@@ -185,11 +166,6 @@ export const UseCases = () => (
           when each message goes.
         </figcaption>
       </figure>
-    </div>
-
-    <div className="mt-20">
-      <GroupHead heading={elsewhere.heading} intro={elsewhere.intro} />
-      <ItemList items={elsewhere.items} columns={2} />
     </div>
   </section>
 )

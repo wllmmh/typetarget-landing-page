@@ -4,61 +4,30 @@ type Row = { label: string; value: ReactNode }
 
 const rows: Row[] = [
   {
-    label: "Who sees your transcripts",
-    value:
-      "You, and the page you type into. TypeTarget has no servers, accounts, analytics or logs, so its developer never receives your audio, your text or your keys.",
-  },
-  {
-    label: "Storage limits",
-    value:
-      "None. TypeTarget doesn't store transcripts at all. They live in the field you chose, and you can save them as a .txt file on your own computer.",
-  },
-  {
-    label: "Recording length",
+    label: "No recording limits.",
     value: (
       <>
-        Up to 18 hours nonstop on the Gemini API free tier.
+        Leave it running through a full-day conference. TypeTarget puts no cap
+        on how long a session can go.
         <a
-          href="#gemini-note"
+          href="#limits-note"
           className="text-primary no-underline"
-          aria-label="See note on Gemini limits"
+          aria-label="See note on provider limits"
         >
           *
-        </a>{" "}
-        When a session hits Gemini&rsquo;s time limit, TypeTarget reconnects by
-        itself without losing audio.
+        </a>
       </>
     ),
   },
   {
-    label: "Price",
+    label: "No storage limits.",
     value:
-      "Free and open source, under the MIT licence. Hosted models run on your own API key, under your own account with Google or Groq, and both offer a free tier.",
+      "TypeTarget doesn't store transcripts, so there's nothing to fill up. Every word goes straight into the field you chose, and you can save it as a .txt file on your own computer. No servers, no accounts, no logs.",
   },
   {
-    label: "Offline mode",
+    label: "Free forever.",
     value:
-      "Local Whisper runs inside your browser with no key and no network, so audio never leaves your computer. It keeps up live only on fast machines, and TypeTarget tells you when it's falling behind.",
-  },
-  {
-    label: "Models",
-    value:
-      "Gemini 3.5 Transcribe Live, Whisper Large v3 and v3 Turbo on Groq, or Local Whisper from tiny to medium.",
-  },
-  {
-    label: "Languages",
-    value:
-      "Dozens with Gemini or Groq. The Local Whisper models are English-only.",
-  },
-  {
-    label: "API keys",
-    value:
-      "Stored in this browser only, sent only to the provider they belong to, and never shown again once saved.",
-  },
-  {
-    label: "Permissions",
-    value:
-      "No access to every site. It only acts on a tab when you right-click it or open the popup there.",
+      "Free and open source under the MIT licence. No trial, no paid tier, no account to create. The transcription models run on your own Google or Groq account, and both offer a free tier.",
   },
 ]
 
@@ -71,33 +40,30 @@ export const SpecSheet = () => (
     <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
       <div className="flex min-w-0 flex-col gap-4 lg:col-span-4">
         <h2 id="own-heading" className="heading">
-          Own your notes.
+          No limits. Free forever.
         </h2>
         <p className="text-base leading-relaxed text-muted-foreground">
-          TypeTarget is a pipe from a tab to a text box. It doesn&rsquo;t keep
-          anything that goes through it.
+          No meter running, no cap on what you keep. Record as much as you want, for as long as you want.
         </p>
       </div>
       <div className="min-w-0 lg:col-span-8">
         <dl className="border-b">
           {rows.map(({ label, value }) => (
-            <div
-              key={label}
-              className="grid gap-1 border-t py-4 md:grid-cols-[13rem_minmax(0,1fr)] md:gap-8"
-            >
-              <dt className="text-sm font-semibold">{label}</dt>
-              <dd className="text-sm leading-relaxed text-muted-foreground">
+            <div key={label} className="flex flex-col gap-2 border-t py-6">
+              <dt className="text-xl font-semibold tracking-tight">{label}</dt>
+              <dd className="max-w-prose text-sm leading-relaxed text-muted-foreground">
                 {value}
               </dd>
             </div>
           ))}
         </dl>
         <p
-          id="gemini-note"
+          id="limits-note"
           className="mt-4 text-xs leading-relaxed text-muted-foreground"
         >
-          * Subject to the Gemini API free-tier limits, which Google sets and
-          can change at any time. Check your quota in Google AI Studio.
+          * TypeTarget sets no limit of its own. Hosted models (Gemini, Groq)
+          apply their own free-tier quotas, which Google and Groq set and can
+          change at any time. Local Whisper has no quota.
         </p>
       </div>
     </div>

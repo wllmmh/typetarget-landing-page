@@ -29,7 +29,7 @@ const steps: Step[] = [
     ),
   },
   {
-    title: "Open your browser's extensions page.",
+    title: "Open your browser's extensions page and turn on Developer mode.",
     body: (
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
@@ -39,17 +39,10 @@ const steps: Step[] = [
         <p>
           Paste it into the address bar. Web pages can&rsquo;t link to it
           directly. In Edge it&rsquo;s <Code>edge://extensions</Code>, and in
-          Brave <Code>brave://extensions</Code>.
+          Brave <Code>brave://extensions</Code>. Developer mode is the switch in
+          the top-right corner of the page.
         </p>
       </div>
-    ),
-  },
-  {
-    title: "Turn on Developer mode.",
-    body: (
-      <p>
-        It&rsquo;s the switch in the top-right corner of the extensions page.
-      </p>
     ),
   },
   {
@@ -72,7 +65,7 @@ export const Install = () => (
     <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
       <div className="flex min-w-0 flex-col gap-4 lg:col-span-4">
         <h2 id="install-heading" className="heading">
-          Install in four steps.
+          Install in three steps.
         </h2>
         <p className="text-base leading-relaxed text-muted-foreground">
           TypeTarget isn&rsquo;t on the Chrome Web Store yet, so you load it
