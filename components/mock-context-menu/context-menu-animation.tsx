@@ -38,6 +38,8 @@ type Scene = {
   mainHighlight: number | null
   subHighlight: number | null
   pressed: boolean
+  /** The target item was clicked this loop. */
+  clicked: boolean
 }
 
 const CLOSED_SCENE: Scene = {
@@ -46,6 +48,7 @@ const CLOSED_SCENE: Scene = {
   mainHighlight: null,
   subHighlight: null,
   pressed: false,
+  clicked: false,
 }
 
 const OUTSIDE: MenuHit = { kind: "outside" }
@@ -59,11 +62,18 @@ type ContextMenuAnimationProps = {
   cursorEnd?: Point
   /** Top-left of the context menu. Defaults to `cursorStart`, like a real right-click. */
   menuPosition?: Point
+  /** Must include the TypeTarget item. */
+  menuEntries?: MockMenuEntry[]
+  menuWidth?: number
   submenuEntries?: MockMenuEntry[]
   /** Id of the submenu item the cursor hovers and clicks. */
   submenuTargetId?: string
   /** Rendered behind the menus, filling the container. */
   background?: ReactNode
+  /** Rendered behind the menus in stage px. `clicked` is true from the click until the loop restarts. */
+  renderStage?: (clicked: boolean) => ReactNode
+  /** Pause once the pointer is back at the start, before the loop restarts, in ms. */
+  loopDelay?: number
   /** Logical stage size. Everything is laid out in these px and scaled to fit. */
   width?: number
   height?: number
@@ -89,9 +99,13 @@ export const ContextMenuAnimation = ({
   cursorStart,
   cursorEnd,
   menuPosition = cursorStart,
+  menuEntries = CHROME_PAGE_MENU,
+  menuWidth = MENU_METRICS.menuWidth,
   submenuEntries = TYPETARGET_SUBMENU,
   submenuTargetId = "listen",
   background,
+  renderStage,
+  loopDelay = 500,
   width = 1280,
   height = 800,
   label,
@@ -111,14 +125,15 @@ export const ContextMenuAnimation = ({
   const endY = cursorEnd?.y
 
   const geometry = useMemo(() => {
-    const parentIndex = findEntryIndex(CHROME_PAGE_MENU, PARENT_ID)
+    const parentIndex = findEntryIndex(menuEntries, PARENT_ID)
     const targetIndex = findEntryIndex(submenuEntries, submenuTargetId)
     const menuOrigin = { x: menuX, y: menuY }
     const submenuOrigin = getSubmenuOrigin({
       menuOrigin,
-      entries: CHROME_PAGE_MENU,
+      entries: menuEntries,
       parentIndex,
       boundsWidth: width,
+      menuWidth,
     })
     const opensRight = submenuOrigin.x > menuX
     const parentRowTop = submenuOrigin.y + MENU_METRICS.paddingY
@@ -134,7 +149,7 @@ export const ContextMenuAnimation = ({
       start: { x: startX, y: startY },
       // A resting point on the parent row, near the edge the submenu opens from.
       waypoint: {
-        x: opensRight ? menuX + MENU_METRICS.menuWidth - 90 : menuX + 90,
+        x: opensRight ? menuX + menuWidth - 90 : menuX + 90,
         y: parentRowTop + 14,
       },
       // Matches where the pointer sits in the reference screenshot.
@@ -150,6 +165,8 @@ export const ContextMenuAnimation = ({
     endY,
     menuX,
     menuY,
+    menuEntries,
+    menuWidth,
     width,
     submenuEntries,
     submenuTargetId,
@@ -226,12 +243,7 @@ export const ContextMenuAnimation = ({
       }
 
       const mainHit = current.mainOpen
-        ? hitTestMenu(
-            CHROME_PAGE_MENU,
-            menuOrigin,
-            MENU_METRICS.menuWidth,
-            point
-          )
+        ? hitTestMenu(menuEntries, menuOrigin, menuWidth, point)
         : OUTSIDE
 
       // Safe-triangle: crossing other rows on the way into an open submenu keeps it.
@@ -304,11 +316,11 @@ export const ContextMenuAnimation = ({
         // Left-click: the item activates on release and the menus dismiss.
         update({ pressed: true })
         await wait(120, signal)
-        update(CLOSED_SCENE)
+        update({ ...CLOSED_SCENE, clicked: true })
         await wait(550, signal)
 
         await moveTo(start, 0.14)
-        await wait(500, signal)
+        await wait(loopDelay, signal)
       }
     }
 
@@ -320,7 +332,17 @@ export const ContextMenuAnimation = ({
       controller.abort()
       setScene(CLOSED_SCENE)
     }
-  }, [inView, reduceMotion, geometry, submenuEntries, cursorX, cursorY])
+  }, [
+    inView,
+    reduceMotion,
+    geometry,
+    menuEntries,
+    menuWidth,
+    submenuEntries,
+    loopDelay,
+    cursorX,
+    cursorY,
+  ])
 
   // Reduced motion: hold the final hovered frame instead of looping. The server
   // can't know the preference, so wait until mounted (scale is measured) to
@@ -333,6 +355,7 @@ export const ContextMenuAnimation = ({
           mainHighlight: geometry.parentIndex,
           subHighlight: geometry.targetIndex,
           pressed: false,
+          clicked: false,
         }
       : scene
 
@@ -356,7 +379,10 @@ export const ContextMenuAnimation = ({
           scale === null && "invisible"
         )}
       >
+        {renderStage?.(shown.clicked)}
         <MockContextMenu
+          entries={menuEntries}
+          width={menuWidth}
           position={geometry.menuOrigin}
           open={shown.mainOpen}
           highlightedIndex={shown.mainHighlight}

@@ -111,13 +111,17 @@ export const MockContextMenu = ({
   entries = CHROME_PAGE_MENU,
   highlightedIndex = null,
   pressed = false,
+  width = MENU_METRICS.menuWidth,
   ...props
-}: MockMenuProps) => (
+}: MockMenuProps & {
+  /** Chrome sizes the menu to fit its longest row. */
+  width?: number
+}) => (
   <MockMenuSurface
     entries={entries}
     highlightedIndex={highlightedIndex}
     pressed={pressed}
-    width={MENU_METRICS.menuWidth}
+    width={width}
     iconGutter
     {...props}
   />

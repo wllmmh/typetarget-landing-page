@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { ArrowDownIcon, GithubLogoIcon } from "@phosphor-icons/react/ssr"
 
+import { TypeToFieldAnimation } from "@/components/landing/type-to-field-animation"
 import { ContextMenuAnimation } from "@/components/mock-context-menu/context-menu-animation"
 import { BlurFade } from "@/components/ui/blur-fade"
 import { Button } from "@/components/ui/button"
@@ -49,14 +50,7 @@ const steps = [
     title: "Right-click where the words should go.",
     body: "In any browser tab, Select TypeTarget → Type to new file or Type to this field to inject the transcription directly into a page text input.",
     media: (
-      <Image
-        src="/type-to-field.webp"
-        alt="A TypeTarget text box with a green outline and a 0:01 timer, filling with transcribed speech, and the TypeTarget menu open."
-        width={1280}
-        height={660}
-        loading="lazy"
-        className="h-auto w-full"
-      />
+      <TypeToFieldAnimation label="A blank text field on a web page. The pointer right-clicks it, opens the TypeTarget menu and clicks Type to this field. The field gets a green outline and a timer, and transcribed speech types into it." />
     ),
   },
 ] as const

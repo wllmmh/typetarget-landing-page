@@ -26,8 +26,7 @@ export const MENU_METRICS = {
   submenuWidth: 160,
 } as const
 
-const { rowHeight, separatorHeight, paddingY, menuWidth, submenuWidth } =
-  MENU_METRICS
+const { rowHeight, separatorHeight, paddingY, submenuWidth } = MENU_METRICS
 
 const getEntryHeight = (entry: MockMenuEntry) =>
   entry.kind === "separator" ? separatorHeight : rowHeight
@@ -81,11 +80,13 @@ export const getSubmenuOrigin = ({
   entries,
   parentIndex,
   boundsWidth,
+  menuWidth = MENU_METRICS.menuWidth,
 }: {
   menuOrigin: Point
   entries: MockMenuEntry[]
   parentIndex: number
   boundsWidth: number
+  menuWidth?: number
 }): Point => {
   const right = menuOrigin.x + menuWidth
 
