@@ -48,6 +48,8 @@ interface TypingAnimationProps extends Omit<MotionProps, "children"> {
   className?: string
   duration?: number
   typeSpeed?: number
+  /** Characters revealed per tick while typing. Raise it to type faster than the ~4ms timer floor. */
+  charsPerTick?: number
   deleteSpeed?: number
   delay?: number
   pauseDelay?: number
@@ -65,6 +67,7 @@ export function TypingAnimation({
   className,
   duration = 100,
   typeSpeed,
+  charsPerTick = 1,
   deleteSpeed,
   delay = 0,
   pauseDelay = 1000,
@@ -132,10 +135,12 @@ export function TypingAnimation({
         switch (phase) {
           case "typing":
             if (currentCharIndex < graphemes.length) {
-              setDisplayedText(
-                graphemes.slice(0, currentCharIndex + 1).join("")
+              const nextIndex = Math.min(
+                currentCharIndex + charsPerTick,
+                graphemes.length
               )
-              setCurrentCharIndex(currentCharIndex + 1)
+              setDisplayedText(graphemes.slice(0, nextIndex).join(""))
+              setCurrentCharIndex(nextIndex)
             } else {
               if (hasMultipleWords || loop) {
                 const isLastWord =
@@ -182,6 +187,7 @@ export function TypingAnimation({
     hasMultipleWords,
     loop,
     typingSpeed,
+    charsPerTick,
     deletingSpeed,
     pauseDelay,
     delay,

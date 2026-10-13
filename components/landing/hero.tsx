@@ -14,13 +14,24 @@ const INTRO =
 const NOTE =
   "Free · MIT licensed · Chrome 116+ · Not on the Chrome Web Store yet, so you load it yourself. It takes a minute."
 
-// Per-character speeds (ms). Each block starts typing once the previous one finishes.
-const HEADLINE_SPEED = 25
-const INTRO_SPEED = 7
-const NOTE_SPEED = 5
-const INTRO_DELAY = HEADLINE.length * HEADLINE_SPEED + 150
-const NOTE_DELAY = INTRO_DELAY + INTRO.length * INTRO_SPEED + 150
-const FADE_DURATION = 0.25
+// Each block starts typing once the previous one finishes. Browsers clamp nested
+// timers to ~4ms, so the long blocks reveal several characters per tick instead.
+const HEADLINE_SPEED = 12
+const INTRO_SPEED = 6
+const INTRO_CHARS_PER_TICK = 6
+const NOTE_SPEED = 6
+const NOTE_CHARS_PER_TICK = 6
+const GAP = 80
+const typeDuration = (text: string, speed: number, charsPerTick = 1) =>
+  Math.ceil(text.length / charsPerTick) * speed
+const INTRO_DELAY = typeDuration(HEADLINE, HEADLINE_SPEED) + GAP
+const NOTE_DELAY =
+  INTRO_DELAY + typeDuration(INTRO, INTRO_SPEED, INTRO_CHARS_PER_TICK) + GAP
+const FADE_DURATION = 0.2
+// The steps fade in one after another once the note has finished typing.
+const STEPS_START =
+  NOTE_DELAY + typeDuration(NOTE, NOTE_SPEED, NOTE_CHARS_PER_TICK) + GAP
+const STEP_DELAY = FADE_DURATION * 1000
 
 const steps = [
   {
@@ -30,6 +41,7 @@ const steps = [
     media: (
       <ContextMenuAnimation
         cursorStart={{ x: 64, y: 274 }}
+        startDelay={STEPS_START}
         label="A video call in a browser tab. The pointer right-clicks, opens the TypeTarget menu and clicks Listen to this tab."
         background={
           <Image
@@ -50,7 +62,10 @@ const steps = [
     title: "Right-click where the words should go.",
     body: "In any browser tab, Select TypeTarget → Type to new file or Type to this field to inject the transcription directly into a page text input.",
     media: (
-      <TypeToFieldAnimation label="A blank text field on a web page. The pointer right-clicks it, opens the TypeTarget menu and clicks Type to this field. The field gets a green outline and a timer, and transcribed speech types into it." />
+      <TypeToFieldAnimation
+        startDelay={STEPS_START + STEP_DELAY}
+        label="A blank text field on a web page. The pointer right-clicks it, opens the TypeTarget menu and clicks Type to this field. The field gets a green outline and a timer, and transcribed speech types into it."
+      />
     ),
   },
 ] as const
@@ -87,6 +102,7 @@ export const Hero = () => (
               <TypingAnimation
                 className="col-start-1 row-start-1 leading-[inherit] tracking-[inherit]"
                 duration={INTRO_SPEED}
+                charsPerTick={INTRO_CHARS_PER_TICK}
                 delay={INTRO_DELAY}
                 startOnView={false}
                 cursorStyle="line"
@@ -128,6 +144,7 @@ export const Hero = () => (
               <TypingAnimation
                 className="col-start-1 row-start-1 leading-[inherit] tracking-[inherit]"
                 duration={NOTE_SPEED}
+                charsPerTick={NOTE_CHARS_PER_TICK}
                 delay={NOTE_DELAY}
                 startOnView={false}
                 cursorStyle="line"
@@ -148,9 +165,12 @@ export const Hero = () => (
         How it works
       </h2>
       <ol className="flex flex-col gap-16 md:gap-24">
-        {steps.map(({ n, title, body, media }) => (
+        {steps.map(({ n, title, body, media }, index) => (
           <li key={n}>
-            <BlurFade inView duration={FADE_DURATION}>
+            <BlurFade
+              delay={(STEPS_START + index * STEP_DELAY) / 1000}
+              duration={FADE_DURATION}
+            >
               <figure className="grid gap-6 lg:grid-cols-12 lg:gap-12">
                 <figcaption className="flex min-w-0 flex-col gap-3 lg:col-span-4 lg:pt-2">
                   <span className="text-2xl font-semibold text-primary tabular-nums">
@@ -171,10 +191,6 @@ export const Hero = () => (
           </li>
         ))}
       </ol>
-      <p className="mt-12 max-w-prose text-sm leading-relaxed text-muted-foreground lg:ml-[calc(33.333%+1rem)]">
-        Then text keeps arriving as people speak. Stop typing, stop listening or
-        switch fields from the same menu, or from the toolbar popup.
-      </p>
     </section>
   </>
 )

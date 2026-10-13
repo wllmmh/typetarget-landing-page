@@ -109,7 +109,13 @@ const FieldStage = ({ active }: { active: boolean }) => (
   </div>
 )
 
-export const TypeToFieldAnimation = ({ label }: { label: string }) => (
+export const TypeToFieldAnimation = ({
+  label,
+  startDelay,
+}: {
+  label: string
+  startDelay?: number
+}) => (
   <ContextMenuAnimation
     cursorStart={{ x: 625, y: 95 }}
     menuEntries={CHROME_EDITABLE_MENU}
@@ -118,6 +124,7 @@ export const TypeToFieldAnimation = ({ label }: { label: string }) => (
     submenuTargetId="type-to-field"
     renderStage={(clicked) => <FieldStage active={clicked} />}
     loopDelay={LOOP_DELAY}
+    startDelay={startDelay}
     width={1280}
     height={660}
     label={label}

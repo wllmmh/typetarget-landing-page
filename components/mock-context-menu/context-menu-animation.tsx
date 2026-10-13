@@ -74,6 +74,8 @@ type ContextMenuAnimationProps = {
   renderStage?: (clicked: boolean) => ReactNode
   /** Pause once the pointer is back at the start, before the loop restarts, in ms. */
   loopDelay?: number
+  /** Hold the first run until this many ms after mount, e.g. while a parent fades in. */
+  startDelay?: number
   /** Logical stage size. Everything is laid out in these px and scaled to fit. */
   width?: number
   height?: number
@@ -106,6 +108,7 @@ export const ContextMenuAnimation = ({
   background,
   renderStage,
   loopDelay = 500,
+  startDelay = 0,
   width = 1280,
   height = 800,
   label,
@@ -116,6 +119,8 @@ export const ContextMenuAnimation = ({
   const [scene, setScene] = useState(CLOSED_SCENE)
   const inView = useInView(containerRef, { amount: 0.3 })
   const reduceMotion = useReducedMotion()
+  // A deadline rather than a duration, so scrolling out and back in doesn't wait again.
+  const [readyAt] = useState(() => performance.now() + startDelay)
   const cursorX = useMotionValue(cursorStart.x)
   const cursorY = useMotionValue(cursorStart.y)
 
@@ -291,6 +296,7 @@ export const ContextMenuAnimation = ({
       })
 
     const run = async () => {
+      await wait(Math.max(0, readyAt - performance.now()), signal)
       for (;;) {
         cursorX.set(start.x)
         cursorY.set(start.y)
@@ -340,6 +346,7 @@ export const ContextMenuAnimation = ({
     menuWidth,
     submenuEntries,
     loopDelay,
+    readyAt,
     cursorX,
     cursorY,
   ])
