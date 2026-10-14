@@ -16,7 +16,7 @@ import { CHROME_STORE_URL, REPO_URL } from "@/lib/site"
 
 const HEADLINE = "Speech to text typed anywhere."
 const INTRO =
-  "TypeTarget is a free browser extension that transcribes your audio directly into any text field you tell it to, using an AI model of your choice."
+  "TypeTarget is a free browser extension that transcribes your audio directly into any text field you tell it to."
 const NOTE = "Free · MIT licensed · Chrome 116+ · Also works in Edge and Brave."
 
 // Each block starts typing once the previous one finishes. Browsers clamp nested

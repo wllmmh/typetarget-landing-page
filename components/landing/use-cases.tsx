@@ -5,10 +5,7 @@ const notes: Group = {
   heading: "Notes you keep",
   intro: "Listen in one tab, write in another.",
   items: [
-    {
-      title: "Meeting notes",
-      body: "A web call in one tab, the transcript in your doc or notes app in the next.",
-    },
+    
     {
       title: "Lectures and courses",
       body: "Every word of a recorded or live class, straight into your study notes.",
@@ -29,10 +26,6 @@ const notes: Group = {
       title: "Call notes into a CRM",
       body: "Sales or support calls, typed straight into the notes field of the record.",
     },
-    {
-      title: "Its own notepad",
-      body: "Type to new file opens a box on any page. Save it as a .txt file when you're done.",
-    },
   ],
 }
 
@@ -43,6 +36,10 @@ const captions: Group = {
     {
       title: "Captions where there are none",
       body: "Streams, embedded players and old recordings that never shipped subtitles.",
+    },
+    {
+      title: "Meeting notes",
+      body: "A web call in one tab, the transcript in your doc or notes app in the next.",
     },
     {
       title: "Deaf and hard-of-hearing access",
@@ -134,11 +131,11 @@ export const UseCases = () => (
   >
     <div className="flex max-w-3xl flex-col gap-4">
       <h2 id="uses-heading" className="heading">
-        Wherever there&rsquo;s a text box.
+        Own your notes. Output and save to anywhere.
       </h2>
       <p className="text-base leading-relaxed text-muted-foreground">
-        TypeTarget doesn&rsquo;t store your notes, and it never sees them. You
-        just tell it where to write. Here are some places to point it.
+        TypeTarget doesn&rsquo;t store your notes. Instead, you
+        tell it where you want it to write them to.
       </p>
     </div>
 
