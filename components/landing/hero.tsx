@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { DownloadSimpleIcon, GithubLogoIcon } from "@phosphor-icons/react/ssr"
+import { DownloadSimpleIcon } from "@phosphor-icons/react/ssr"
 
 import {
   MuteButton,
@@ -7,13 +7,14 @@ import {
   MutableVideo,
 } from "@/components/landing/mutable-video"
 import { TypeToFieldAnimation } from "@/components/landing/type-to-field-animation"
+import { Code } from "@/components/landing/code"
 import { ContextMenuAnimation } from "@/components/mock-context-menu/context-menu-animation"
 import { PopupAnimation } from "@/components/mock-popup/popup-animation"
 import { BlurFade } from "@/components/ui/blur-fade"
 import { BrowserName } from "@/components/landing/browser-name"
 import { Button } from "@/components/ui/button"
 import { TypingAnimation } from "@/components/ui/typing-animation"
-import { CHROME_STORE_URL, REPO_URL } from "@/lib/site"
+import { CHROME_STORE_URL } from "@/lib/site"
 
 const HEADLINE = "Speech to text typed anywhere."
 const INTRO =
@@ -56,7 +57,13 @@ const steps = [
     n: "Step 2",
     optional: false,
     title: "Select an input.",
-    body: "Click the 'Start listening' button in the TypeTarget panel, or right click on any page. Choose TypeTarget → Listen to this tab.",
+    body: (
+      <>
+        Click the <Code>Start listening</Code> button in the TypeTarget panel,
+        or right click on any page. Choose <Code>TypeTarget</Code> →{" "}
+        <Code>Listen to this tab</Code>.
+      </>
+    ),
     media: (
       <MuteProvider>
         <div className="relative">
@@ -97,7 +104,13 @@ const steps = [
     n: "Step 3",
     optional: false,
     title: "Choose an output.",
-    body: "Click the 'Start typing' button in the TypeTarget panel or right click on any web page's text field and Select TypeTarget → Type to this field.",
+    body: (
+      <>
+        Click the <Code>Start typing</Code> button in the TypeTarget panel or
+        right click on any web page&rsquo;s text field and Select{" "}
+        <Code>TypeTarget</Code> → <Code>Type to this field</Code>.
+      </>
+    ),
     media: (
       <TypeToFieldAnimation
         startDelay={STEPS_START + 2 * STEP_DELAY}
@@ -148,7 +161,7 @@ export const Hero = () => (
               </TypingAnimation>
             </span>
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <BlurFade delay={INTRO_DELAY / 1000} duration={FADE_DURATION}>
               <Button
                 size="lg"
@@ -162,41 +175,27 @@ export const Hero = () => (
                 Add to <BrowserName />
               </Button>
             </BlurFade>
-            <BlurFade
-              delay={INTRO_DELAY / 1000 + 0.05}
-              duration={FADE_DURATION}
-            >
-              <Button
-                variant="outline"
-                size="lg"
-                nativeButton={false}
-                render={<a href={REPO_URL} />}
+            <BlurFade delay={INTRO_DELAY / 1000 + 0.1} duration={FADE_DURATION}>
+              <a
+                href={CHROME_STORE_URL}
+                className="flex w-fit items-center gap-3 text-sm leading-tight font-semibold hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
               >
-                <GithubLogoIcon data-icon="inline-start" className="size-4" />
-                Source
-              </Button>
+                <Image
+                  src="/chrome-store-192px.svg"
+                  alt=""
+                  width={48}
+                  height={48}
+                  className="size-12"
+                />
+                <span className="flex flex-col">
+                  <span className="text-xs font-normal text-muted-foreground">
+                    Available on the
+                  </span>
+                  Chrome Web Store
+                </span>
+              </a>
             </BlurFade>
           </div>
-          <BlurFade delay={INTRO_DELAY / 1000 + 0.1} duration={FADE_DURATION}>
-            <a
-              href={CHROME_STORE_URL}
-              className="flex w-fit items-center gap-3 text-sm leading-tight font-semibold hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-            >
-              <Image
-                src="/chrome-store-192px.svg"
-                alt=""
-                width={48}
-                height={48}
-                className="size-12"
-              />
-              <span className="flex flex-col">
-                <span className="text-xs font-normal text-muted-foreground">
-                  Available on the
-                </span>
-                Chrome Web Store
-              </span>
-            </a>
-          </BlurFade>
           <p className="text-xs text-muted-foreground">
             <span className="sr-only">{NOTE}</span>
             <span aria-hidden className="grid">

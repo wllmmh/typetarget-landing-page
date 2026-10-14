@@ -1,16 +1,13 @@
 import type { ReactNode } from "react"
 import { PlusIcon } from "@phosphor-icons/react/ssr"
 
-import { DOWNLOAD_URL } from "@/lib/site"
+import { Code } from "@/components/landing/code"
+import { MockAiStudioKeys } from "@/components/landing/mock-ai-studio-keys"
+import { MockGroqCreateKey } from "@/components/landing/mock-groq-keys"
+import { DOWNLOAD_URL, GEMINI_KEYS_URL, GROQ_KEYS_URL } from "@/lib/site"
 
 const linkClass =
   "text-foreground underline decoration-primary underline-offset-4"
-
-const Code = ({ children }: { children: ReactNode }) => (
-  <code className="border bg-muted px-1.5 py-0.5 text-[0.8125rem]">
-    {children}
-  </code>
-)
 
 const questions: { q: string; a: ReactNode }[] = [
   {
@@ -20,6 +17,48 @@ const questions: { q: string; a: ReactNode }[] = [
   {
     q: "Do I need an API key?",
     a: "Not to start. Local Whisper needs no key, but performance is dependent on your hardware. A Gemini or Groq key, which you get free from those providers, gives you live transcription on any machine.",
+  },
+  {
+    q: "How do I get an API key?",
+    a: (
+      <>
+        <span className="font-semibold text-foreground">Gemini.</span> Go to{" "}
+        <a href={GEMINI_KEYS_URL} className={linkClass}>
+          aistudio.google.com/api-keys
+        </a>{" "}
+        and click the <Code>Create API key</Code> button in the top right.
+        <MockAiStudioKeys />
+        <ol className="list-decimal space-y-1 pl-5">
+          <li>Name your key anything.</li>
+          <li>
+            Choose <Code>Create new project</Code>, and name the project
+            anything too.
+          </li>
+          <li>
+            Click <Code>Create key</Code>.
+          </li>
+          <li>
+            Copy the key it gives you and paste it into the API key field in
+            TypeTarget.
+          </li>
+        </ol>
+        <p className="mt-6">
+          <span className="font-semibold text-foreground">Groq.</span> Go to{" "}
+          <a href={GROQ_KEYS_URL} className={linkClass}>
+            console.groq.com/keys
+          </a>{" "}
+          and click the <Code>Create API Key</Code> button.
+        </p>
+        <MockGroqCreateKey />
+        <ol className="list-decimal space-y-1 pl-5">
+          <li>Give it a Display Name of anything you want.</li>
+          <li>
+            Copy your Secret Key and paste it into the Groq API key field in
+            TypeTarget.
+          </li>
+        </ol>
+      </>
+    ),
   },
   {
     q: "Where does my audio go?",
@@ -41,7 +80,8 @@ const questions: { q: string; a: ReactNode }[] = [
         <Code>chrome://extensions</Code> by pasting it into the address bar, as
         web pages can&rsquo;t link to it (in Edge it&rsquo;s{" "}
         <Code>edge://extensions</Code>, in Brave <Code>brave://extensions</Code>
-        ). Turn on Developer mode in the top-right corner, click Load unpacked
+        ). Turn on Developer mode in the top-right corner, click{" "}
+        <Code>Load unpacked</Code>
         and select the extracted folder. To update later, download the new zip,
         replace the folder and press the reload arrow on TypeTarget&rsquo;s
         card.
@@ -70,9 +110,9 @@ export const Faq = () => (
                 className="mt-0.5 size-4 shrink-0 group-open:rotate-45 motion-safe:transition-transform motion-safe:duration-150"
               />
             </summary>
-            <p className="max-w-prose pb-6 text-sm leading-relaxed text-muted-foreground">
+            <div className="max-w-prose pb-6 text-sm leading-relaxed text-muted-foreground">
               {a}
-            </p>
+            </div>
           </details>
         ))}
       </div>
