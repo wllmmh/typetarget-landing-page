@@ -77,7 +77,7 @@ const questions: { q: string; a: ReactNode; id?: string }[] = [
     a: (
       <>
         <span className="font-semibold text-foreground">Transcription.</span>{" "}
-        Whisper models, local or on Groq, support{" "}
+        OpenAI's Whisper models, local or on Groq, support{" "}
         <a href={WHISPER_LANGUAGES_URL} className={linkClass}>
           99 languages
         </a>
