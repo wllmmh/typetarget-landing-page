@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { ArrowDownIcon, GithubLogoIcon } from "@phosphor-icons/react/ssr"
+import { DownloadSimpleIcon, GithubLogoIcon } from "@phosphor-icons/react/ssr"
 
 import {
   MuteButton,
@@ -9,15 +9,15 @@ import {
 import { TypeToFieldAnimation } from "@/components/landing/type-to-field-animation"
 import { ContextMenuAnimation } from "@/components/mock-context-menu/context-menu-animation"
 import { BlurFade } from "@/components/ui/blur-fade"
+import { BrowserName } from "@/components/landing/browser-name"
 import { Button } from "@/components/ui/button"
 import { TypingAnimation } from "@/components/ui/typing-animation"
-import { REPO_URL } from "@/lib/site"
+import { CHROME_STORE_URL, REPO_URL } from "@/lib/site"
 
 const HEADLINE = "Speech to text typed anywhere."
 const INTRO =
   "TypeTarget is a free browser extension that transcribes your audio directly into any text field you tell it to, using an AI model of your choice."
-const NOTE =
-  "Free · MIT licensed · Chrome 116+ · Not on the Chrome Web Store yet, so you load it yourself. It takes a minute."
+const NOTE = "Free · MIT licensed · Chrome 116+ · Also works in Edge and Brave."
 
 // Each block starts typing once the previous one finishes. Browsers clamp nested
 // timers to ~4ms, so the long blocks reveal several characters per tick instead.
@@ -138,10 +138,13 @@ export const Hero = () => (
               <Button
                 size="lg"
                 nativeButton={false}
-                render={<a href="#install" />}
+                render={<a href={CHROME_STORE_URL} />}
               >
-                <ArrowDownIcon data-icon="inline-start" className="size-4" />
-                Install
+                <DownloadSimpleIcon
+                  data-icon="inline-start"
+                  className="size-4"
+                />
+                Add to <BrowserName />
               </Button>
             </BlurFade>
             <BlurFade
@@ -159,6 +162,26 @@ export const Hero = () => (
               </Button>
             </BlurFade>
           </div>
+          <BlurFade delay={INTRO_DELAY / 1000 + 0.1} duration={FADE_DURATION}>
+            <a
+              href={CHROME_STORE_URL}
+              className="flex w-fit items-center gap-3 text-sm leading-tight font-semibold hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+            >
+              <Image
+                src="/chrome-store-192px.svg"
+                alt=""
+                width={48}
+                height={48}
+                className="size-12"
+              />
+              <span className="flex flex-col">
+                <span className="text-xs font-normal text-muted-foreground">
+                  Available on the
+                </span>
+                Chrome Web Store
+              </span>
+            </a>
+          </BlurFade>
           <p className="text-xs text-muted-foreground">
             <span className="sr-only">{NOTE}</span>
             <span aria-hidden className="grid">

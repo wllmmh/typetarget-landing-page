@@ -1,6 +1,18 @@
+import type { ReactNode } from "react"
 import { PlusIcon } from "@phosphor-icons/react/ssr"
 
-const questions = [
+import { DOWNLOAD_URL } from "@/lib/site"
+
+const linkClass =
+  "text-foreground underline decoration-primary underline-offset-4"
+
+const Code = ({ children }: { children: ReactNode }) => (
+  <code className="border bg-muted px-1.5 py-0.5 text-[0.8125rem]">
+    {children}
+  </code>
+)
+
+const questions: { q: string; a: ReactNode }[] = [
   {
     q: "Does it transcribe my own voice?",
     a: "No. TypeTarget hears what you hear, not what you say. It doesn't use your microphone.",
@@ -15,7 +27,26 @@ const questions = [
   },
   {
     q: "Which browsers does it work in?",
-    a: "Chrome 116 or newer, loaded unpacked. Chromium-based browsers like Edge and Brave install the same way.",
+    a: "Chrome 116 or newer, installed from the Chrome Web Store. Chromium-based browsers like Edge and Brave can add it from the same listing.",
+  },
+  {
+    q: "Can I load it without the Chrome Web Store?",
+    a: (
+      <>
+        Yes.{" "}
+        <a href={DOWNLOAD_URL} className={linkClass}>
+          Download the zip
+        </a>{" "}
+        and extract it to get a folder called <Code>typetarget</Code>. Open{" "}
+        <Code>chrome://extensions</Code> by pasting it into the address bar, as
+        web pages can&rsquo;t link to it (in Edge it&rsquo;s{" "}
+        <Code>edge://extensions</Code>, in Brave <Code>brave://extensions</Code>
+        ). Turn on Developer mode in the top-right corner, click Load unpacked
+        and select the extracted folder. To update later, download the new zip,
+        replace the folder and press the reload arrow on TypeTarget&rsquo;s
+        card.
+      </>
+    ),
   },
 ]
 

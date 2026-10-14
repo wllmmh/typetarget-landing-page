@@ -1,8 +1,9 @@
 import Image from "next/image"
 import { DownloadSimpleIcon, GithubLogoIcon } from "@phosphor-icons/react/ssr"
 
+import { BrowserName } from "@/components/landing/browser-name"
 import { Button } from "@/components/ui/button"
-import { DOWNLOAD_URL, REPO_URL } from "@/lib/site"
+import { CHROME_STORE_URL, REPO_URL } from "@/lib/site"
 
 export const SiteHeader = () => (
   <header className="sticky top-0 z-20 border-b bg-background">
@@ -40,10 +41,10 @@ export const SiteHeader = () => (
           size="sm"
           className="md:h-10 md:px-6"
           nativeButton={false}
-          render={<a href={DOWNLOAD_URL} />}
+          render={<a href={CHROME_STORE_URL} />}
         >
           <DownloadSimpleIcon data-icon="inline-start" className="size-4" />
-          Download
+          Add to <BrowserName />
         </Button>
       </div>
     </div>
