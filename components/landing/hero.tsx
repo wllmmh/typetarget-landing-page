@@ -8,6 +8,7 @@ import {
 } from "@/components/landing/mutable-video"
 import { TypeToFieldAnimation } from "@/components/landing/type-to-field-animation"
 import { ContextMenuAnimation } from "@/components/mock-context-menu/context-menu-animation"
+import { PopupAnimation } from "@/components/mock-popup/popup-animation"
 import { BlurFade } from "@/components/ui/blur-fade"
 import { BrowserName } from "@/components/landing/browser-name"
 import { Button } from "@/components/ui/button"
@@ -41,14 +42,25 @@ const STEP_DELAY = FADE_DURATION * 1000
 const steps = [
   {
     n: "1",
-    title: "Right-click the tab you want heard.",
-    body: "A meeting, a lecture, a stream, a video. Choose TypeTarget → Listen to this tab.",
+    title: "Pick an model and/or language.",
+    body: "Select an AI model to transcribe locally on your computer or let a cloud provider handle the compute for you. Together, they understand over 100 human languages.",
+    media: (
+      <PopupAnimation
+        startDelay={STEPS_START}
+        label="The TypeTarget popup. The pointer scrolls through the model list and picks Whisper Small Q5, then scrolls the spoken language list and picks Español."
+      />
+    ),
+  },
+  {
+    n: "2",
+    title: "Select an input.",
+    body: "Click the 'Start listening' button in the TypeTarget panel, or right click on any page. Choose TypeTarget → Listen to this tab.",
     media: (
       <MuteProvider>
         <div className="relative">
           <ContextMenuAnimation
             cursorStart={{ x: 64, y: 274 }}
-            startDelay={STEPS_START}
+            startDelay={STEPS_START + STEP_DELAY}
             label="A video call in a browser tab. The pointer right-clicks, opens the TypeTarget menu and clicks Listen to this tab."
             background={
               <>
@@ -80,12 +92,12 @@ const steps = [
     ),
   },
   {
-    n: "2",
-    title: "Right-click where the words should go.",
-    body: "In any browser tab, Select TypeTarget → Type to new file or Type to this field to inject the transcription directly into a page text input.",
+    n: "3",
+    title: "Choose an output.",
+    body: "Click the 'Start typing' button in the TypeTarget panel or right click on any web page's text field and Select TypeTarget → Type to this field.",
     media: (
       <TypeToFieldAnimation
-        startDelay={STEPS_START + STEP_DELAY}
+        startDelay={STEPS_START + 2 * STEP_DELAY}
         label="A blank text field on a web page. The pointer right-clicks it, opens the TypeTarget menu and clicks Type to this field. The field gets a green outline and a timer, and transcribed speech types into it."
       />
     ),
