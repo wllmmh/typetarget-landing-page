@@ -4,12 +4,18 @@ import { PlusIcon } from "@phosphor-icons/react/ssr"
 import { Code } from "@/components/landing/code"
 import { MockAiStudioKeys } from "@/components/landing/mock-ai-studio-keys"
 import { MockGroqCreateKey } from "@/components/landing/mock-groq-keys"
-import { DOWNLOAD_URL, GEMINI_KEYS_URL, GROQ_KEYS_URL } from "@/lib/site"
+import {
+  DOWNLOAD_URL,
+  GEMINI_KEYS_URL,
+  GEMINI_LANGUAGES_URL,
+  GROQ_KEYS_URL,
+  WHISPER_LANGUAGES_URL,
+} from "@/lib/site"
 
 const linkClass =
   "text-foreground underline decoration-primary underline-offset-4"
 
-const questions: { q: string; a: ReactNode }[] = [
+const questions: { q: string; a: ReactNode; id?: string }[] = [
   {
     q: "Does it transcribe my own voice?",
     a: "No. TypeTarget hears what you hear, not what you say. It doesn't use your microphone.",
@@ -65,6 +71,34 @@ const questions: { q: string; a: ReactNode }[] = [
     a: "With Local Whisper, nowhere: it's transcribed inside your browser. With Gemini or Groq, it goes only to that provider, using your own key. It never goes to TypeTarget.",
   },
   {
+    q: "What languages do you support?",
+    // The id sits on the answer so a #languages link opens the closed details element.
+    id: "languages",
+    a: (
+      <>
+        <span className="font-semibold text-foreground">Transcription.</span>{" "}
+        Whisper models, local or on Groq, support{" "}
+        <a href={WHISPER_LANGUAGES_URL} className={linkClass}>
+          99 languages
+        </a>
+        . Gemini Transcribe has its own{" "}
+        <a href={GEMINI_LANGUAGES_URL} className={linkClass}>
+          list of supported languages
+        </a>
+        .
+        <span className="mt-6 block">
+          <span className="font-semibold text-foreground">Interface.</span> The
+          TypeTarget interface is available in Arabic, Bengali, Chinese
+          (Simplified and Traditional), Czech, English, Filipino, French,
+          German, Hindi, Indonesian, Italian, Japanese, Korean, Marathi, Polish,
+          Portuguese (Brazil and Portugal), Russian, Spanish, Telugu, Thai,
+          Turkish, Ukrainian, Urdu and Vietnamese, matching your system and
+          browser language.
+        </span>
+      </>
+    ),
+  },
+  {
     q: "Which browsers does it work in?",
     a: "Chrome 116 or newer, installed from the Chrome Web Store. Chromium-based browsers like Edge and Brave can add it from the same listing.",
   },
@@ -101,7 +135,7 @@ export const Faq = () => (
         Frequently asked questions.
       </h2>
       <div className="min-w-0 border-b lg:col-span-8">
-        {questions.map(({ q, a }) => (
+        {questions.map(({ q, a, id }) => (
           <details key={q} className="group border-t">
             <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-sm font-semibold outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
               {q}
@@ -110,7 +144,10 @@ export const Faq = () => (
                 className="mt-0.5 size-4 shrink-0 group-open:rotate-45 motion-safe:transition-transform motion-safe:duration-150"
               />
             </summary>
-            <div className="max-w-prose pb-6 text-sm leading-relaxed text-muted-foreground">
+            <div
+              id={id}
+              className="max-w-prose scroll-mt-28 pb-6 text-sm leading-relaxed text-muted-foreground"
+            >
               {a}
             </div>
           </details>

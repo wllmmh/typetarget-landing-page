@@ -4,4 +4,8 @@ export const DOWNLOAD_URL = "https://wllmmh.github.io/typetarget.zip"
 export const REPO_URL = "https://github.com/wllmmh/typetarget"
 export const GEMINI_KEYS_URL = "https://aistudio.google.com/api-keys"
 export const GROQ_KEYS_URL = "https://console.groq.com/keys"
+export const WHISPER_LANGUAGES_URL =
+  "https://github.com/openai/whisper#available-models-and-languages"
+export const GEMINI_LANGUAGES_URL =
+  "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-transcribe#supported-languages"
 export const VERSION = "0.1.0"

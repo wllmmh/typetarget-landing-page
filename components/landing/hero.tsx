@@ -45,7 +45,19 @@ const steps = [
     n: "Step 1",
     optional: true,
     title: "Pick a model and/or language.",
-    body: "Select an AI model to transcribe locally on your computer or let a cloud provider handle the compute for you. Together, they understand over 100 human languages.",
+    body: (
+      <>
+        Select an AI model to transcribe locally on your computer or let a cloud
+        provider handle the compute for you. Together, they understand over{" "}
+        <a
+          href="#languages"
+          className="text-foreground underline decoration-primary underline-offset-4"
+        >
+          100 human languages
+        </a>
+        .
+      </>
+    ),
     media: (
       <PopupAnimation
         startDelay={STEPS_START}
