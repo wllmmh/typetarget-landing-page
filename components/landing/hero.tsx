@@ -41,8 +41,9 @@ const STEP_DELAY = FADE_DURATION * 1000
 
 const steps = [
   {
-    n: "1",
-    title: "Pick an model and/or language.",
+    n: "Step 1",
+    optional: true,
+    title: "Pick a model and/or language.",
     body: "Select an AI model to transcribe locally on your computer or let a cloud provider handle the compute for you. Together, they understand over 100 human languages.",
     media: (
       <PopupAnimation
@@ -52,7 +53,8 @@ const steps = [
     ),
   },
   {
-    n: "2",
+    n: "Step 2",
+    optional: false,
     title: "Select an input.",
     body: "Click the 'Start listening' button in the TypeTarget panel, or right click on any page. Choose TypeTarget → Listen to this tab.",
     media: (
@@ -92,7 +94,8 @@ const steps = [
     ),
   },
   {
-    n: "3",
+    n: "Step 3",
+    optional: false,
     title: "Choose an output.",
     body: "Click the 'Start typing' button in the TypeTarget panel or right click on any web page's text field and Select TypeTarget → Type to this field.",
     media: (
@@ -222,7 +225,7 @@ export const Hero = () => (
         How it works
       </h2>
       <ol className="flex flex-col gap-16 md:gap-24">
-        {steps.map(({ n, title, body, media }, index) => (
+        {steps.map(({ n, optional, title, body, media }, index) => (
           <li key={n}>
             <BlurFade
               delay={(STEPS_START + index * STEP_DELAY) / 1000}
@@ -232,6 +235,11 @@ export const Hero = () => (
                 <figcaption className="flex min-w-0 flex-col gap-3 lg:col-span-4 lg:pt-2">
                   <span className="text-2xl font-semibold text-primary tabular-nums">
                     {n}
+                    {optional && (
+                      <span className="ml-2 text-sm font-normal text-muted-foreground">
+                        (optional)
+                      </span>
+                    )}
                   </span>
                   <h3 className="text-xl font-semibold tracking-tight text-balance">
                     {title}
