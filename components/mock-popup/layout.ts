@@ -78,13 +78,24 @@ export const getPanelHeight = (entries: PanelEntry[]) =>
 export const getMaxScroll = (entries: PanelEntry[]) =>
   getContentHeight(entries) - getPanelHeight(entries)
 
-/** The thumb's length and how far it travels over the full scroll range. */
-export const getScrollbarThumb = (entries: PanelEntry[]) => {
+/**
+ * The thumb's length, how far it travels, and the scroll range that travel
+ * spans. `optionCount` sizes the thumb for a longer list than `entries`
+ * renders, so a truncated list still looks as long as the real one.
+ */
+export const getScrollbarThumb = (
+  entries: PanelEntry[],
+  optionCount?: number
+) => {
   const height = getPanelHeight(entries)
+  const content =
+    optionCount === undefined
+      ? getContentHeight(entries)
+      : panelPaddingY * 2 + optionCount * optionHeight
   const track = height - SCROLLBAR_METRICS.trackInset * 2
-  const length = (track * height) / getContentHeight(entries)
+  const length = (track * height) / content
 
-  return { length, travel: track - length }
+  return { length, travel: track - length, range: content - height }
 }
 
 export const findOptionIndex = (entries: PanelEntry[], id: string) =>

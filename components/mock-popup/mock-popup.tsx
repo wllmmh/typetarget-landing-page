@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils"
 
 import {
   LANGUAGE_ENTRIES,
+  LANGUAGE_OPTION_COUNT,
   MODEL_ENTRIES,
   getEntryLabel,
 } from "./default-entries"
@@ -94,6 +95,8 @@ type PanelProps = {
   selectedId: string
   hovered: string | null
   scroll: MotionValue<number>
+  /** Options in the real list, when `entries` is only its start. */
+  optionCount?: number
 }
 
 const { arrowWidth, arrowHeight, arrowInset } = SCROLLBAR_METRICS
@@ -125,15 +128,16 @@ const ScrollArrow = ({ direction }: { direction: "up" | "down" }) => (
 const ScrollBar = ({
   entries,
   scroll,
+  optionCount,
 }: {
   entries: PanelEntry[]
   scroll: MotionValue<number>
+  optionCount?: number
 }) => {
-  const max = getMaxScroll(entries)
-  const { length, travel } = getScrollbarThumb(entries)
+  const { length, travel, range } = getScrollbarThumb(entries, optionCount)
   const top = useTransform(
     scroll,
-    (value) => SCROLLBAR_METRICS.trackInset + (travel * value) / max
+    (value) => SCROLLBAR_METRICS.trackInset + (travel * value) / range
   )
 
   return (
@@ -156,7 +160,14 @@ const ScrollBar = ({
   )
 }
 
-const Panel = ({ menu, entries, selectedId, hovered, scroll }: PanelProps) => {
+const Panel = ({
+  menu,
+  entries,
+  selectedId,
+  hovered,
+  scroll,
+  optionCount,
+}: PanelProps) => {
   const y = useTransform(scroll, (value) => -value)
   const scrollable = getMaxScroll(entries) > 0
 
@@ -213,7 +224,13 @@ const Panel = ({ menu, entries, selectedId, hovered, scroll }: PanelProps) => {
           )
         )}
       </motion.div>
-      {scrollable && <ScrollBar entries={entries} scroll={scroll} />}
+      {scrollable && (
+        <ScrollBar
+          entries={entries}
+          scroll={scroll}
+          optionCount={optionCount}
+        />
+      )}
     </div>
   )
 }
@@ -301,6 +318,7 @@ export const MockPopup = ({
       <Dropdown
         menu="language"
         entries={LANGUAGE_ENTRIES}
+        optionCount={LANGUAGE_OPTION_COUNT}
         value={languageId}
         open={openMenu === "language"}
         hovered={hovered}

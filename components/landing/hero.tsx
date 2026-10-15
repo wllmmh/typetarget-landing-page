@@ -19,7 +19,7 @@ import { CHROME_STORE_URL } from "@/lib/site"
 const HEADLINE = "Speech to text typed anywhere."
 const INTRO =
   "TypeTarget is a free browser extension that transcribes your audio directly into any text field you tell it to."
-const NOTE = "Free · MIT licensed · Chrome 116+ · Also works in Edge and Brave."
+const NOTE = "Free · MIT licensed · Chrome 116+"
 
 // Each block starts typing once the previous one finishes. Browsers clamp nested
 // timers to ~4ms, so the long blocks reveal several characters per tick instead.
@@ -61,7 +61,7 @@ const steps = [
     media: (
       <PopupAnimation
         startDelay={STEPS_START}
-        label="The TypeTarget popup. The pointer scrolls through the model list and picks Whisper Small Q5, then scrolls the spoken language list and picks Español."
+        label="The TypeTarget popup. The pointer scrolls through the model list and picks Whisper Large v3 Q5, then scrolls the spoken language list and picks English."
       />
     ),
   },

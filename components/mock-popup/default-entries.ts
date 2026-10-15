@@ -83,6 +83,9 @@ export const LANGUAGE_ENTRIES: PanelEntry[] = [
   language("sw", "Kiswahili"),
 ]
 
+/** Auto plus Whisper's 99 languages: the full menu, for sizing its scrollbar. */
+export const LANGUAGE_OPTION_COUNT = 100
+
 export const DEFAULT_LANGUAGE_ID = ""
 
 export const getEntryLabel = (entries: PanelEntry[], id: string) =>

@@ -43,8 +43,8 @@ const HEIGHT = 600
 const POPUP_ORIGIN: Point = { x: 160, y: 35 }
 const CURSOR_START: Point = { x: 90, y: 470 }
 
-const MODEL_TARGET = "small-q5_1"
-const LANGUAGE_TARGET = "es"
+const MODEL_TARGET = "large-v3-q5_0"
+const LANGUAGE_TARGET = "en"
 // One wheel notch, as Chrome scrolls it at 100% zoom.
 const WHEEL_NOTCH = 100
 
@@ -155,8 +155,10 @@ export const PopupAnimation = ({
 
   useEffect(() => {
     if (reduceMotion) {
-      const { x, y } = getOptionPoint("model", MODEL_TARGET, 0, 150)
-      modelScroll.set(0)
+      // The target is near the bottom of the list, so hold it scrolled there.
+      const scroll = getMaxScroll(MODEL_ENTRIES)
+      const { x, y } = getOptionPoint("model", MODEL_TARGET, scroll, 150)
+      modelScroll.set(scroll)
       cursorX.set(x)
       cursorY.set(y)
       return
@@ -276,7 +278,7 @@ export const PopupAnimation = ({
         update(INITIAL_SCENE)
         await wait(700, signal)
 
-        // Browse the models: down the local ones, on past the hosted ones, then back up.
+        // Browse the models: down the local ones, on past the hosted ones.
         await moveTo(
           { x: MODEL_TRIGGER.x + 200, y: MODEL_TRIGGER.y + 18 },
           -0.1
@@ -299,7 +301,6 @@ export const PopupAnimation = ({
         await wait(450, signal)
         await moveToOption("model", "groq-whisper-large-v3", 120, 0.06)
         await wait(380, signal)
-        await wheel("model", -2, 240)
         await moveToOption("model", MODEL_TARGET, 150, -0.05)
         await wait(450, signal)
         await click({ openMenu: null, modelId: MODEL_TARGET })
