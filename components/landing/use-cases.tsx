@@ -19,8 +19,8 @@ const notes: Group = {
       body: "Transcribe a recorded session while you watch it back.",
     },
     {
-      title: "Podcasts and videos",
-      body: "Pull a transcript for show notes, a blog draft or a quote you need exact.",
+      title: "Podcasts and social media",
+      body: "Save a transcript of an entire video for show notes, a blog draft or a quote you need.",
     },
     {
       title: "Call notes into a CRM",

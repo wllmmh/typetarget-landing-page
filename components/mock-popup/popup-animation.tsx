@@ -1,6 +1,12 @@
 "use client"
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import {
+  useEffect,
+  useEffectEvent,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react"
 import {
   animate,
   useInView,
@@ -118,6 +124,10 @@ const wait = (ms: number, signal: AbortSignal) =>
 type PopupAnimationProps = {
   /** Hold the first run until this many ms after mount, e.g. while a parent fades in. */
   startDelay?: number
+  /** Stop and reset. Unpausing starts again from the beginning. */
+  paused?: boolean
+  /** Called each time a run finishes, just before the next one starts. */
+  onLoopEnd?: () => void
   /** Accessible description. Without it the animation is hidden from assistive tech. */
   label?: string
   className?: string
@@ -129,6 +139,8 @@ type PopupAnimationProps = {
  */
 export const PopupAnimation = ({
   startDelay = 0,
+  paused = false,
+  onLoopEnd,
   label,
   className,
 }: PopupAnimationProps) => {
@@ -143,6 +155,7 @@ export const PopupAnimation = ({
   const cursorY = useMotionValue(MODEL_TRIGGER_POINT.y)
   const modelScroll = useMotionValue(0)
   const languageScroll = useMotionValue(0)
+  const loopEnded = useEffectEvent(() => onLoopEnd?.())
 
   useLayoutEffect(() => {
     const element = containerRef.current
@@ -167,7 +180,7 @@ export const PopupAnimation = ({
       cursorY.set(y)
       return
     }
-    if (!inView) return
+    if (!inView || paused) return
 
     const controller = new AbortController()
     const { signal } = controller
@@ -321,6 +334,7 @@ export const PopupAnimation = ({
         update({ openMenu: null })
         hoverHere()
         await wait(900, signal)
+        loopEnded()
       }
     }
 
@@ -331,9 +345,13 @@ export const PopupAnimation = ({
     return () => {
       controller.abort()
       setScene(INITIAL_SCENE)
+      // So the next run starts from rest, as the first one does.
+      cursorX.set(MODEL_TRIGGER_POINT.x)
+      cursorY.set(MODEL_TRIGGER_POINT.y)
     }
   }, [
     inView,
+    paused,
     reduceMotion,
     readyAt,
     cursorX,

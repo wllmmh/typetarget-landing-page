@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useEffectEvent,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -76,6 +77,10 @@ type ContextMenuAnimationProps = {
   loopDelay?: number
   /** Hold the first run until this many ms after mount, e.g. while a parent fades in. */
   startDelay?: number
+  /** Stop and reset. Unpausing starts again from the beginning. */
+  paused?: boolean
+  /** Called each time a run finishes, just before the next one starts. */
+  onLoopEnd?: () => void
   /** Logical stage size. Everything is laid out in these px and scaled to fit. */
   width?: number
   height?: number
@@ -109,6 +114,8 @@ export const ContextMenuAnimation = ({
   renderStage,
   loopDelay = 500,
   startDelay = 0,
+  paused = false,
+  onLoopEnd,
   width = 1280,
   height = 800,
   label,
@@ -123,6 +130,7 @@ export const ContextMenuAnimation = ({
   const [readyAt] = useState(() => performance.now() + startDelay)
   const cursorX = useMotionValue(cursorStart.x)
   const cursorY = useMotionValue(cursorStart.y)
+  const loopEnded = useEffectEvent(() => onLoopEnd?.())
 
   const { x: startX, y: startY } = cursorStart
   const { x: menuX, y: menuY } = menuPosition
@@ -196,7 +204,7 @@ export const ContextMenuAnimation = ({
       cursorY.set(geometry.end.y)
       return
     }
-    if (!inView) return
+    if (!inView || paused) return
 
     const controller = new AbortController()
     const { signal } = controller
@@ -327,6 +335,7 @@ export const ContextMenuAnimation = ({
 
         await moveTo(start, 0.14)
         await wait(loopDelay, signal)
+        loopEnded()
       }
     }
 
@@ -340,6 +349,7 @@ export const ContextMenuAnimation = ({
     }
   }, [
     inView,
+    paused,
     reduceMotion,
     geometry,
     menuEntries,

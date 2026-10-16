@@ -112,9 +112,13 @@ const FieldStage = ({ active }: { active: boolean }) => (
 export const TypeToFieldAnimation = ({
   label,
   startDelay,
+  paused,
+  onLoopEnd,
 }: {
   label: string
   startDelay?: number
+  paused?: boolean
+  onLoopEnd?: () => void
 }) => (
   <ContextMenuAnimation
     cursorStart={{ x: 625, y: 95 }}
@@ -125,6 +129,8 @@ export const TypeToFieldAnimation = ({
     renderStage={(clicked) => <FieldStage active={clicked} />}
     loopDelay={LOOP_DELAY}
     startDelay={startDelay}
+    paused={paused}
+    onLoopEnd={onLoopEnd}
     width={1280}
     height={660}
     label={label}
