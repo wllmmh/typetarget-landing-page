@@ -10,7 +10,7 @@ import {
   MuteProvider,
   MutableVideo,
 } from "@/components/landing/mutable-video"
-import { TypeToFieldAnimation } from "@/components/landing/type-to-field-animation"
+import { TypeToNewFileAnimation } from "@/components/landing/type-to-new-file-animation"
 import { ContextMenuAnimation } from "@/components/mock-context-menu/context-menu-animation"
 import { PopupAnimation } from "@/components/mock-popup/popup-animation"
 import { Button } from "@/components/ui/button"
@@ -46,7 +46,7 @@ const ListenToTabMedia = ({ startDelay, paused, onLoopEnd }: MediaProps) => {
     <MuteProvider>
       <div className="relative">
         <ContextMenuAnimation
-          cursorStart={{ x: 64, y: 274 }}
+          cursorStart={{ x: 64, y: 256 }}
           startDelay={startDelay}
           paused={paused}
           onLoopEnd={onLoopEnd}
@@ -141,9 +141,9 @@ const steps: Step[] = [
       </>
     ),
     Media: (props) => (
-      <TypeToFieldAnimation
+      <TypeToNewFileAnimation
         {...props}
-        label="A blank text field on a web page. The pointer right-clicks it, opens the TypeTarget menu and clicks Type to this field. The field gets a green outline and a timer, and transcribed speech types into it."
+        label="The video call from step 2. The pointer right-clicks, opens the TypeTarget menu and clicks Type to new file. A text box with a green outline and a timer opens over the bottom of the page and transcribed speech types into it. The pointer clicks the box's Open in new tab button, and the text carries on typing in a full-page box in a new tab."
       />
     ),
   },

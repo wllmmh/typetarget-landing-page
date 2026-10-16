@@ -122,6 +122,22 @@ export const TYPETARGET_SUBMENU: MockMenuEntry[] = [
     disabled: true,
   },
   { kind: "item", id: "type-to-new-file", label: "Type to new file" },
+  { kind: "item", id: "type-to-new-tab", label: "Type to new tab" },
+  { kind: "item", id: "stop-typing", label: "Stop typing", disabled: true },
+]
+
+/** The submenu on a page, not a text field, while a tab is being listened to. */
+export const TYPETARGET_LISTENING_SUBMENU: MockMenuEntry[] = [
+  { kind: "item", id: "listen", label: "Listen to this tab" },
+  { kind: "item", id: "stop-listening", label: "Stop listening" },
+  {
+    kind: "item",
+    id: "type-to-field",
+    label: "Type to this field",
+    disabled: true,
+  },
+  { kind: "item", id: "type-to-new-file", label: "Type to new file" },
+  { kind: "item", id: "type-to-new-tab", label: "Type to new tab" },
   { kind: "item", id: "stop-typing", label: "Stop typing", disabled: true },
 ]
 
@@ -131,5 +147,6 @@ export const TYPETARGET_FIELD_SUBMENU: MockMenuEntry[] = [
   { kind: "item", id: "stop-listening", label: "Stop listening" },
   { kind: "item", id: "type-to-field", label: "Type to this field" },
   { kind: "item", id: "type-to-new-file", label: "Type to new file" },
+  { kind: "item", id: "type-to-new-tab", label: "Type to new tab" },
   { kind: "item", id: "stop-typing", label: "Stop typing", disabled: true },
 ]

@@ -56,6 +56,13 @@ const OUTSIDE: MenuHit = { kind: "outside" }
 
 const PARENT_ID = "typetarget"
 
+/** What a script run after the click can do with the pointer. Every promise rejects if the run is stopped. */
+export type AfterClickControls = {
+  moveTo: (to: Point, bow: number) => Promise<void>
+  wait: (ms: number) => Promise<void>
+  press: (pressed: boolean) => void
+}
+
 type ContextMenuAnimationProps = {
   /** Where the cursor rests and right-clicks, in stage px. */
   cursorStart: Point
@@ -73,6 +80,12 @@ type ContextMenuAnimationProps = {
   background?: ReactNode
   /** Rendered behind the menus in stage px. `clicked` is true from the click until the loop restarts. */
   renderStage?: (clicked: boolean) => ReactNode
+  /**
+   * Runs right after the click, before the pointer heads back to the start,
+   * e.g. to click something the menu item opened. Called synchronously with
+   * the click, so state it resets first lands with `clicked`.
+   */
+  afterClick?: (controls: AfterClickControls) => Promise<void>
   /** Pause once the pointer is back at the start, before the loop restarts, in ms. */
   loopDelay?: number
   /** Hold the first run until this many ms after mount, e.g. while a parent fades in. */
@@ -112,6 +125,7 @@ export const ContextMenuAnimation = ({
   submenuTargetId = "listen",
   background,
   renderStage,
+  afterClick,
   loopDelay = 500,
   startDelay = 0,
   paused = false,
@@ -131,6 +145,9 @@ export const ContextMenuAnimation = ({
   const cursorX = useMotionValue(cursorStart.x)
   const cursorY = useMotionValue(cursorStart.y)
   const loopEnded = useEffectEvent(() => onLoopEnd?.())
+  const runAfterClick = useEffectEvent(
+    (controls: AfterClickControls) => afterClick?.(controls)
+  )
 
   const { x: startX, y: startY } = cursorStart
   const { x: menuX, y: menuY } = menuPosition
@@ -331,6 +348,11 @@ export const ContextMenuAnimation = ({
         update({ pressed: true })
         await wait(120, signal)
         update({ ...CLOSED_SCENE, clicked: true })
+        await runAfterClick({
+          moveTo,
+          wait: (ms) => wait(ms, signal),
+          press: (pressed) => update({ pressed }),
+        })
         await wait(550, signal)
 
         await moveTo(start, 0.14)
