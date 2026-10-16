@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils"
 const FIELD_TEXT =
   "What would you do with unlimited free AI transcriptions?"
 // Slow enough that the text is still typing when it moves to the new tab.
-const FIELD_TYPE_SPEED = 60
+const FIELD_TYPE_SPEED = 10
 const FIELD_TYPE_DELAY = 300
 const LOOP_DELAY = 1500
 
@@ -61,8 +61,14 @@ const OPEN_IN_TAB = {
 const GREEN = "#1f9d55"
 const FONT_STACK =
   "[font-family:system-ui,-apple-system,'Segoe_UI',Roboto,'Noto_Sans',Ubuntu,sans-serif]"
+// The extension's box and editor tab are Canvas and CanvasText under `color-scheme: light dark`,
+// so like native UI they follow the OS theme, not the page theme. These are Chrome's values.
+const FIELD_THEME = cn(
+  "[--nf-bg:#fff] [--nf-fg:#000]",
+  "system-dark:[--nf-bg:#121212] system-dark:[--nf-fg:#fff]"
+)
 const FIELD_TEXT_STYLE =
-  "text-[15px] leading-[1.5] font-normal tracking-normal text-[#1f1f1f]"
+  "text-[15px] leading-[1.5] font-normal tracking-normal text-(--nf-fg)"
 const DESTINATION_OUTLINE: CSSProperties = {
   outline: `4px double ${GREEN}`,
   outlineOffset: -4,
@@ -190,11 +196,11 @@ const OutputStage = ({
   return (
     <div
       style={{ zoom: ZOOM, width: VIEW_WIDTH, height: VIEW_HEIGHT }}
-      className={cn("absolute top-0 left-0", FONT_STACK)}
+      className={cn("absolute top-0 left-0", FIELD_THEME, FONT_STACK)}
     >
       {inTab ? (
         // The editor tab: a full-page box with Move back to page instead of the window buttons.
-        <div className="absolute inset-0 bg-white">
+        <div className="absolute inset-0 bg-(--nf-bg)">
           <div
             style={DESTINATION_OUTLINE}
             className={cn(
@@ -233,7 +239,7 @@ const OutputStage = ({
               height: BOX_HEIGHT,
             }}
             className={cn(
-              "absolute overflow-hidden rounded-[4px] bg-white px-4 py-3 shadow-[0_0_16px_rgb(0_0_0/0.25)]",
+              "absolute overflow-hidden rounded-[4px] bg-(--nf-bg) px-4 py-3 shadow-[0_0_16px_rgb(0_0_0/0.25)]",
               FIELD_TEXT_STYLE
             )}
           >
@@ -292,11 +298,14 @@ export const TypeToNewFileAnimation = ({
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
+    // The only keyframe is at 0s, so a seek takes a moment; done while hidden, the slide
+    // shows 6s from the start instead of 0s until the seek lands.
     if (paused) {
       video.pause()
+      video.currentTime = VIDEO_START
       return
     }
-    video.currentTime = VIDEO_START
+    if (video.currentTime !== VIDEO_START) video.currentTime = VIDEO_START
     video.play().catch(() => {
       // Blocked or interrupted by a pause: the poster image stays up, which is fine.
     })
@@ -306,17 +315,19 @@ export const TypeToNewFileAnimation = ({
     // A stopped run can leave these set; this lands with the click, before the box shows.
     setInTab(false)
     setOpenInTabHovered(false)
-    await wait(1200)
+    await wait(500)
 
     await moveTo(OPEN_IN_TAB, 0.1)
     setOpenInTabHovered(true)
-    await wait(400)
+    await wait(300)
 
     press(true)
     await wait(120)
     press(false)
     setInTab(true)
     setOpenInTabHovered(false)
+    // A look at the new tab before the pointer heads back.
+    await wait(550)
   }
 
   return (

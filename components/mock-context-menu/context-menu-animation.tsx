@@ -353,7 +353,6 @@ export const ContextMenuAnimation = ({
           wait: (ms) => wait(ms, signal),
           press: (pressed) => update({ pressed }),
         })
-        await wait(550, signal)
 
         await moveTo(start, 0.14)
         await wait(loopDelay, signal)
