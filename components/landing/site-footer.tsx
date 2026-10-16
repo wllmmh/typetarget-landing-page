@@ -1,4 +1,4 @@
-import { REPO_URL, VERSION } from "@/lib/site"
+import { CONTACT_URL, REPO_URL, VERSION } from "@/lib/site"
 
 const footLink =
   "text-foreground underline decoration-border underline-offset-4 hover:decoration-primary"
@@ -20,6 +20,10 @@ export const SiteFooter = () => (
       .{" "}
       <a href={`${REPO_URL}/issues`} className={footLink}>
         Report an issue
+      </a>
+      .{" "}
+      <a href={CONTACT_URL} className={footLink}>
+        Contact
       </a>
       .
     </p>
