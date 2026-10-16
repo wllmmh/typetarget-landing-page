@@ -25,9 +25,9 @@ const rows: Row[] = [
       "TypeTarget doesn't store transcripts, so there's nothing to fill up. Every word goes straight into the field you chose, and you can save it as a .txt file on your own computer. No servers, no accounts, no logs.",
   },
   {
-    label: "Free forever.",
+    label: "No account needed.",
     value:
-      "Free and open source under the MIT licence. No trial, no paid tier, no account to create. The transcription models run on your own Google or Groq account, and both offer a free tier.",
+      "Free and open source under the MIT licence. No trial, no paid tier, no account to create. The cloud hosted transcription models run on your own Google or Groq account, and both offer a free tier.",
   },
 ]
 
@@ -40,7 +40,7 @@ export const SpecSheet = () => (
     <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
       <div className="flex min-w-0 flex-col gap-4 lg:col-span-4">
         <h2 id="own-heading" className="heading">
-          No limits. Free forever.
+          Free forever.
         </h2>
         <p className="text-base leading-relaxed text-muted-foreground">
           No meter running, no cap on what you keep. Record as much as you want, for as long as you want.

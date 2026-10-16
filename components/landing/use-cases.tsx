@@ -59,15 +59,15 @@ const captions: Group = {
 const llm: Group = {
   heading: "Into any AI chat",
   intro:
-    "TypeTarget types into the prompt box of any LLM web interface. Give the chat its instructions first, and every line it receives gets handled the way you asked. Pre-prompt it for anything.",
+    "TypeTarget can type into the prompt box of any LLM web interface. Give the AI its instructions, and every message you send it gets handled the way you asked.",
   items: [
     {
       title: "Live roleplay",
       body: "Cast the AI as a character. What the other side says lands in its chat box as your lines.",
     },
     {
-      title: "Live translation",
-      body: "Tell it to translate everything you send. Watch a foreign-language video in your own.",
+      title: "Translations",
+      body: "Tell it to translate everything you send. Communicate with someone who speaks another language.",
     },
     {
       title: "Meeting copilot",
@@ -159,8 +159,7 @@ export const UseCases = () => (
         </pre>
         <figcaption className="text-xs leading-relaxed text-muted-foreground">
           An example prompt. Paste your own into any AI chat before you start
-          listening. TypeTarget doesn&rsquo;t press Enter for you, so you choose
-          when each message goes.
+          listening.
         </figcaption>
       </figure>
     </div>

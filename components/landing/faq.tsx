@@ -67,6 +67,10 @@ const questions: { q: string; a: ReactNode; id?: string }[] = [
     ),
   },
   {
+    q: "Why is my transcription slow?",
+    a: "You're most likely using Local Whisper, which runs inside your browser, so its speed depends on your hardware. On an older or less powerful machine it can fall behind the audio. For fast, live transcription on any machine, switch to a free Gemini or Groq key.",
+  },
+  {
     q: "Where does my audio go?",
     a: "With Local Whisper, nowhere: it's transcribed inside your browser. With Gemini or Groq, it goes only to that provider, using your own key. It never goes to TypeTarget.",
   },
