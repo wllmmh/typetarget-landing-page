@@ -1,12 +1,12 @@
 import Image from "next/image"
-import { DownloadSimpleIcon } from "@phosphor-icons/react/ssr"
+import { DownloadSimpleIcon, GithubLogoIcon } from "@phosphor-icons/react/ssr"
 
 import { StepsCarousel } from "@/components/landing/steps-carousel"
 import { BlurFade } from "@/components/ui/blur-fade"
 import { BrowserName } from "@/components/landing/browser-name"
 import { Button } from "@/components/ui/button"
 import { TypingAnimation } from "@/components/ui/typing-animation"
-import { CHROME_STORE_URL } from "@/lib/site"
+import { CHROME_STORE_URL, REPO_URL } from "@/lib/site"
 
 const HEADLINE = "Speech to text typed anywhere."
 const INTRO =
@@ -55,7 +55,7 @@ export const Hero = () => (
             </TypingAnimation>
           </span>
         </h1>
-        <div className="flex max-w-xl min-w-0 flex-col gap-6">
+        <div className="flex max-w-2xl min-w-0 flex-col gap-6">
           <p className="text-base leading-relaxed text-pretty text-muted-foreground">
             <span className="sr-only">{INTRO}</span>
             <span aria-hidden className="grid">
@@ -89,7 +89,7 @@ export const Hero = () => (
             <BlurFade delay={INTRO_DELAY / 1000 + 0.1} duration={FADE_DURATION}>
               <a
                 href={CHROME_STORE_URL}
-                className="flex w-fit items-center gap-3 text-sm leading-tight font-semibold hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                className="group flex w-fit items-center gap-3 text-sm leading-tight font-semibold hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
               >
                 <Image
                   src="/chrome-store-192px.svg"
@@ -99,12 +99,28 @@ export const Hero = () => (
                   className="size-12"
                 />
                 <span className="flex flex-col">
-                  <span className="text-xs font-normal text-muted-foreground">
+                  <span className="text-xs font-normal text-muted-foreground group-hover:text-primary">
                     Available on the
                   </span>
                   Chrome Web Store
                 </span>
               </a>
+            </BlurFade>
+            <BlurFade delay={INTRO_DELAY / 1000 + 0.2} duration={FADE_DURATION}>
+              <Button
+                variant="ghost"
+                size="icon-lg"
+                nativeButton={false}
+                render={
+                  <a
+                    href={REPO_URL}
+                    aria-label="TypeTarget source on GitHub"
+                    title="Source on GitHub"
+                  />
+                }
+              >
+                <GithubLogoIcon className="size-5" />
+              </Button>
             </BlurFade>
           </div>
           <p className="text-xs text-muted-foreground">

@@ -51,6 +51,8 @@ const POPUP_ORIGIN: Point = { x: 160, y: 35 }
 const MODEL_TARGET = "large-v3-q5_0"
 // One wheel notch, as Chrome scrolls it at 100% zoom.
 const WHEEL_NOTCH = 100
+// Each run is padded out to this, so the carousel shows the step for a set time.
+const LOOP_MS = 6000
 
 const MODEL_TRIGGER = getTriggerOrigin(
   POPUP_ORIGIN,
@@ -257,7 +259,12 @@ export const PopupAnimation = ({
       moveTo(getOptionPoint(menu, id, scrolls[menu].get(), x), bow)
 
     // A wheel notch scrolls smoothly; the rows slide under a still pointer, so hover follows them.
-    const wheel = async (menu: PopupMenu, notches: number, gap: number) => {
+    const wheel = async (
+      menu: PopupMenu,
+      notches: number,
+      gap: number,
+      duration = 0.18
+    ) => {
       const scroll = scrolls[menu]
       const max = getMaxScroll(PANELS[menu].entries)
       for (let notch = 0; notch < Math.abs(notches); notch++) {
@@ -267,7 +274,7 @@ export const PopupAnimation = ({
         )
         await track((onComplete) =>
           animate(scroll, target, {
-            duration: 0.18,
+            duration,
             ease: "easeOut",
             onUpdate: hoverHere,
             onComplete,
@@ -288,52 +295,48 @@ export const PopupAnimation = ({
     const run = async () => {
       await wait(Math.max(0, readyAt - performance.now()), signal)
       for (;;) {
+        const loopStart = performance.now()
         modelScroll.set(0)
         languageScroll.set(0)
         update(INITIAL_SCENE)
         hoverHere()
-        await wait(700, signal)
-
-        // Browse the models: down the local ones, on past the hosted ones, to the end.
-        await moveTo(MODEL_TRIGGER_POINT, -0.1)
-        await wait(300, signal)
-        await click({ openMenu: "model" })
-        await wait(400, signal)
-        await moveToOption("model", "tiny-q8_0", 150, 0.08)
-        await wait(260, signal)
-        await moveToOption("model", "base-q5_1", 132)
-        await wait(320, signal)
-        await moveToOption("model", "base", 160, -0.06)
-        await wait(240, signal)
-        await wheel("model", 3, 260)
         await wait(200, signal)
+
+        // Browse the models: into the local ones, then a quick spin past the hosted ones to the end.
+        await moveTo(MODEL_TRIGGER_POINT, -0.1)
+        await wait(120, signal)
+        await click({ openMenu: "model" })
+        await wait(200, signal)
+        await moveToOption("model", "tiny-q8_0", 150, 0.08)
+        await wait(100, signal)
         await wheel(
           "model",
-          Math.ceil(getMaxScroll(MODEL_ENTRIES) / WHEEL_NOTCH) - 3,
-          220
+          Math.ceil(getMaxScroll(MODEL_ENTRIES) / WHEEL_NOTCH),
+          20,
+          0.1
         )
-        await wait(700, signal)
+        await wait(250, signal)
         // Esc: the list closes under the still pointer, leaving the model unchanged.
         update({ openMenu: null })
         hoverHere()
-        await wait(500, signal)
+        await wait(150, signal)
 
         await moveTo(
           { x: LANGUAGE_TRIGGER.x + 186, y: LANGUAGE_TRIGGER.y + 17 },
           0.12
         )
-        await wait(280, signal)
+        await wait(120, signal)
         await click({ openMenu: "language" })
-        await wait(380, signal)
-        await moveToOption("language", "id", 140, 0.08)
         await wait(200, signal)
-        await wheel("language", 16, 90)
-        await wait(600, signal)
-        // Esc again, leaving Auto selected. The pointer stays put and the loop
-        // restarts by heading back to the model trigger.
+        await moveToOption("language", "af", 140, 0.08)
+        await wait(80, signal)
+        await wheel("language", 6, 40)
+        await wait(250, signal)
+        // Esc again, leaving Auto selected. The pointer rests for whatever is
+        // left of the run, then the loop restarts by heading back to the model trigger.
         update({ openMenu: null })
         hoverHere()
-        await wait(900, signal)
+        await wait(Math.max(0, loopStart + LOOP_MS - performance.now()), signal)
         loopEnded()
       }
     }

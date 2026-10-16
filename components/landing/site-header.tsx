@@ -1,9 +1,9 @@
 import Image from "next/image"
-import { DownloadSimpleIcon, GithubLogoIcon } from "@phosphor-icons/react/ssr"
+import { DownloadSimpleIcon } from "@phosphor-icons/react/ssr"
 
 import { BrowserName } from "@/components/landing/browser-name"
 import { Button } from "@/components/ui/button"
-import { CHROME_STORE_URL, REPO_URL } from "@/lib/site"
+import { CHROME_STORE_URL } from "@/lib/site"
 
 export const SiteHeader = () => (
   <header className="sticky top-0 z-20 border-b bg-background">
@@ -22,21 +22,6 @@ export const SiteHeader = () => (
         TypeTarget
       </a>
       <div className="flex items-center gap-2">
-        <Button
-          variant="outline"
-          size="icon-sm"
-          className="md:size-10"
-          nativeButton={false}
-          render={
-            <a
-              href={REPO_URL}
-              aria-label="TypeTarget source on GitHub"
-              title="Source on GitHub"
-            />
-          }
-        >
-          <GithubLogoIcon className="size-4" />
-        </Button>
         <Button
           size="sm"
           className="md:h-10 md:px-6"
