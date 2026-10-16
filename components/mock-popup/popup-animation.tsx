@@ -41,10 +41,8 @@ const WIDTH = 640
 const HEIGHT = 600
 // Centred; the popup is about 530px tall.
 const POPUP_ORIGIN: Point = { x: 160, y: 35 }
-const CURSOR_START: Point = { x: 90, y: 470 }
 
 const MODEL_TARGET = "large-v3-q5_0"
-const LANGUAGE_TARGET = "en"
 // One wheel notch, as Chrome scrolls it at 100% zoom.
 const WHEEL_NOTCH = 100
 
@@ -56,6 +54,12 @@ const LANGUAGE_TRIGGER = getTriggerOrigin(
   POPUP_ORIGIN,
   POPUP_METRICS.languageTriggerTop
 )
+
+// Where each run's first move heads, and where the first run starts.
+const MODEL_TRIGGER_POINT: Point = {
+  x: MODEL_TRIGGER.x + 200,
+  y: MODEL_TRIGGER.y + 18,
+}
 
 const PANELS: Record<PopupMenu, { entries: PanelEntry[]; origin: Point }> = {
   model: {
@@ -120,8 +124,8 @@ type PopupAnimationProps = {
 }
 
 /**
- * The pointer browses TypeTarget's model list and picks a model, then
- * scrolls the language list and picks a language.
+ * The pointer scrolls TypeTarget's model list to the bottom without picking
+ * one, then scrolls the language list the same way.
  */
 export const PopupAnimation = ({
   startDelay = 0,
@@ -135,8 +139,8 @@ export const PopupAnimation = ({
   const reduceMotion = useReducedMotion()
   // A deadline rather than a duration, so scrolling out and back in doesn't wait again.
   const [readyAt] = useState(() => performance.now() + startDelay)
-  const cursorX = useMotionValue(CURSOR_START.x)
-  const cursorY = useMotionValue(CURSOR_START.y)
+  const cursorX = useMotionValue(MODEL_TRIGGER_POINT.x)
+  const cursorY = useMotionValue(MODEL_TRIGGER_POINT.y)
   const modelScroll = useMotionValue(0)
   const languageScroll = useMotionValue(0)
 
@@ -271,18 +275,14 @@ export const PopupAnimation = ({
     const run = async () => {
       await wait(Math.max(0, readyAt - performance.now()), signal)
       for (;;) {
-        cursorX.set(CURSOR_START.x)
-        cursorY.set(CURSOR_START.y)
         modelScroll.set(0)
         languageScroll.set(0)
         update(INITIAL_SCENE)
+        hoverHere()
         await wait(700, signal)
 
-        // Browse the models: down the local ones, on past the hosted ones.
-        await moveTo(
-          { x: MODEL_TRIGGER.x + 200, y: MODEL_TRIGGER.y + 18 },
-          -0.1
-        )
+        // Browse the models: down the local ones, on past the hosted ones, to the end.
+        await moveTo(MODEL_TRIGGER_POINT, -0.1)
         await wait(300, signal)
         await click({ openMenu: "model" })
         await wait(400, signal)
@@ -294,16 +294,15 @@ export const PopupAnimation = ({
         await wait(240, signal)
         await wheel("model", 3, 260)
         await wait(200, signal)
-        await moveToOption("model", "large-v2-q5_0", 176, 0.05)
-        await wait(260, signal)
-        await wheel("model", 1, 300)
-        await moveToOption("model", "gemini-3.5-transcribe-live", 140)
-        await wait(450, signal)
-        await moveToOption("model", "groq-whisper-large-v3", 120, 0.06)
-        await wait(380, signal)
-        await moveToOption("model", MODEL_TARGET, 150, -0.05)
-        await wait(450, signal)
-        await click({ openMenu: null, modelId: MODEL_TARGET })
+        await wheel(
+          "model",
+          Math.ceil(getMaxScroll(MODEL_ENTRIES) / WHEEL_NOTCH) - 3,
+          220
+        )
+        await wait(700, signal)
+        // Esc: the list closes under the still pointer, leaving the model unchanged.
+        update({ openMenu: null })
+        hoverHere()
         await wait(500, signal)
 
         await moveTo(
@@ -315,14 +314,12 @@ export const PopupAnimation = ({
         await wait(380, signal)
         await moveToOption("language", "id", 140, 0.08)
         await wait(200, signal)
-        await wheel("language", 4, 110)
-        await wait(160, signal)
-        await moveToOption("language", LANGUAGE_TARGET, 112, -0.06)
-        await wait(450, signal)
-        await click({ openMenu: null, languageId: LANGUAGE_TARGET })
-        await wait(900, signal)
-
-        await moveTo(CURSOR_START, 0.14)
+        await wheel("language", 16, 90)
+        await wait(600, signal)
+        // Esc again, leaving Auto selected. The pointer stays put and the loop
+        // restarts by heading back to the model trigger.
+        update({ openMenu: null })
+        hoverHere()
         await wait(900, signal)
       }
     }
