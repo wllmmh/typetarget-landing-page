@@ -45,8 +45,8 @@ import { MockPopup, type PopupMenu } from "./mock-popup"
 
 const WIDTH = 640
 const HEIGHT = 600
-// Centred; the popup is about 530px tall.
-const POPUP_ORIGIN: Point = { x: 160, y: 35 }
+// Centred; the popup is about 547px tall.
+const POPUP_ORIGIN: Point = { x: 160, y: 26 }
 
 const MODEL_TARGET = "large-v3-q5_0"
 // One wheel notch, as Chrome scrolls it at 100% zoom.

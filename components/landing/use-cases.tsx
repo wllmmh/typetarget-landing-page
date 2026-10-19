@@ -11,10 +11,6 @@ const notes: Group = {
       body: "Every word of a recorded or live class, straight into your study notes.",
     },
     {
-      title: "Webinars and conference talks",
-      body: "Keep the whole talk, not just the slide you photographed.",
-    },
-    {
       title: "Interviews and user research",
       body: "Transcribe a recorded session while you watch it back.",
     },
@@ -38,20 +34,16 @@ const captions: Group = {
       body: "Streams, embedded players and old recordings that never shipped subtitles.",
     },
     {
+      title: "Live webinars and conferences",
+      body: "Keep the whole transcript, not just the slide you photographed.",
+    },
+    {
       title: "Meeting notes",
       body: "A web call in one tab, the transcript in your doc or notes app in the next.",
     },
     {
       title: "Deaf and hard-of-hearing access",
       body: "A running text version of any call or video, in a box you can scroll back through.",
-    },
-    {
-      title: "Caption a call into chat",
-      body: "Type the call into a chat box for a teammate who can't listen right now.",
-    },
-    {
-      title: "Listening in a second language",
-      body: "Read along to catch what went by too fast.",
     },
   ],
 }
@@ -84,10 +76,6 @@ const llm: Group = {
     {
       title: "Live commentary",
       body: "Annotate claims in a debate, a pitch or a keynote while it's still going.",
-    },
-    {
-      title: "Summaries",
-      body: "Feed it a long stream or podcast and ask what you missed.",
     },
   ],
 }

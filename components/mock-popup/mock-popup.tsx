@@ -5,6 +5,7 @@ import Image from "next/image"
 import { motion, useTransform, type MotionValue } from "motion/react"
 
 import type { Point } from "@/components/mock-context-menu/layout"
+import { VERSION } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
 import {
@@ -28,8 +29,9 @@ const popupTheme = cn(
   "[--tt-divider:#c4c7c5] [--tt-menu:#fff] [--tt-on-primary:#fff] [--tt-outline:#747775] [--tt-primary:#0b57d0] [--tt-surface:#fff] [--tt-text-secondary:#444746] [--tt-text:#1f1f1f]",
   "system-dark:[--tt-divider:#444746] system-dark:[--tt-menu:#2d2e30] system-dark:[--tt-on-primary:#062e6f] system-dark:[--tt-outline:#8e918f] system-dark:[--tt-primary:#a8c7fa] system-dark:[--tt-surface:#1f1f1f] system-dark:[--tt-text-secondary:#c4c7c5] system-dark:[--tt-text:#e3e3e3]",
   "[--tt-hover:color-mix(in_srgb,var(--tt-text)_8%,transparent)] [--tt-primary-tint:color-mix(in_srgb,var(--tt-primary)_10%,transparent)]",
-  // Chrome's own scrollbar colours, which popup.css leaves alone.
-  "[--sb-thumb:#8b8b8b] [--sb-track:#fcfcfc] system-dark:[--sb-thumb:#9f9f9f] system-dark:[--sb-track:#2c2c2c]"
+  // Chrome's own scrollbar and range track colours, which popup.css leaves alone.
+  "[--sb-thumb:#8b8b8b] [--sb-track:#fcfcfc] system-dark:[--sb-thumb:#9f9f9f] system-dark:[--sb-track:#2c2c2c]",
+  "[--range-border:#b2b2b2] [--range-track:#efefef] system-dark:[--range-border:#858585] system-dark:[--range-track:#3b3b3b]"
 )
 
 // popup.css's stack. The headings below are divs so the page's h2 font rule doesn't reach them.
@@ -43,30 +45,16 @@ const PlayIcon = () => (
   </svg>
 )
 
-const InfoIcon = () => (
-  <svg
-    viewBox="0 0 12 12"
-    width={14}
-    height={14}
-    aria-hidden
-    className="shrink-0 text-(--tt-text-secondary)"
-  >
-    <circle
-      cx="6"
-      cy="6"
-      r="5.25"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.2"
-    />
-    <path
-      d="M6 5.25 V8.75"
-      stroke="currentColor"
-      strokeWidth="1.3"
-      strokeLinecap="round"
-    />
-    <circle cx="6" cy="3.5" r="0.75" fill="currentColor" />
-  </svg>
+/**
+ * Chrome's range input under popup.css's accent colour, measured from a
+ * render: a 16px thumb over an 8px rounded track, here at the slider's
+ * minimum, which is the default.
+ */
+const RangeInput = () => (
+  <div className="relative mt-0.5 h-4">
+    <div className="absolute inset-x-0 top-1 h-2 rounded-full border border-(--range-border) bg-(--range-track)" />
+    <div className="absolute top-0 left-0 size-4 rounded-full bg-(--tt-primary)" />
+  </div>
 )
 
 const Heading = ({ children }: { children: string }) => (
@@ -83,7 +71,7 @@ const Section = ({ children }: { children: ReactNode }) => (
 
 const PrimaryButton = ({ children }: { children: string }) => (
   <div className="mt-2 flex">
-    <span className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-(--tt-primary) px-4 py-1.5 font-medium text-(--tt-on-primary)">
+    <span className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full border border-transparent bg-(--tt-primary) px-4 py-1.5 font-medium text-(--tt-on-primary)">
       <PlayIcon /> {children}
     </span>
   </div>
@@ -220,6 +208,14 @@ const Panel = ({
                   {entry.detail}
                 </span>
               )}
+              {entry.endonym && (
+                <span
+                  lang={entry.id}
+                  className="shrink-0 text-(--tt-text-secondary)"
+                >
+                  {entry.endonym}
+                </span>
+              )}
             </div>
           )
         )}
@@ -329,6 +325,15 @@ export const MockPopup = ({
       <Heading>Listening to</Heading>
       <p>No tab selected</p>
       <PrimaryButton>Start listening</PrimaryButton>
+      <div className="mt-2">
+        <div className="flex items-baseline justify-between gap-2">
+          Chunk length
+          <span className="mt-1 text-[11px] leading-[16.5px] text-(--tt-text-secondary) tabular-nums">
+            3 seconds
+          </span>
+        </div>
+        <RangeInput />
+      </div>
     </Section>
     <Section>
       <Heading>Typing to</Heading>
@@ -349,10 +354,11 @@ export const MockPopup = ({
       </div>
     </Section>
     <Section>
-      <Heading>Diagnostics</Heading>
-      <div className="-mx-2 flex items-center justify-between gap-1.5 px-2 py-1">
-        Status: Idle
-        <InfoIcon />
+      <div className="mt-1 flex items-baseline gap-4 text-[12px] leading-[18px] text-(--tt-text-secondary)">
+        <span>Diagnostics</span>
+        <span>Help</span>
+        <span>Contact</span>
+        <span className="ml-auto text-[11px] leading-[16.5px]">v{VERSION}</span>
       </div>
     </Section>
   </div>

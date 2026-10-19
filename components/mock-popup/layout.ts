@@ -2,7 +2,15 @@ import type { Point } from "@/components/mock-context-menu/layout"
 
 export type PanelEntry =
   | { kind: "group"; label: string; action?: string }
-  | { kind: "option"; id: string; label: string; detail?: string }
+  | {
+      kind: "option"
+      id: string
+      label: string
+      /** A model's size: small and tabular. */
+      detail?: string
+      /** A language's own name: full size, since many scripts are hard to read small. */
+      endonym?: string
+    }
 
 export type PanelHit =
   { kind: "outside" } | { kind: "gap" } | { kind: "option"; id: string }

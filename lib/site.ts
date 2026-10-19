@@ -9,4 +9,4 @@ export const WHISPER_LANGUAGES_URL =
   "https://github.com/openai/whisper#available-models-and-languages"
 export const GEMINI_LANGUAGES_URL =
   "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-transcribe#supported-languages"
-export const VERSION = "0.4.1"
+export const VERSION = "0.4.5"
