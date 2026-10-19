@@ -1,8 +1,9 @@
-import type { Metadata } from "next"
+import type { ReactNode } from "react"
 import { Geist, Geist_Mono } from "next/font/google"
 
-import "./globals.css"
+import "@/app/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { LOCALE_INFO, type Locale } from "@/lib/i18n/locales"
 import { cn } from "@/lib/utils"
 
 const fontSans = Geist({
@@ -12,20 +13,22 @@ const fontSans = Geist({
 
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
-export const metadata: Metadata = {
-  title: "TypeTarget: speech to text, into any text field",
-  description:
-    "A free, open-source browser extension that transcribes any tab's audio and types it, live, into any text field in any tab. Meeting notes, captions, and live input for any AI chat.",
-}
-
-export default function RootLayout({
+/** The `<html>` both root layouts share: `/` for English and `/[locale]` for the rest. */
+export const SiteDocument = ({
+  locale,
+  beforePaint,
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: {
+  locale: Locale
+  /** Inline scripts that run before any of the page is parsed or painted. */
+  beforePaint?: ReactNode
+  children: ReactNode
+}) => {
+  const { tag, dir } = LOCALE_INFO[locale]
   return (
     <html
-      lang="en"
+      lang={tag}
+      dir={dir}
       suppressHydrationWarning
       className={cn(
         "antialiased",
@@ -35,6 +38,7 @@ export default function RootLayout({
       )}
     >
       <body>
+        {beforePaint}
         <ThemeProvider forcedTheme="light">{children}</ThemeProvider>
       </body>
     </html>

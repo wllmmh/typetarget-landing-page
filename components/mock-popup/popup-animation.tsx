@@ -4,6 +4,7 @@ import {
   useEffect,
   useEffectEvent,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react"
@@ -27,8 +28,8 @@ import { cn } from "@/lib/utils"
 import {
   DEFAULT_LANGUAGE_ID,
   DEFAULT_MODEL_ID,
-  LANGUAGE_ENTRIES,
-  MODEL_ENTRIES,
+  getModelEntries,
+  type ModelMenuLabels,
 } from "./default-entries"
 import {
   POPUP_METRICS,
@@ -41,7 +42,7 @@ import {
   isInTrigger,
   type PanelEntry,
 } from "./layout"
-import { MockPopup, type PopupMenu } from "./mock-popup"
+import { MockPopup, type PopupMenu, type PopupStrings } from "./mock-popup"
 
 const WIDTH = 640
 const HEIGHT = 600
@@ -69,16 +70,16 @@ const MODEL_TRIGGER_POINT: Point = {
   y: MODEL_TRIGGER.y + 18,
 }
 
-const PANELS: Record<PopupMenu, { entries: PanelEntry[]; origin: Point }> = {
-  model: {
-    entries: MODEL_ENTRIES,
-    origin: getPanelOrigin(POPUP_ORIGIN, POPUP_METRICS.modelTriggerTop),
-  },
-  language: {
-    entries: LANGUAGE_ENTRIES,
-    origin: getPanelOrigin(POPUP_ORIGIN, POPUP_METRICS.languageTriggerTop),
-  },
-}
+type Panels = Record<PopupMenu, { entries: PanelEntry[]; origin: Point }>
+
+const MODEL_PANEL_ORIGIN = getPanelOrigin(
+  POPUP_ORIGIN,
+  POPUP_METRICS.modelTriggerTop
+)
+const LANGUAGE_PANEL_ORIGIN = getPanelOrigin(
+  POPUP_ORIGIN,
+  POPUP_METRICS.languageTriggerTop
+)
 
 type Scene = {
   openMenu: PopupMenu | null
@@ -99,12 +100,13 @@ const INITIAL_SCENE: Scene = {
 
 /** A point on an option's row, `x` px in from the panel's left edge. */
 const getOptionPoint = (
+  panels: Panels,
   menu: PopupMenu,
   id: string,
   scroll: number,
   x: number
 ): Point => {
-  const { entries, origin } = PANELS[menu]
+  const { entries, origin } = panels[menu]
   const top = getPanelEntryTops(entries)[findOptionIndex(entries, id)]
 
   return { x: origin.x + x, y: origin.y + top - scroll + 17 }
@@ -124,6 +126,10 @@ const wait = (ms: number, signal: AbortSignal) =>
   })
 
 type PopupAnimationProps = {
+  strings: PopupStrings & ModelMenuLabels
+  /** The Spoken language menu as the extension shows it in the page's language. */
+  languageEntries: PanelEntry[]
+  dir: "ltr" | "rtl"
   /** Hold the first run until this many ms after mount, e.g. while a parent fades in. */
   startDelay?: number
   /** Stop and reset. Unpausing starts again from the beginning. */
@@ -140,6 +146,9 @@ type PopupAnimationProps = {
  * one, then scrolls the language list the same way.
  */
 export const PopupAnimation = ({
+  strings,
+  languageEntries,
+  dir,
   startDelay = 0,
   paused = false,
   onLoopEnd,
@@ -158,6 +167,13 @@ export const PopupAnimation = ({
   const modelScroll = useMotionValue(0)
   const languageScroll = useMotionValue(0)
   const loopEnded = useEffectEvent(() => onLoopEnd?.())
+  const panels = useMemo<Panels>(
+    () => ({
+      model: { entries: getModelEntries(strings), origin: MODEL_PANEL_ORIGIN },
+      language: { entries: languageEntries, origin: LANGUAGE_PANEL_ORIGIN },
+    }),
+    [strings, languageEntries]
+  )
 
   useLayoutEffect(() => {
     const element = containerRef.current
@@ -175,8 +191,14 @@ export const PopupAnimation = ({
   useEffect(() => {
     if (reduceMotion) {
       // The target is near the bottom of the list, so hold it scrolled there.
-      const scroll = getMaxScroll(MODEL_ENTRIES)
-      const { x, y } = getOptionPoint("model", MODEL_TARGET, scroll, 150)
+      const scroll = getMaxScroll(panels.model.entries)
+      const { x, y } = getOptionPoint(
+        panels,
+        "model",
+        MODEL_TARGET,
+        scroll,
+        150
+      )
       modelScroll.set(scroll)
       cursorX.set(x)
       cursorY.set(y)
@@ -186,6 +208,12 @@ export const PopupAnimation = ({
 
     const controller = new AbortController()
     const { signal } = controller
+    const [firstLanguageId = DEFAULT_LANGUAGE_ID] =
+      panels.language.entries.flatMap((entry) =>
+        entry.kind === "option" && entry.id !== DEFAULT_LANGUAGE_ID
+          ? [entry.id]
+          : []
+      )
     const scrolls: Record<PopupMenu, MotionValue<number>> = {
       model: modelScroll,
       language: languageScroll,
@@ -206,7 +234,7 @@ export const PopupAnimation = ({
     const hitAt = (point: Point): string | null => {
       const { openMenu } = current
       if (openMenu) {
-        const { entries, origin } = PANELS[openMenu]
+        const { entries, origin } = panels[openMenu]
         const hit = hitTestPanel(
           entries,
           origin,
@@ -256,7 +284,7 @@ export const PopupAnimation = ({
     }
 
     const moveToOption = (menu: PopupMenu, id: string, x: number, bow = 0) =>
-      moveTo(getOptionPoint(menu, id, scrolls[menu].get(), x), bow)
+      moveTo(getOptionPoint(panels, menu, id, scrolls[menu].get(), x), bow)
 
     // A wheel notch scrolls smoothly; the rows slide under a still pointer, so hover follows them.
     const wheel = async (
@@ -266,7 +294,7 @@ export const PopupAnimation = ({
       duration = 0.18
     ) => {
       const scroll = scrolls[menu]
-      const max = getMaxScroll(PANELS[menu].entries)
+      const max = getMaxScroll(panels[menu].entries)
       for (let notch = 0; notch < Math.abs(notches); notch++) {
         const target = Math.min(
           max,
@@ -311,7 +339,7 @@ export const PopupAnimation = ({
         await wait(100, signal)
         await wheel(
           "model",
-          Math.ceil(getMaxScroll(MODEL_ENTRIES) / WHEEL_NOTCH),
+          Math.ceil(getMaxScroll(panels.model.entries) / WHEEL_NOTCH),
           20,
           0.1
         )
@@ -328,7 +356,8 @@ export const PopupAnimation = ({
         await wait(120, signal)
         await click({ openMenu: "language" })
         await wait(200, signal)
-        await moveToOption("language", "af", 140, 0.08)
+        // The first language after Auto, which depends on the page's language.
+        await moveToOption("language", firstLanguageId, 140, 0.08)
         await wait(80, signal)
         await wheel("language", 6, 40)
         await wait(250, signal)
@@ -353,6 +382,7 @@ export const PopupAnimation = ({
       cursorY.set(MODEL_TRIGGER_POINT.y)
     }
   }, [
+    panels,
     inView,
     paused,
     reduceMotion,
@@ -381,6 +411,8 @@ export const PopupAnimation = ({
       role={label ? "img" : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
+      // The stage is laid out in px from the left; the popup sets its own direction.
+      dir="ltr"
       style={{ aspectRatio: `${WIDTH} / ${HEIGHT}` }}
       className={cn(
         "pointer-events-none relative w-full overflow-hidden select-none",
@@ -400,6 +432,10 @@ export const PopupAnimation = ({
       >
         <MockPopup
           position={POPUP_ORIGIN}
+          strings={strings}
+          modelEntries={panels.model.entries}
+          languageEntries={panels.language.entries}
+          dir={dir}
           modelId={shown.modelId}
           languageId={shown.languageId}
           openMenu={shown.openMenu}

@@ -13,11 +13,11 @@ import {
   ContextMenuAnimation,
   type AfterClickControls,
 } from "@/components/mock-context-menu/context-menu-animation"
-import { TYPETARGET_LISTENING_SUBMENU } from "@/components/mock-context-menu/default-entries"
+import type { MockMenuEntry } from "@/components/mock-context-menu/layout"
 import { cn } from "@/lib/utils"
 
-const FIELD_TEXT =
-  "What would you do with unlimited free AI transcriptions?"
+// Stays in English on every language's page: it's what the video's audio says.
+const FIELD_TEXT = "What would you do with unlimited free AI transcriptions?"
 // Slow enough that the text is still typing when it moves to the new tab.
 const FIELD_TYPE_SPEED = 10
 const FIELD_TYPE_DELAY = 300
@@ -53,8 +53,7 @@ const CONTROLS_PADDING_X = 2
 
 /** Middle of Open in new tab, the third of four buttons, in stage px. */
 const OPEN_IN_TAB = {
-  x:
-    (VIEW_WIDTH - BOX_MARGIN - CONTROLS_PADDING_X - BUTTON_WIDTH * 1.5) * ZOOM,
+  x: (VIEW_WIDTH - BOX_MARGIN - CONTROLS_PADDING_X - BUTTON_WIDTH * 1.5) * ZOOM,
   y: (TAB_TOP + TAB_HEIGHT / 2) * ZOOM,
 }
 
@@ -281,11 +280,16 @@ const OutputStage = ({
 
 export const TypeToNewFileAnimation = ({
   label,
+  menuEntries,
+  submenuEntries,
   startDelay,
   paused,
   onLoopEnd,
 }: {
   label: string
+  menuEntries: MockMenuEntry[]
+  /** The TypeTarget submenu while a tab is being listened to. */
+  submenuEntries: MockMenuEntry[]
   startDelay?: number
   paused?: boolean
   onLoopEnd?: () => void
@@ -333,7 +337,8 @@ export const TypeToNewFileAnimation = ({
   return (
     <ContextMenuAnimation
       cursorStart={{ x: 64, y: 256 }}
-      submenuEntries={TYPETARGET_LISTENING_SUBMENU}
+      menuEntries={menuEntries}
+      submenuEntries={submenuEntries}
       submenuTargetId="type-to-new-file"
       afterClick={afterClick}
       renderStage={(clicked) =>

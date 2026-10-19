@@ -18,7 +18,6 @@ import {
 
 import { cn } from "@/lib/utils"
 
-import { CHROME_PAGE_MENU, TYPETARGET_SUBMENU } from "./default-entries"
 import { HUMAN_EASE, createHumanPath, getHumanMoveDuration } from "./human-path"
 import {
   MENU_METRICS,
@@ -71,9 +70,9 @@ type ContextMenuAnimationProps = {
   /** Top-left of the context menu. Defaults to `cursorStart`, like a real right-click. */
   menuPosition?: Point
   /** Must include the TypeTarget item. */
-  menuEntries?: MockMenuEntry[]
+  menuEntries: MockMenuEntry[]
   menuWidth?: number
-  submenuEntries?: MockMenuEntry[]
+  submenuEntries: MockMenuEntry[]
   /** Id of the submenu item the cursor hovers and clicks. */
   submenuTargetId?: string
   /** Rendered behind the menus, filling the container. */
@@ -119,9 +118,9 @@ export const ContextMenuAnimation = ({
   cursorStart,
   cursorEnd,
   menuPosition = cursorStart,
-  menuEntries = CHROME_PAGE_MENU,
+  menuEntries,
   menuWidth = MENU_METRICS.menuWidth,
-  submenuEntries = TYPETARGET_SUBMENU,
+  submenuEntries,
   submenuTargetId = "listen",
   background,
   renderStage,
@@ -145,8 +144,8 @@ export const ContextMenuAnimation = ({
   const cursorX = useMotionValue(cursorStart.x)
   const cursorY = useMotionValue(cursorStart.y)
   const loopEnded = useEffectEvent(() => onLoopEnd?.())
-  const runAfterClick = useEffectEvent(
-    (controls: AfterClickControls) => afterClick?.(controls)
+  const runAfterClick = useEffectEvent((controls: AfterClickControls) =>
+    afterClick?.(controls)
   )
 
   const { x: startX, y: startY } = cursorStart
@@ -403,6 +402,8 @@ export const ContextMenuAnimation = ({
       role={label ? "img" : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
+      // The stage is laid out in px from the left, so it stays left-to-right on an RTL page.
+      dir="ltr"
       style={{ aspectRatio: `${width} / ${height}` }}
       className={cn(
         "pointer-events-none relative w-full overflow-hidden select-none",

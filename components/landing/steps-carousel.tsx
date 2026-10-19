@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, type ReactNode } from "react"
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import Image from "next/image"
 import { PauseIcon, PlayIcon } from "@phosphor-icons/react/ssr"
 
@@ -12,9 +12,31 @@ import {
 } from "@/components/landing/mutable-video"
 import { TypeToNewFileAnimation } from "@/components/landing/type-to-new-file-animation"
 import { ContextMenuAnimation } from "@/components/mock-context-menu/context-menu-animation"
+import {
+  getChromePageMenu,
+  getTypeTargetListeningSubmenu,
+  getTypeTargetSubmenu,
+} from "@/components/mock-context-menu/default-entries"
+import type { MockMenuEntry } from "@/components/mock-context-menu/layout"
+import type { PanelEntry } from "@/components/mock-popup/layout"
 import { PopupAnimation } from "@/components/mock-popup/popup-animation"
 import { Button } from "@/components/ui/button"
+import type { ExtensionStrings } from "@/lib/i18n/extension-strings"
+import { format, rich } from "@/lib/i18n/format"
+import type { Messages } from "@/lib/i18n/messages/en"
 import { cn } from "@/lib/utils"
+
+/** Everything the slides say, in the page's language. */
+type StepsText = {
+  menuEntries: MockMenuEntry[]
+  submenuEntries: MockMenuEntry[]
+  listeningSubmenuEntries: MockMenuEntry[]
+  popupStrings: ExtensionStrings
+  languageEntries: PanelEntry[]
+  popupDir: "ltr" | "rtl"
+  mute: { mute: string; unmute: string }
+  animations: Record<StepId, string>
+}
 
 type MediaProps = {
   startDelay: number
@@ -22,9 +44,15 @@ type MediaProps = {
   paused: boolean
   /** The carousel moves on once the shown slide's animation has played through. */
   onLoopEnd: () => void
+  text: StepsText
 }
 
-const ListenToTabMedia = ({ startDelay, paused, onLoopEnd }: MediaProps) => {
+const ListenToTabMedia = ({
+  startDelay,
+  paused,
+  onLoopEnd,
+  text,
+}: MediaProps) => {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   // Hidden slides stay mounted, so stop the video rather than let it play (or be heard) unseen.
@@ -47,10 +75,12 @@ const ListenToTabMedia = ({ startDelay, paused, onLoopEnd }: MediaProps) => {
       <div className="relative">
         <ContextMenuAnimation
           cursorStart={{ x: 64, y: 256 }}
+          menuEntries={text.menuEntries}
+          submenuEntries={text.submenuEntries}
           startDelay={startDelay}
           paused={paused}
           onLoopEnd={onLoopEnd}
-          label="A video call in a browser tab. The pointer right-clicks, opens the TypeTarget menu and clicks Listen to this tab."
+          label={text.animations.selectInput}
           background={
             <>
               {/* Sits under the video: it's what shows if the video fails to load, or with reduced motion. */}
@@ -77,77 +107,59 @@ const ListenToTabMedia = ({ startDelay, paused, onLoopEnd }: MediaProps) => {
             </>
           }
         />
-        <MuteButton className="absolute right-3 bottom-3" />
+        <MuteButton labels={text.mute} className="absolute right-3 bottom-3" />
       </div>
     </MuteProvider>
   )
 }
 
+type StepId = "pickModel" | "selectInput" | "chooseOutput"
+
 type Step = {
-  n: string
+  id: StepId
   optional: boolean
-  title: string
-  body: ReactNode
   Media: (props: MediaProps) => ReactNode
 }
 
 const steps: Step[] = [
   {
-    n: "Step 1",
+    id: "pickModel",
     optional: true,
-    title: "Pick a model and/or language.",
-    body: (
-      <>
-        Select an AI model to transcribe locally on your computer or let a cloud
-        provider handle the compute for you. Together, they understand over{" "}
-        <a
-          href="#languages"
-          className="text-foreground underline decoration-primary underline-offset-4"
-        >
-          100 human languages
-        </a>
-        .
-      </>
-    ),
-    Media: (props) => (
+    Media: ({ text, ...props }) => (
       <PopupAnimation
         {...props}
-        label="The TypeTarget popup. The pointer scrolls through the model list and picks Whisper Large v3 Q5, then scrolls the spoken language list and picks English."
+        strings={text.popupStrings}
+        languageEntries={text.languageEntries}
+        dir={text.popupDir}
+        label={text.animations.pickModel}
       />
     ),
   },
+  { id: "selectInput", optional: false, Media: ListenToTabMedia },
   {
-    n: "Step 2",
+    id: "chooseOutput",
     optional: false,
-    title: "Select an input.",
-    body: (
-      <>
-        Click the <Code>Start listening</Code> button in the TypeTarget panel,
-        or right click on any page. Choose <Code>TypeTarget</Code> →{" "}
-        <Code>Listen to this tab</Code>.
-      </>
-    ),
-    Media: ListenToTabMedia,
-  },
-  {
-    n: "Step 3",
-    optional: false,
-    title: "Choose an output.",
-    body: (
-      <>
-        Click the <Code>Start typing</Code> button in the TypeTarget panel or
-        right click on any web page&rsquo;s text field and Select{" "}
-        <Code>TypeTarget</Code> → <Code>Type to this field</Code>.
-      </>
-    ),
-    Media: (props) => (
+    Media: ({ text, ...props }) => (
       <TypeToNewFileAnimation
         {...props}
-        label="The video call from step 2. The pointer right-clicks, opens the TypeTarget menu and clicks Type to new file. A text box with a green outline and a timer opens over the bottom of the page and transcribed speech types into it. The pointer clicks the box's Open in new tab button, and the text carries on typing in a full-page box in a new tab."
+        menuEntries={text.menuEntries}
+        submenuEntries={text.listeningSubmenuEntries}
+        label={text.animations.chooseOutput}
       />
     ),
   },
 ]
+
+const code = (text: string) => <Code>{text}</Code>
+
+/** The extension's button and menu names the steps refer to, so they match it. */
+const getUiNames = (extension: ExtensionStrings) => ({
+  startListening: extension.startListening,
+  startTyping: extension.startTyping,
+  listenToTab: extension.menuListenHere,
+  typeToField: extension.menuTypeHere,
+  typeToNewFile: extension.menuNewFile,
+})
 
 /**
  * Shows one step at a time and moves to the next once the shown step's
@@ -155,13 +167,61 @@ const steps: Step[] = [
  * frame and never finish, so it stays put until a step is picked.
  */
 export const StepsCarousel = ({
+  messages,
+  chromeMenu,
+  extension,
+  languageEntries,
+  popupDir,
   startDelay = 0,
 }: {
+  messages: Messages["steps"]
+  chromeMenu: Messages["chromeMenu"]
+  /** The extension's own text, which the mock popup and menus show. */
+  extension: ExtensionStrings
+  /** The mock popup's Spoken language menu, built on the server. */
+  languageEntries: PanelEntry[]
+  popupDir: "ltr" | "rtl"
   /** Hold the first animation until this many ms after mount, e.g. while a parent fades in. */
   startDelay?: number
 }) => {
   const [active, setActive] = useState(0)
   const [playing, setPlaying] = useState(true)
+
+  // Memoized so the animations, which restart when their entries change, don't on every render.
+  const text = useMemo<StepsText>(() => {
+    const names = getUiNames(extension)
+    return {
+      menuEntries: getChromePageMenu(chromeMenu),
+      submenuEntries: getTypeTargetSubmenu(extension),
+      listeningSubmenuEntries: getTypeTargetListeningSubmenu(extension),
+      popupStrings: extension,
+      languageEntries,
+      popupDir,
+      mute: { mute: messages.mute, unmute: messages.unmute },
+      animations: {
+        pickModel: messages.pickModel.animation,
+        selectInput: format(messages.selectInput.animation, names),
+        chooseOutput: format(messages.chooseOutput.animation, names),
+      },
+    }
+  }, [messages, chromeMenu, extension, languageEntries, popupDir])
+
+  const names = getUiNames(extension)
+  const bodies: Record<StepId, ReactNode> = {
+    pickModel: rich(messages.pickModel.body, {
+      languages: (label) => (
+        <a
+          href="#languages"
+          className="text-foreground underline decoration-primary underline-offset-4"
+        >
+          {label}
+        </a>
+      ),
+    }),
+    selectInput: rich(format(messages.selectInput.body, names), { code }),
+    chooseOutput: rich(format(messages.chooseOutput.body, names), { code }),
+  }
+  const stepLabel = (index: number) => format(messages.step, { n: index + 1 })
 
   const next = () => {
     if (playing) setActive((index) => (index + 1) % steps.length)
@@ -171,19 +231,22 @@ export const StepsCarousel = ({
     <div
       role="region"
       aria-roledescription="carousel"
-      aria-label="Setup steps"
+      aria-label={messages.carouselLabel}
       className="flex flex-col gap-6"
     >
       {/* Every slide shares one grid cell, so the carousel is as tall as the tallest and never shifts. */}
       <div aria-live={playing ? "off" : "polite"} className="grid">
-        {steps.map(({ n, optional, title, body, Media }, index) => {
+        {steps.map(({ id, optional, Media }, index) => {
           const shown = index === active
           return (
             <div
-              key={n}
+              key={id}
               role="group"
               aria-roledescription="slide"
-              aria-label={`${index + 1} of ${steps.length}`}
+              aria-label={format(messages.slideLabel, {
+                n: index + 1,
+                total: steps.length,
+              })}
               inert={!shown}
               className={cn(
                 "col-start-1 row-start-1 transition-[opacity,visibility] duration-300",
@@ -193,18 +256,18 @@ export const StepsCarousel = ({
               <figure className="grid gap-6 lg:grid-cols-12 lg:gap-12">
                 <figcaption className="flex min-w-0 flex-col gap-3 lg:col-span-4 lg:pt-2">
                   <span className="text-2xl font-semibold text-primary tabular-nums">
-                    {n}
+                    {stepLabel(index)}
                     {optional && (
-                      <span className="ml-2 text-sm font-normal text-muted-foreground">
-                        (optional)
+                      <span className="ms-2 text-sm font-normal text-muted-foreground">
+                        {messages.optional}
                       </span>
                     )}
                   </span>
                   <h3 className="text-xl font-semibold tracking-tight text-balance">
-                    {title}
+                    {messages[id].title}
                   </h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                    {body}
+                    {bodies[id]}
                   </p>
                 </figcaption>
                 <div className="min-w-0 self-start border bg-muted lg:col-span-8">
@@ -212,6 +275,7 @@ export const StepsCarousel = ({
                     startDelay={startDelay}
                     paused={!shown}
                     onLoopEnd={next}
+                    text={text}
                   />
                 </div>
               </figure>
@@ -224,7 +288,7 @@ export const StepsCarousel = ({
         <Button
           variant="ghost"
           size="icon-sm"
-          aria-label={playing ? "Pause slideshow" : "Play slideshow"}
+          aria-label={playing ? messages.pause : messages.play}
           onClick={() => setPlaying((value) => !value)}
           // Reduced motion has no autoplay to pause.
           className="motion-reduce:hidden"
@@ -235,12 +299,12 @@ export const StepsCarousel = ({
             <PlayIcon className="size-4" />
           )}
         </Button>
-        {steps.map(({ n }, index) => (
+        {steps.map(({ id }, index) => (
           <Button
-            key={n}
+            key={id}
             variant={index === active ? "secondary" : "ghost"}
             size="icon-sm"
-            aria-label={n}
+            aria-label={stepLabel(index)}
             aria-current={index === active}
             onClick={() => setActive(index)}
             className={cn("tabular-nums", index === active && "text-primary")}

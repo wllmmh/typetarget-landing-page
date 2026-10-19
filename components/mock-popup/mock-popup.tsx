@@ -5,15 +5,12 @@ import Image from "next/image"
 import { motion, useTransform, type MotionValue } from "motion/react"
 
 import type { Point } from "@/components/mock-context-menu/layout"
+import type { ExtensionStrings } from "@/lib/i18n/extension-strings"
+import { format } from "@/lib/i18n/format"
 import { VERSION } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
-import {
-  LANGUAGE_ENTRIES,
-  LANGUAGE_OPTION_COUNT,
-  MODEL_ENTRIES,
-  getEntryLabel,
-} from "./default-entries"
+import { LANGUAGE_OPTION_COUNT, getEntryLabel } from "./default-entries"
 import {
   POPUP_METRICS,
   SCROLLBAR_METRICS,
@@ -53,7 +50,7 @@ const PlayIcon = () => (
 const RangeInput = () => (
   <div className="relative mt-0.5 h-4">
     <div className="absolute inset-x-0 top-1 h-2 rounded-full border border-(--range-border) bg-(--range-track)" />
-    <div className="absolute top-0 left-0 size-4 rounded-full bg-(--tt-primary)" />
+    <div className="absolute start-0 top-0 size-4 rounded-full bg-(--tt-primary)" />
   </div>
 )
 
@@ -131,7 +128,7 @@ const ScrollBar = ({
   return (
     <div
       style={{ width: SCROLLBAR_METRICS.width }}
-      className="absolute inset-y-0 right-0 bg-(--sb-track)"
+      className="absolute inset-y-0 end-0 bg-(--sb-track)"
     >
       <ScrollArrow direction="up" />
       <motion.div
@@ -173,7 +170,7 @@ const Panel = ({
       <motion.div
         style={{
           y,
-          marginRight: scrollable ? SCROLLBAR_METRICS.width : 0,
+          marginInlineEnd: scrollable ? SCROLLBAR_METRICS.width : 0,
         }}
         className="py-1"
       >
@@ -252,9 +249,33 @@ const Dropdown = ({ value, open, ...panel }: DropdownProps) => (
   </div>
 )
 
+/** The extension's popup text, from its catalogs. */
+export type PopupStrings = Pick<
+  ExtensionStrings,
+  | "modelHeading"
+  | "spokenLanguageHeading"
+  | "listeningToHeading"
+  | "noTabSelected"
+  | "startListening"
+  | "chunkLength"
+  | "chunkLengthValue"
+  | "typingToHeading"
+  | "noFieldSelected"
+  | "startTyping"
+  | "showOutline"
+  | "diagnosticsHeading"
+  | "helpLink"
+  | "contactLink"
+>
+
 type MockPopupProps = {
   /** Top-left corner, in the container's px. */
   position: Point
+  strings: PopupStrings
+  modelEntries: PanelEntry[]
+  languageEntries: PanelEntry[]
+  /** The extension lays its popup out right to left for Arabic and Urdu. */
+  dir: "ltr" | "rtl"
   modelId: string
   languageId: string
   openMenu: PopupMenu | null
@@ -267,6 +288,10 @@ type MockPopupProps = {
 /** Non-interactive replica of the extension's toolbar popup, for animations. */
 export const MockPopup = ({
   position,
+  strings,
+  modelEntries,
+  languageEntries,
+  dir,
   modelId,
   languageId,
   openMenu,
@@ -276,6 +301,7 @@ export const MockPopup = ({
 }: MockPopupProps) => (
   <div
     aria-hidden
+    dir={dir}
     style={{
       left: position.x,
       top: position.y,
@@ -299,10 +325,10 @@ export const MockPopup = ({
       TypeTarget
     </div>
     <Section>
-      <Heading>Model</Heading>
+      <Heading>{strings.modelHeading}</Heading>
       <Dropdown
         menu="model"
-        entries={MODEL_ENTRIES}
+        entries={modelEntries}
         value={modelId}
         open={openMenu === "model"}
         hovered={hovered}
@@ -310,10 +336,10 @@ export const MockPopup = ({
       />
     </Section>
     <Section>
-      <Heading>Spoken language</Heading>
+      <Heading>{strings.spokenLanguageHeading}</Heading>
       <Dropdown
         menu="language"
-        entries={LANGUAGE_ENTRIES}
+        entries={languageEntries}
         optionCount={LANGUAGE_OPTION_COUNT}
         value={languageId}
         open={openMenu === "language"}
@@ -322,23 +348,23 @@ export const MockPopup = ({
       />
     </Section>
     <Section>
-      <Heading>Listening to</Heading>
-      <p>No tab selected</p>
-      <PrimaryButton>Start listening</PrimaryButton>
+      <Heading>{strings.listeningToHeading}</Heading>
+      <p>{strings.noTabSelected}</p>
+      <PrimaryButton>{strings.startListening}</PrimaryButton>
       <div className="mt-2">
         <div className="flex items-baseline justify-between gap-2">
-          Chunk length
+          {strings.chunkLength}
           <span className="mt-1 text-[11px] leading-[16.5px] text-(--tt-text-secondary) tabular-nums">
-            3 seconds
+            {format(strings.chunkLengthValue, { seconds: 3 })}
           </span>
         </div>
         <RangeInput />
       </div>
     </Section>
     <Section>
-      <Heading>Typing to</Heading>
-      <p>No field selected</p>
-      <PrimaryButton>Start typing</PrimaryButton>
+      <Heading>{strings.typingToHeading}</Heading>
+      <p>{strings.noFieldSelected}</p>
+      <PrimaryButton>{strings.startTyping}</PrimaryButton>
       <div className="mt-2 flex items-center gap-2">
         <span className="flex size-[13px] items-center justify-center rounded-[2px] bg-(--tt-primary) text-(--tt-on-primary)">
           <svg viewBox="0 0 12 12" width={10} height={10} aria-hidden>
@@ -350,15 +376,15 @@ export const MockPopup = ({
             />
           </svg>
         </span>
-        Show outline
+        {strings.showOutline}
       </div>
     </Section>
     <Section>
       <div className="mt-1 flex items-baseline gap-4 text-[12px] leading-[18px] text-(--tt-text-secondary)">
-        <span>Diagnostics</span>
-        <span>Help</span>
-        <span>Contact</span>
-        <span className="ml-auto text-[11px] leading-[16.5px]">v{VERSION}</span>
+        <span>{strings.diagnosticsHeading}</span>
+        <span>{strings.helpLink}</span>
+        <span>{strings.contactLink}</span>
+        <span className="ms-auto text-[11px] leading-[16.5px]">v{VERSION}</span>
       </div>
     </Section>
   </div>

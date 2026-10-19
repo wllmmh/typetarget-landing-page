@@ -11,124 +11,104 @@ import {
   GROQ_KEYS_URL,
   WHISPER_LANGUAGES_URL,
 } from "@/lib/site"
+import type { ExtensionStrings } from "@/lib/i18n/extension-strings"
+import { format, rich } from "@/lib/i18n/format"
+import type { Messages } from "@/lib/i18n/messages/en"
 
 const linkClass =
   "text-foreground underline decoration-primary underline-offset-4"
 
-const questions: { q: string; a: ReactNode; id?: string }[] = [
+const code = (text: string) => <Code>{text}</Code>
+const bold = (text: string) => (
+  <span className="font-semibold text-foreground">{text}</span>
+)
+const linkTo = (href: string, text: string) => (
+  <a href={href} className={linkClass}>
+    {text}
+  </a>
+)
+const link = (href: string) => (text: string) => linkTo(href, text)
+
+const getQuestions = (
+  m: Messages["faq"],
+  extension: ExtensionStrings
+): { q: string; a: ReactNode; id?: string }[] => [
+  m.microphone,
+  m.needKey,
   {
-    q: "Does it transcribe my own voice?",
-    a: "No. TypeTarget hears what you hear, not what you say. It doesn't use your microphone.",
-  },
-  {
-    q: "Do I need an API key?",
-    a: "Not to start. Local Whisper needs no key, but performance is dependent on your hardware. A Gemini or Groq key, which you get free from those providers, gives you live transcription on any machine.",
-  },
-  {
-    q: "How do I get an API key?",
+    q: m.getKey.q,
     a: (
       <>
-        <span className="font-semibold text-foreground">Gemini.</span> Go to{" "}
-        <a href={GEMINI_KEYS_URL} className={linkClass}>
-          aistudio.google.com/api-keys
-        </a>{" "}
-        and click the <Code>Create API key</Code> button in the top right.
-        <MockAiStudioKeys />
-        <ol className="list-decimal space-y-1 pl-5">
-          <li>Name your key anything.</li>
-          <li>
-            Choose <Code>Create new project</Code>, and name the project
-            anything too.
-          </li>
-          <li>
-            Click <Code>Create key</Code>.
-          </li>
-          <li>
-            Copy the key it gives you and paste it into the API key field in
-            TypeTarget.
-          </li>
+        {rich(m.getKey.gemini, {
+          b: bold,
+          link: link(GEMINI_KEYS_URL),
+          code,
+        })}
+        <MockAiStudioKeys label={m.getKey.aiStudioImage} />
+        <ol className="list-decimal space-y-1 ps-5">
+          {m.getKey.geminiSteps.map((step) => (
+            <li key={step}>{rich(step, { code })}</li>
+          ))}
         </ol>
         <p className="mt-6">
-          <span className="font-semibold text-foreground">Groq.</span> Go to{" "}
-          <a href={GROQ_KEYS_URL} className={linkClass}>
-            console.groq.com/keys
-          </a>{" "}
-          and click the <Code>Create API Key</Code> button.
+          {rich(m.getKey.groq, { b: bold, link: link(GROQ_KEYS_URL), code })}
         </p>
-        <MockGroqCreateKey />
-        <ol className="list-decimal space-y-1 pl-5">
-          <li>Give it a Display Name of anything you want.</li>
-          <li>
-            Copy your Secret Key and paste it into the Groq API key field in
-            TypeTarget.
-          </li>
+        <MockGroqCreateKey label={m.getKey.groqImage} />
+        <ol className="list-decimal space-y-1 ps-5">
+          {m.getKey.groqSteps.map((step) => (
+            <li key={step}>{rich(step, { code })}</li>
+          ))}
         </ol>
       </>
     ),
   },
+  m.slow,
   {
-    q: "Why is my transcription slow?",
-    a: "You're most likely using Local Whisper, which runs inside your browser, so its speed depends on your hardware. On an older or less powerful machine it can fall behind the audio. For fast, live transcription on any machine, switch to a free Gemini or Groq key.",
+    q: m.wrongLanguage.q,
+    // The extension's own setting names, so they match its popup.
+    a: rich(
+      format(m.wrongLanguage.a, {
+        model: extension.modelHeading,
+        spokenLanguage: extension.spokenLanguageHeading,
+        auto: extension.spokenLanguageAuto,
+        chunkLength: extension.chunkLength,
+      }),
+      { code }
+    ),
   },
+  m.audio,
   {
-    q: "Where does my audio go?",
-    a: "With Local Whisper, nowhere: it's transcribed inside your browser. With Gemini or Groq, it goes only to that provider, using your own key. It never goes to TypeTarget.",
-  },
-  {
-    q: "What languages do you support?",
+    q: m.languages.q,
     // The id sits on the answer so a #languages link opens the closed details element.
     id: "languages",
     a: (
       <>
-        <span className="font-semibold text-foreground">Transcription.</span>{" "}
-        OpenAI's Whisper models, local or on Groq, support{" "}
-        <a href={WHISPER_LANGUAGES_URL} className={linkClass}>
-          99 languages
-        </a>
-        . Gemini Transcribe has its own{" "}
-        <a href={GEMINI_LANGUAGES_URL} className={linkClass}>
-          list of supported languages
-        </a>
-        .
+        {rich(m.languages.transcription, {
+          b: bold,
+          whisper: link(WHISPER_LANGUAGES_URL),
+          gemini: link(GEMINI_LANGUAGES_URL),
+        })}
         <span className="mt-6 block">
-          <span className="font-semibold text-foreground">Interface.</span> The
-          TypeTarget interface is available in Arabic, Bengali, Chinese
-          (Simplified and Traditional), Czech, English, Filipino, French,
-          German, Hindi, Indonesian, Italian, Japanese, Korean, Marathi, Polish,
-          Portuguese (Brazil and Portugal), Russian, Spanish, Telugu, Thai,
-          Turkish, Ukrainian, Urdu and Vietnamese, matching your system and
-          browser language.
+          {rich(m.languages.interface, { b: bold })}
         </span>
       </>
     ),
   },
+  m.browsers,
   {
-    q: "Which browsers does it work in?",
-    a: "Chrome 116 or newer, installed from the Chrome Web Store. Chromium-based browsers like Edge and Brave can add it from the same listing.",
-  },
-  {
-    q: "Can I load it without the Chrome Web Store?",
-    a: (
-      <>
-        Yes.{" "}
-        <a href={DOWNLOAD_URL} className={linkClass}>
-          Download the zip
-        </a>{" "}
-        and extract it to get a folder called <Code>typetarget</Code>. Open{" "}
-        <Code>chrome://extensions</Code> by pasting it into the address bar, as
-        web pages can&rsquo;t link to it (in Edge it&rsquo;s{" "}
-        <Code>edge://extensions</Code>, in Brave <Code>brave://extensions</Code>
-        ). Turn on Developer mode in the top-right corner, click{" "}
-        <Code>Load unpacked</Code>
-        and select the extracted folder. To update later, download the new zip,
-        replace the folder and press the reload arrow on TypeTarget&rsquo;s
-        card.
-      </>
-    ),
+    q: m.unpacked.q,
+    a: rich(m.unpacked.a, { download: link(DOWNLOAD_URL), code }),
   },
 ]
 
-export const Faq = () => (
+export const Faq = ({
+  messages,
+  extension,
+}: {
+  messages: Messages["faq"]
+  /** The extension's own text, for the settings an answer names. */
+  extension: ExtensionStrings
+}) => (
   <section
     id="faq"
     aria-labelledby="faq-heading"
@@ -136,10 +116,10 @@ export const Faq = () => (
   >
     <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
       <h2 id="faq-heading" className="heading min-w-0 lg:col-span-4">
-        Frequently asked questions.
+        {messages.heading}
       </h2>
       <div className="min-w-0 border-b lg:col-span-8">
-        {questions.map(({ q, a, id }) => (
+        {getQuestions(messages, extension).map(({ q, a, id }) => (
           <details key={q} className="group border-t">
             <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-sm font-semibold outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
               {q}

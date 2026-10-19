@@ -5,7 +5,6 @@ import { CaretRightIcon } from "@phosphor-icons/react/ssr"
 
 import { cn } from "@/lib/utils"
 
-import { CHROME_PAGE_MENU, TYPETARGET_SUBMENU } from "./default-entries"
 import { MENU_METRICS, type MockMenuEntry, type Point } from "./layout"
 
 // Native menus follow the OS theme, not the page theme.
@@ -17,7 +16,7 @@ const menuTheme = cn(
 )
 
 type MockMenuProps = {
-  entries?: MockMenuEntry[]
+  entries: MockMenuEntry[]
   /** Top-left corner, in the container's px. */
   position: Point
   open: boolean
@@ -30,6 +29,8 @@ type MockMenuProps = {
 
 type MockMenuSurfaceProps = Required<Omit<MockMenuProps, "className">> & {
   width: number
+  /** Treat `width` as a minimum, so a longer label widens the menu instead of truncating. */
+  growToFit?: boolean
   iconGutter: boolean
   className?: string
 }
@@ -41,6 +42,7 @@ const MockMenuSurface = ({
   highlightedIndex,
   pressed,
   width,
+  growToFit = false,
   iconGutter,
   className,
 }: MockMenuSurfaceProps) => (
@@ -52,7 +54,11 @@ const MockMenuSurface = ({
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.12, ease: "easeOut" }}
-        style={{ left: position.x, top: position.y, width }}
+        style={{
+          left: position.x,
+          top: position.y,
+          ...(growToFit ? { minWidth: width } : { width }),
+        }}
         className={cn(
           menuTheme,
           "pointer-events-none absolute origin-top-left overflow-hidden rounded-[8px] bg-(--mm-bg) py-2 [font-family:system-ui,-apple-system,'Segoe_UI',Roboto,'Noto_Sans',Ubuntu,sans-serif] text-[14px] leading-5 font-normal tracking-normal whitespace-nowrap text-(--mm-fg) shadow-(--mm-shadow) select-none",
@@ -108,7 +114,7 @@ const MockMenuSurface = ({
 
 /** Non-interactive replica of Chrome's page context menu, for animations. */
 export const MockContextMenu = ({
-  entries = CHROME_PAGE_MENU,
+  entries,
   highlightedIndex = null,
   pressed = false,
   width = MENU_METRICS.menuWidth,
@@ -129,7 +135,7 @@ export const MockContextMenu = ({
 
 /** Non-interactive replica of a Chrome context submenu, for animations. */
 export const MockContextSubmenu = ({
-  entries = TYPETARGET_SUBMENU,
+  entries,
   highlightedIndex = null,
   pressed = false,
   ...props
@@ -139,6 +145,8 @@ export const MockContextSubmenu = ({
     highlightedIndex={highlightedIndex}
     pressed={pressed}
     width={MENU_METRICS.submenuWidth}
+    // Chrome sizes it to its longest row, which in some languages is wider.
+    growToFit
     iconGutter={false}
     {...props}
   />

@@ -186,4 +186,17 @@
     letter-spacing: -0.035em;
     text-wrap: balance;
   }
+  /* Tight tracking breaks joined scripts, and tight leading clips the marks above and below Indic and Thai letters. */
+  :is(.display, .heading):is(
+      :lang(ar),
+      :lang(ur),
+      :lang(bn),
+      :lang(hi),
+      :lang(mr),
+      :lang(te),
+      :lang(th)
+    ) {
+    letter-spacing: normal;
+    line-height: 1.35;
+  }
 }

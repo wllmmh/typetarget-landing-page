@@ -8,11 +8,11 @@ const studioTheme = cn(
   "system-dark:[--as-bg:#1b1b1b] system-dark:[--as-button-border:#333537] system-dark:[--as-button:#333537] system-dark:[--as-field-border:#282a2c] system-dark:[--as-field:#282a2c] system-dark:[--as-muted:#9aa0a6] system-dark:[--as-text:#e3e3e3]"
 )
 
-/** The top-right corner of aistudio.google.com/api-keys. */
-export const MockAiStudioKeys = () => (
+/** The top-right corner of aistudio.google.com/api-keys, in English like the page itself. `label` describes it in the reader's language. */
+export const MockAiStudioKeys = ({ label }: { label: string }) => (
   <div
     role="img"
-    aria-label="The top-right corner of Google AI Studio's API keys page, with an API quickstart link, a Create API key button, and a Filter by All projects dropdown below them."
+    aria-label={label}
     className={cn(
       studioTheme,
       "my-4 flex justify-center border bg-(--as-bg) px-5 py-6 [font-family:system-ui,sans-serif] text-(--as-text)"

@@ -41,14 +41,20 @@ export const MutableVideo = (props: Omit<ComponentProps<"video">, "muted">) => {
   return <video {...props} muted={muted} />
 }
 
-export const MuteButton = ({ className }: { className?: string }) => {
+export const MuteButton = ({
+  labels,
+  className,
+}: {
+  labels: { mute: string; unmute: string }
+  className?: string
+}) => {
   const { muted, toggle } = useMute()
   const Icon = muted ? SpeakerSimpleSlashIcon : SpeakerSimpleHighIcon
   return (
     <Button
       variant="secondary"
       size="icon-sm"
-      aria-label={muted ? "Unmute video" : "Mute video"}
+      aria-label={muted ? labels.unmute : labels.mute}
       onClick={toggle}
       // The video is hidden for reduced motion, so there's nothing to unmute.
       className={cn("motion-reduce:hidden", className)}

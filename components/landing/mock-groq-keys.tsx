@@ -8,11 +8,11 @@ const groqTheme = cn(
   "system-dark:[--gq-bg:#161616] system-dark:[--gq-border:#e8604b] system-dark:[--gq-button:#46443f] system-dark:[--gq-text:#e8e6e3]"
 )
 
-/** The Create API Key button on console.groq.com/keys. */
-export const MockGroqCreateKey = () => (
+/** The Create API Key button on console.groq.com/keys, in English like the page itself. `label` describes it in the reader's language. */
+export const MockGroqCreateKey = ({ label }: { label: string }) => (
   <div
     role="img"
-    aria-label="GroqCloud's Create API Key button, with a plus sign before the label."
+    aria-label={label}
     className={cn(
       groqTheme,
       "my-4 flex justify-center border bg-(--gq-bg) px-5 py-6 [font-family:system-ui,sans-serif] text-(--gq-text)"

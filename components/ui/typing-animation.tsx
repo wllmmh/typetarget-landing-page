@@ -19,6 +19,11 @@ import {
 
 import { cn } from "@/lib/utils"
 
+// Whole user-perceived characters, so Devanagari, Thai and the like never show a half-built cluster.
+const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" })
+const toGraphemes = (text: string) =>
+  Array.from(segmenter.segment(text), ({ segment }) => segment)
+
 const motionElements = {
   article: motion.article,
   div: motion.div,
@@ -130,7 +135,7 @@ export function TypingAnimation({
 
       timeout = setTimeout(() => {
         const currentWord = wordsToAnimate[currentWordIndex] || ""
-        const graphemes = Array.from(currentWord)
+        const graphemes = toGraphemes(currentWord)
 
         switch (phase) {
           case "typing":
@@ -193,7 +198,7 @@ export function TypingAnimation({
     delay,
   ])
 
-  const currentWordGraphemes = Array.from(
+  const currentWordGraphemes = toGraphemes(
     wordsToAnimate[currentWordIndex] || ""
   )
   const isComplete =
