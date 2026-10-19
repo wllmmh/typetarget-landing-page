@@ -5,37 +5,46 @@ import { Hero } from "@/components/landing/hero"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { SiteHeader } from "@/components/landing/site-header"
 import { SpecSheet } from "@/components/landing/spec-sheet"
+import { StructuredData } from "@/components/landing/structured-data"
 import { UseCases } from "@/components/landing/use-cases"
 import { getLanguageEntries } from "@/components/mock-popup/spoken-languages"
 import { EXTENSION_STRINGS } from "@/lib/i18n/extension-strings"
 import {
-  DEFAULT_LOCALE,
-  LOCALES,
   LOCALE_INFO,
+  languageAlternates,
   localePath,
   type Locale,
 } from "@/lib/i18n/locales"
 import { getMessages } from "@/lib/i18n/messages"
-import { SITE_URL } from "@/lib/site"
+import { OG_IMAGE, SITE_URL } from "@/lib/site"
 
 /** Title, description, and links to every language's version of the page for search engines. */
 export const getPageMetadata = (locale: Locale): Metadata => {
   const { meta } = getMessages(locale)
+  const { title, description } = meta
   return {
     metadataBase: new URL(SITE_URL),
-    title: meta.title,
-    description: meta.description,
+    title,
+    description,
     alternates: {
       canonical: localePath(locale),
-      languages: {
-        ...Object.fromEntries(
-          LOCALES.map((alternate) => [
-            LOCALE_INFO[alternate].tag,
-            localePath(alternate),
-          ])
-        ),
-        "x-default": localePath(DEFAULT_LOCALE),
-      },
+      languages: languageAlternates(),
+    },
+    openGraph: {
+      type: "website",
+      siteName: "TypeTarget",
+      title,
+      description,
+      url: localePath(locale),
+      // Open Graph writes locales as `pt_BR`, not `pt-BR`.
+      locale: LOCALE_INFO[locale].tag.replace("-", "_"),
+      images: [OG_IMAGE],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [OG_IMAGE],
     },
   }
 }
@@ -48,6 +57,11 @@ export const LandingPage = ({ locale }: { locale: Locale }) => {
 
   return (
     <>
+      <StructuredData
+        locale={locale}
+        messages={messages}
+        extension={extension}
+      />
       <SiteHeader locale={locale} messages={messages.header} />
       <main>
         <Hero

@@ -75,6 +75,14 @@ export const isLocale = (value: string): value is Locale =>
 export const localePath = (locale: Locale) =>
   locale === DEFAULT_LOCALE ? "/" : `/${locale}`
 
+/** Every language's path by its `hreflang`, plus `x-default`: for the page's `<head>` and the sitemap. */
+export const languageAlternates = (): Record<string, string> => ({
+  ...Object.fromEntries(
+    LOCALES.map((locale) => [LOCALE_INFO[locale].tag, localePath(locale)])
+  ),
+  "x-default": localePath(DEFAULT_LOCALE),
+})
+
 /** Where the language menu remembers an explicit choice, so `/` stops redirecting by browser language. */
 export const LOCALE_STORAGE_KEY = "typetarget-locale"
 

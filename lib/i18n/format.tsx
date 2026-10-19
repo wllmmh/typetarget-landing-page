@@ -28,6 +28,9 @@ const splitOn = (
   return <>{nodes}</>
 }
 
+/** A message's text with its `<tag>`s dropped, for places that take plain text. */
+export const plainText = (message: string) => message.replace(TAG, "$2")
+
 /** Like `format`, for values that are elements rather than text. */
 export const interpolate = (
   message: string,
