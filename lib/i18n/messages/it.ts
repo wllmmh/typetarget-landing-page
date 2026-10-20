@@ -226,7 +226,7 @@ export const it: Messages = {
       a: "Sì. <download>Scarica lo zip</download> ed estrailo per ottenere una cartella chiamata <code>typetarget</code>. Apri <code>chrome://extensions</code> incollandolo nella barra degli indirizzi, perché le pagine web non possono collegarsi a essa (in Edge è <code>edge://extensions</code>, in Brave <code>brave://extensions</code>). Attiva la Modalità sviluppatore nell'angolo in alto a destra, fai clic su <code>Carica estensione non pacchettizzata</code> e seleziona la cartella estratta. Per aggiornarlo in seguito, scarica il nuovo zip, sostituisci la cartella e premi la freccia di ricarica sulla scheda di TypeTarget.",
     },
     contact: {
-      q: "Quali sono i vostri contatti?",
+      q: "Come posso contattare TypeTarget?",
       a: "Scrivici tramite <contact>questo modulo</contact>.",
     },
   },

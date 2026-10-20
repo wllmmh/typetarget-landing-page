@@ -222,7 +222,7 @@ export const zhTW: Messages = {
       a: "可以。<download>下載 zip 檔</download>並解壓縮，取得名為 <code>typetarget</code> 的資料夾。由於網頁無法連結至 <code>chrome://extensions</code>，請將它貼到網址列開啟（Edge 是 <code>edge://extensions</code>，Brave 是 <code>brave://extensions</code>）。開啟右上角的開發人員模式，按一下 <code>載入未封裝項目</code>，然後選取解壓縮後的資料夾。日後要更新時，下載新的 zip，取代資料夾，再按一下 TypeTarget 資訊卡上的重新載入箭頭。",
     },
     contact: {
-      q: "你們的聯絡方式是什麼？",
+      q: "如何聯絡 TypeTarget？",
       a: "請透過<contact>這份表單</contact>留言給我們。",
     },
   },

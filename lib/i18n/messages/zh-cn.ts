@@ -222,7 +222,7 @@ export const zhCN: Messages = {
       a: "可以。<download>下载 zip 文件</download>并解压，得到一个名为 <code>typetarget</code> 的文件夹。由于网页无法链接到 <code>chrome://extensions</code>，请将它粘贴到地址栏中打开（Edge 中是 <code>edge://extensions</code>，Brave 中是 <code>brave://extensions</code>）。打开右上角的开发者模式，点击 <code>加载未打包的扩展程序</code>，然后选择解压后的文件夹。以后要更新时，下载新的 zip，替换文件夹，再点击 TypeTarget 卡片上的重新加载箭头。",
     },
     contact: {
-      q: "你们的联系方式是什么？",
+      q: "如何联系 TypeTarget？",
       a: "请通过<contact>这个表单</contact>给我们留言。",
     },
   },

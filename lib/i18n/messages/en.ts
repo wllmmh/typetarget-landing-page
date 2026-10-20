@@ -237,7 +237,7 @@ export const en = {
       a: "Yes. <download>Download the zip</download> and extract it to get a folder called <code>typetarget</code>. Open <code>chrome://extensions</code> by pasting it into the address bar, as web pages can’t link to it (in Edge it’s <code>edge://extensions</code>, in Brave <code>brave://extensions</code>). Turn on Developer mode in the top-right corner, click <code>Load unpacked</code> and select the extracted folder. To update later, download the new zip, replace the folder and press the reload arrow on TypeTarget’s card.",
     },
     contact: {
-      q: "What is your contact information?",
+      q: "How do I contact TypeTarget?",
       a: "Send a message through <contact>this form</contact>.",
     },
   },

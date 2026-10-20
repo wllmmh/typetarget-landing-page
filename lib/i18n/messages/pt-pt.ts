@@ -227,7 +227,7 @@ export const ptPT: Messages = {
       a: "Sim. <download>Transfira o zip</download> e extraia-o para obter uma pasta chamada <code>typetarget</code>. Abra <code>chrome://extensions</code> colando o endereço na barra de endereço, porque as páginas web não podem criar ligações para ele (no Edge é <code>edge://extensions</code>, no Brave <code>brave://extensions</code>). Ative o Modo de programador no canto superior direito, clique em <code>Carregar expandida</code> e selecione a pasta extraída. Para atualizar mais tarde, transfira o novo zip, substitua a pasta e clique na seta de recarregar no cartão do TypeTarget.",
     },
     contact: {
-      q: "Quais são as informações de contacto?",
+      q: "Como posso contactar o TypeTarget?",
       a: "Envie uma mensagem através <contact>deste formulário</contact>.",
     },
   },

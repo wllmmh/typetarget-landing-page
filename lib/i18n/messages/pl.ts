@@ -227,7 +227,7 @@ export const pl: Messages = {
       a: "Tak. <download>Pobierz plik zip</download> i rozpakuj go, aby otrzymać folder <code>typetarget</code>. Otwórz <code>chrome://extensions</code>, wklejając adres do paska adresu, bo strony internetowe nie mogą do niego linkować (w Edge to <code>edge://extensions</code>, w Brave <code>brave://extensions</code>). Włącz Tryb dewelopera w prawym górnym rogu, kliknij <code>Załaduj rozpakowane</code> i wybierz rozpakowany folder. Aby później zaktualizować, pobierz nowy zip, podmień folder i kliknij strzałkę odświeżania na karcie TypeTarget.",
     },
     contact: {
-      q: "Jakie są dane kontaktowe?",
+      q: "Jak skontaktować się z TypeTarget?",
       a: "Napisz do nas przez <contact>ten formularz</contact>.",
     },
   },

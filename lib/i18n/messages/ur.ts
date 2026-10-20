@@ -226,7 +226,7 @@ export const ur: Messages = {
       a: "جی ہاں۔ <download>zip ڈاؤن لوڈ کریں</download> اور اسے نکالیں تاکہ <code>typetarget</code> نام کا فولڈر مل جائے۔ <code>chrome://extensions</code> کو ایڈریس بار میں پیسٹ کر کے کھولیں، کیونکہ ویب صفحات اس کا لنک نہیں دے سکتے (Edge میں یہ <code>edge://extensions</code> ہے، Brave میں <code>brave://extensions</code>)۔ اوپری کونے میں ڈویلپر موڈ آن کریں، <code>Load unpacked</code> پر کلک کریں اور نکالا گیا فولڈر چنیں۔ بعد میں اپ ڈیٹ کرنے کے لیے نئی zip ڈاؤن لوڈ کریں، فولڈر بدلیں اور TypeTarget کے کارڈ پر دوبارہ لوڈ کرنے والا تیر دبائیں۔",
     },
     contact: {
-      q: "آپ کی رابطے کی معلومات کیا ہیں؟",
+      q: "میں TypeTarget سے کیسے رابطہ کروں؟",
       a: "<contact>اس فارم</contact> کے ذریعے ہمیں پیغام بھیجیں۔",
     },
   },

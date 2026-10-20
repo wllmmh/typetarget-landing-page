@@ -225,7 +225,7 @@ export const ar: Messages = {
       a: "نعم. <download>نزّل ملف zip</download> واستخرجه لتحصل على مجلد اسمه <code>typetarget</code>. افتح <code>chrome://extensions</code> بلصقه في شريط العناوين، لأن صفحات الويب لا يمكنها الربط إليه (في Edge هو <code>edge://extensions</code>، وفي Brave <code>brave://extensions</code>). فعّل وضع المطوّر في الزاوية العلوية، وانقر على <code>تحميل إضافة غير مضغوطة</code> واختر المجلد المستخرج. للتحديث لاحقًا، نزّل ملف zip الجديد واستبدل المجلد واضغط على سهم إعادة التحميل في بطاقة TypeTarget.",
     },
     contact: {
-      q: "ما هي معلومات التواصل معكم؟",
+      q: "كيف أتواصل مع TypeTarget؟",
       a: "أرسل لنا رسالة عبر <contact>هذا النموذج</contact>.",
     },
   },

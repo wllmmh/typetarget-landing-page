@@ -226,7 +226,7 @@ export const ko: Messages = {
       a: "네. <download>zip 파일을 다운로드</download>해 압축을 풀면 <code>typetarget</code> 폴더가 생깁니다. 웹 페이지에서는 링크할 수 없으므로 주소창에 <code>chrome://extensions</code>를 붙여 넣어 여세요(Edge에서는 <code>edge://extensions</code>, Brave에서는 <code>brave://extensions</code>). 오른쪽 위에서 개발자 모드를 켜고 <code>압축해제된 확장 프로그램을 로드합니다</code>를 클릭한 다음 압축을 푼 폴더를 선택하세요. 나중에 업데이트하려면 새 zip을 다운로드해 폴더를 바꾸고 TypeTarget 카드의 새로고침 화살표를 누르세요.",
     },
     contact: {
-      q: "연락처가 어떻게 되나요?",
+      q: "TypeTarget에 어떻게 문의하나요?",
       a: "<contact>이 양식</contact>으로 메시지를 보내 주세요.",
     },
   },

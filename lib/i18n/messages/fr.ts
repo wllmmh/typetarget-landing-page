@@ -227,7 +227,7 @@ export const fr: Messages = {
       a: "Oui. <download>Téléchargez le zip</download> et extrayez-le pour obtenir un dossier nommé <code>typetarget</code>. Ouvrez <code>chrome://extensions</code> en le collant dans la barre d'adresse, car les pages web ne peuvent pas y renvoyer (dans Edge c'est <code>edge://extensions</code>, dans Brave <code>brave://extensions</code>). Activez le Mode développeur en haut à droite, cliquez sur <code>Charger l'extension non empaquetée</code> et sélectionnez le dossier extrait. Pour mettre à jour plus tard, téléchargez le nouveau zip, remplacez le dossier et cliquez sur la flèche d'actualisation de la carte de TypeTarget.",
     },
     contact: {
-      q: "Quelles sont vos coordonnées ?",
+      q: "Comment contacter TypeTarget ?",
       a: "Envoyez-nous un message via <contact>ce formulaire</contact>.",
     },
   },

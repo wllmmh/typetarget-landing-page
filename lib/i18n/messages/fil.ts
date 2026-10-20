@@ -228,7 +228,7 @@ export const fil: Messages = {
       a: "Oo. <download>I-download ang zip</download> at i-extract ito para makakuha ng folder na tinatawag na <code>typetarget</code>. Buksan ang <code>chrome://extensions</code> sa pamamagitan ng pag-paste nito sa address bar, dahil hindi ito puwedeng i-link ng mga web page (sa Edge ito ay <code>edge://extensions</code>, sa Brave <code>brave://extensions</code>). I-on ang Developer mode sa kanang itaas na sulok, i-click ang <code>I-load ang naka-unpack</code> at piliin ang na-extract na folder. Para mag-update sa ibang pagkakataon, i-download ang bagong zip, palitan ang folder at pindutin ang reload arrow sa card ng TypeTarget.",
     },
     contact: {
-      q: "Ano ang inyong contact information?",
+      q: "Paano makipag-ugnayan sa TypeTarget?",
       a: "Magpadala ng mensahe sa pamamagitan ng <contact>form na ito</contact>.",
     },
   },

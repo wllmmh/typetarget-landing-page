@@ -226,7 +226,7 @@ export const tr: Messages = {
       a: "Evet. <download>Zip dosyasını indirin</download> ve <code>typetarget</code> adlı bir klasör elde etmek için çıkarın. Web sayfaları bağlantı veremediği için <code>chrome://extensions</code> adresini adres çubuğuna yapıştırarak açın (Edge'de <code>edge://extensions</code>, Brave'de <code>brave://extensions</code>). Sağ üst köşedeki Geliştirici modunu açın, <code>Paketlenmemiş öğe yükle</code> düğmesine tıklayın ve çıkardığınız klasörü seçin. Daha sonra güncellemek için yeni zip dosyasını indirin, klasörü değiştirin ve TypeTarget kartındaki yeniden yükleme okuna basın.",
     },
     contact: {
-      q: "İletişim bilgileriniz nedir?",
+      q: "TypeTarget ile nasıl iletişime geçebilirim?",
       a: "<contact>Bu form</contact> üzerinden bize mesaj gönderin.",
     },
   },

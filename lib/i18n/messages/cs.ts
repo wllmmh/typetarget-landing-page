@@ -226,7 +226,7 @@ export const cs: Messages = {
       a: "Ano. <download>Stáhněte si zip</download> a rozbalte ho, čímž získáte složku <code>typetarget</code>. Otevřete <code>chrome://extensions</code> vložením do adresního řádku, protože webové stránky na ni nemohou odkazovat (v Edgi je to <code>edge://extensions</code>, v Brave <code>brave://extensions</code>). Vpravo nahoře zapněte Režim pro vývojáře, klikněte na <code>Načíst rozbalené</code> a vyberte rozbalenou složku. Pro pozdější aktualizaci stáhněte nový zip, nahraďte složku a stiskněte šipku pro opětovné načtení na kartě TypeTarget.",
     },
     contact: {
-      q: "Jaké jsou vaše kontaktní údaje?",
+      q: "Jak mohu kontaktovat TypeTarget?",
       a: "Napište nám přes <contact>tento formulář</contact>.",
     },
   },

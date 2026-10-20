@@ -227,7 +227,7 @@ export const ptBR: Messages = {
       a: "Sim. <download>Baixe o zip</download> e extraia para obter uma pasta chamada <code>typetarget</code>. Abra <code>chrome://extensions</code> colando o endereço na barra de endereços, já que páginas da web não podem criar links para ele (no Edge é <code>edge://extensions</code>, no Brave <code>brave://extensions</code>). Ative o Modo do desenvolvedor no canto superior direito, clique em <code>Carregar sem compactação</code> e selecione a pasta extraída. Para atualizar depois, baixe o novo zip, substitua a pasta e clique na seta de recarregar no cartão do TypeTarget.",
     },
     contact: {
-      q: "Quais são as informações de contato?",
+      q: "Como entro em contato com o TypeTarget?",
       a: "Envie uma mensagem por <contact>este formulário</contact>.",
     },
   },

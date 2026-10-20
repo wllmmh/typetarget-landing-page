@@ -226,7 +226,7 @@ export const de: Messages = {
       a: "Ja. <download>Lade die ZIP-Datei herunter</download> und entpacke sie, um einen Ordner namens <code>typetarget</code> zu erhalten. Öffne <code>chrome://extensions</code>, indem du es in die Adressleiste einfügst, da Webseiten nicht dorthin verlinken können (in Edge ist es <code>edge://extensions</code>, in Brave <code>brave://extensions</code>). Aktiviere oben rechts den Entwicklermodus, klicke auf <code>Entpackte Erweiterung laden</code> und wähle den entpackten Ordner aus. Für ein späteres Update lade die neue ZIP-Datei herunter, ersetze den Ordner und klicke auf der Karte von TypeTarget auf den Pfeil zum Neuladen.",
     },
     contact: {
-      q: "Wie lauten eure Kontaktdaten?",
+      q: "Wie kann ich TypeTarget kontaktieren?",
       a: "Schreib uns über <contact>dieses Formular</contact>.",
     },
   },

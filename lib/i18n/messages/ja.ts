@@ -226,7 +226,7 @@ export const ja: Messages = {
       a: "はい。<download>zip をダウンロード</download>して展開すると、<code>typetarget</code> というフォルダができます。ウェブページからはリンクできないので、<code>chrome://extensions</code> をアドレスバーに貼り付けて開きます（Edge では <code>edge://extensions</code>、Brave では <code>brave://extensions</code>）。右上のデベロッパー モードをオンにし、<code>パッケージ化されていない拡張機能を読み込む</code> をクリックして、展開したフォルダを選びます。後で更新するときは、新しい zip をダウンロードしてフォルダを置き換え、TypeTarget のカードの再読み込みの矢印を押します。",
     },
     contact: {
-      q: "連絡先を教えてください。",
+      q: "TypeTargetへはどうすれば連絡できますか？",
       a: "<contact>こちらのフォーム</contact>からメッセージをお送りください。",
     },
   },

@@ -226,7 +226,7 @@ export const id: Messages = {
       a: "Bisa. <download>Unduh file zip</download> dan ekstrak untuk mendapatkan folder bernama <code>typetarget</code>. Buka <code>chrome://extensions</code> dengan menempelkannya ke bilah alamat, karena halaman web tidak bisa menautkannya (di Edge alamatnya <code>edge://extensions</code>, di Brave <code>brave://extensions</code>). Aktifkan Mode developer di pojok kanan atas, klik <code>Muat yang belum dikemas</code>, lalu pilih folder hasil ekstrak. Untuk memperbarui nanti, unduh zip baru, ganti foldernya, dan tekan panah muat ulang pada kartu TypeTarget.",
     },
     contact: {
-      q: "Apa informasi kontak Anda?",
+      q: "Bagaimana cara menghubungi TypeTarget?",
       a: "Kirim pesan lewat <contact>formulir ini</contact>.",
     },
   },

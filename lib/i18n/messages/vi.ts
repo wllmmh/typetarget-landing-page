@@ -225,7 +225,7 @@ export const vi: Messages = {
       a: "Có. <download>Tải tệp zip</download> và giải nén để có thư mục tên <code>typetarget</code>. Mở <code>chrome://extensions</code> bằng cách dán vào thanh địa chỉ, vì trang web không thể liên kết tới đó (trong Edge là <code>edge://extensions</code>, trong Brave là <code>brave://extensions</code>). Bật Chế độ dành cho nhà phát triển ở góc trên bên phải, nhấp <code>Tải tiện ích đã giải nén</code> và chọn thư mục đã giải nén. Để cập nhật sau này, tải tệp zip mới, thay thư mục và nhấn mũi tên tải lại trên thẻ của TypeTarget.",
     },
     contact: {
-      q: "Thông tin liên hệ của bạn là gì?",
+      q: "Làm thế nào để liên hệ với TypeTarget?",
       a: "Hãy gửi tin nhắn qua <contact>biểu mẫu này</contact>.",
     },
   },
