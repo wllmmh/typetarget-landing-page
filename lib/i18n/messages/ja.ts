@@ -203,7 +203,7 @@ export const ja: Messages = {
       a: "おそらくローカルの Whisper を使っています。ブラウザ内で動くため、速度はハードウェアに左右されます。古いパソコンや性能の低いパソコンでは、音声に追いつけないことがあります。どのパソコンでも速くリアルタイムに文字起こしするには、無料の Gemini か Groq のキーに切り替えてください。",
     },
     wrongLanguage: {
-      q: "違う言語で文字起こしされます。",
+      q: "なぜ違う言語で文字起こしされるのですか？",
       a: "<code>{model}</code> で別のモデルを試してください。大きなモデルほど言語を正しく聞き分けます。話されている言語がわかっている場合は、<code>{auto}</code> のままにせず <code>{spokenLanguage}</code> でその言語を選んでください。<code>{chunkLength}</code> を長くすると、モデルが言語を判断するための音声が増えるので、それも効果があります。",
     },
     audio: {
@@ -224,6 +224,10 @@ export const ja: Messages = {
     unpacked: {
       q: "Chrome ウェブストアを使わずに読み込めますか？",
       a: "はい。<download>zip をダウンロード</download>して展開すると、<code>typetarget</code> というフォルダができます。ウェブページからはリンクできないので、<code>chrome://extensions</code> をアドレスバーに貼り付けて開きます（Edge では <code>edge://extensions</code>、Brave では <code>brave://extensions</code>）。右上のデベロッパー モードをオンにし、<code>パッケージ化されていない拡張機能を読み込む</code> をクリックして、展開したフォルダを選びます。後で更新するときは、新しい zip をダウンロードしてフォルダを置き換え、TypeTarget のカードの再読み込みの矢印を押します。",
+    },
+    contact: {
+      q: "連絡先を教えてください。",
+      a: "<contact>こちらのフォーム</contact>からメッセージをお送りください。",
     },
   },
   footer: {

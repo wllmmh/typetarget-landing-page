@@ -199,7 +199,7 @@ export const zhCN: Messages = {
       a: "你很可能在用本地 Whisper，它在浏览器内运行，所以速度取决于你的硬件。在较旧或性能较弱的电脑上，它可能跟不上音频。想在任何电脑上快速实时转写，请改用免费的 Gemini 或 Groq 密钥。",
     },
     wrongLanguage: {
-      q: "转写成了错误的语言。",
+      q: "为什么转写成了错误的语言？",
       a: "在 <code>{model}</code> 中换一个模型试试：更大的模型更擅长分辨语言。如果你知道说的是哪种语言，请在 <code>{spokenLanguage}</code> 中选择它，而不是保留 <code>{auto}</code>。你也可以调大 <code>{chunkLength}</code>，让模型有更多语音来识别语言。",
     },
     audio: {
@@ -220,6 +220,10 @@ export const zhCN: Messages = {
     unpacked: {
       q: "不通过 Chrome 应用商店可以加载吗？",
       a: "可以。<download>下载 zip 文件</download>并解压，得到一个名为 <code>typetarget</code> 的文件夹。由于网页无法链接到 <code>chrome://extensions</code>，请将它粘贴到地址栏中打开（Edge 中是 <code>edge://extensions</code>，Brave 中是 <code>brave://extensions</code>）。打开右上角的开发者模式，点击 <code>加载未打包的扩展程序</code>，然后选择解压后的文件夹。以后要更新时，下载新的 zip，替换文件夹，再点击 TypeTarget 卡片上的重新加载箭头。",
+    },
+    contact: {
+      q: "你们的联系方式是什么？",
+      a: "请通过<contact>这个表单</contact>给我们留言。",
     },
   },
   footer: {

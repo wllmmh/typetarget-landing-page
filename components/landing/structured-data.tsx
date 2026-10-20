@@ -43,6 +43,7 @@ const getFaqText = (
   },
   m.browsers,
   { q: m.unpacked.q, a: plainText(m.unpacked.a) },
+  { q: m.contact.q, a: plainText(m.contact.a) },
 ]
 
 /**

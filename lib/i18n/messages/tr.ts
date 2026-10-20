@@ -203,7 +203,7 @@ export const tr: Messages = {
       a: "Büyük olasılıkla tarayıcınızın içinde çalışan yerel Whisper'ı kullanıyorsunuz, bu yüzden hızı donanımınıza bağlı. Eski ya da daha az güçlü bir bilgisayarda sesin gerisinde kalabilir. Her bilgisayarda hızlı ve canlı döküm için ücretsiz bir Gemini ya da Groq anahtarına geçin.",
     },
     wrongLanguage: {
-      q: "Yanlış dilde metne döküyor.",
+      q: "Neden yanlış dilde metne döküyor?",
       a: "<code>{model}</code> altında başka bir model deneyin: büyük modeller dilleri daha iyi ayırt eder. Konuşulan dili biliyorsanız <code>{auto}</code> olarak bırakmak yerine <code>{spokenLanguage}</code> altında o dili seçin. <code>{chunkLength}</code> değerini de artırabilirsiniz; böylece model dili tanımak için daha fazla konuşma duyar.",
     },
     audio: {
@@ -224,6 +224,10 @@ export const tr: Messages = {
     unpacked: {
       q: "Chrome Web Mağazası olmadan yükleyebilir miyim?",
       a: "Evet. <download>Zip dosyasını indirin</download> ve <code>typetarget</code> adlı bir klasör elde etmek için çıkarın. Web sayfaları bağlantı veremediği için <code>chrome://extensions</code> adresini adres çubuğuna yapıştırarak açın (Edge'de <code>edge://extensions</code>, Brave'de <code>brave://extensions</code>). Sağ üst köşedeki Geliştirici modunu açın, <code>Paketlenmemiş öğe yükle</code> düğmesine tıklayın ve çıkardığınız klasörü seçin. Daha sonra güncellemek için yeni zip dosyasını indirin, klasörü değiştirin ve TypeTarget kartındaki yeniden yükleme okuna basın.",
+    },
+    contact: {
+      q: "İletişim bilgileriniz nedir?",
+      a: "<contact>Bu form</contact> üzerinden bize mesaj gönderin.",
     },
   },
   footer: {

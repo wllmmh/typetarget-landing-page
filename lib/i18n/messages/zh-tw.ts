@@ -199,7 +199,7 @@ export const zhTW: Messages = {
       a: "你很可能在使用本機 Whisper，它在瀏覽器內執行，所以速度取決於你的硬體。在較舊或效能較低的電腦上，它可能跟不上音訊。想在任何電腦上快速即時轉錄，請改用免費的 Gemini 或 Groq 金鑰。",
     },
     wrongLanguage: {
-      q: "轉錄成錯誤的語言。",
+      q: "為什麼轉錄成錯誤的語言？",
       a: "在 <code>{model}</code> 中換一個模型試試：較大的模型較能分辨語言。如果你知道說的是哪種語言，請在 <code>{spokenLanguage}</code> 中選取它，而不是保留 <code>{auto}</code>。你也可以調高 <code>{chunkLength}</code>，讓模型有更多語音來辨識語言。",
     },
     audio: {
@@ -220,6 +220,10 @@ export const zhTW: Messages = {
     unpacked: {
       q: "可以不透過 Chrome 線上應用程式商店載入嗎？",
       a: "可以。<download>下載 zip 檔</download>並解壓縮，取得名為 <code>typetarget</code> 的資料夾。由於網頁無法連結至 <code>chrome://extensions</code>，請將它貼到網址列開啟（Edge 是 <code>edge://extensions</code>，Brave 是 <code>brave://extensions</code>）。開啟右上角的開發人員模式，按一下 <code>載入未封裝項目</code>，然後選取解壓縮後的資料夾。日後要更新時，下載新的 zip，取代資料夾，再按一下 TypeTarget 資訊卡上的重新載入箭頭。",
+    },
+    contact: {
+      q: "你們的聯絡方式是什麼？",
+      a: "請透過<contact>這份表單</contact>留言給我們。",
     },
   },
   footer: {

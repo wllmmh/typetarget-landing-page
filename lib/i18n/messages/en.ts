@@ -214,7 +214,7 @@ export const en = {
       a: "You're most likely using Local Whisper, which runs inside your browser, so its speed depends on your hardware. On an older or less powerful machine it can fall behind the audio. For fast, live transcription on any machine, switch to a free Gemini or Groq key.",
     },
     wrongLanguage: {
-      q: "It's transcribing the wrong language.",
+      q: "Why is it transcribing the wrong language?",
       a: "Try a different model under <code>{model}</code>: larger models are better at telling languages apart. If you know the language being spoken, pick it under <code>{spokenLanguage}</code> instead of leaving it on <code>{auto}</code>. You can also increase <code>{chunkLength}</code>, which gives the model more speech to recognize the language from.",
     },
     audio: {
@@ -235,6 +235,10 @@ export const en = {
     unpacked: {
       q: "Can I load it without the Chrome Web Store?",
       a: "Yes. <download>Download the zip</download> and extract it to get a folder called <code>typetarget</code>. Open <code>chrome://extensions</code> by pasting it into the address bar, as web pages can’t link to it (in Edge it’s <code>edge://extensions</code>, in Brave <code>brave://extensions</code>). Turn on Developer mode in the top-right corner, click <code>Load unpacked</code> and select the extracted folder. To update later, download the new zip, replace the folder and press the reload arrow on TypeTarget’s card.",
+    },
+    contact: {
+      q: "What is your contact information?",
+      a: "Send a message through <contact>this form</contact>.",
     },
   },
   footer: {

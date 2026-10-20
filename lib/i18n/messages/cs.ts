@@ -203,7 +203,7 @@ export const cs: Messages = {
       a: "Nejspíš používáte místní Whisper, který běží v prohlížeči, takže jeho rychlost závisí na vašem hardwaru. Na starším nebo slabším počítači může za zvukem zaostávat. Pro rychlý živý přepis na jakémkoli počítači přejděte na bezplatný klíč Gemini nebo Groq.",
     },
     wrongLanguage: {
-      q: "Přepisuje ve špatném jazyce.",
+      q: "Proč přepisuje ve špatném jazyce?",
       a: "Zkuste v části <code>{model}</code> jiný model: větší modely jazyky rozlišují lépe. Pokud víte, jakým jazykem se mluví, vyberte ho v části <code>{spokenLanguage}</code> místo ponechání možnosti <code>{auto}</code>. Můžete také zvýšit <code>{chunkLength}</code>, aby měl model víc řeči, podle které jazyk pozná.",
     },
     audio: {
@@ -224,6 +224,10 @@ export const cs: Messages = {
     unpacked: {
       q: "Můžu ho načíst bez Internetového obchodu Chrome?",
       a: "Ano. <download>Stáhněte si zip</download> a rozbalte ho, čímž získáte složku <code>typetarget</code>. Otevřete <code>chrome://extensions</code> vložením do adresního řádku, protože webové stránky na ni nemohou odkazovat (v Edgi je to <code>edge://extensions</code>, v Brave <code>brave://extensions</code>). Vpravo nahoře zapněte Režim pro vývojáře, klikněte na <code>Načíst rozbalené</code> a vyberte rozbalenou složku. Pro pozdější aktualizaci stáhněte nový zip, nahraďte složku a stiskněte šipku pro opětovné načtení na kartě TypeTarget.",
+    },
+    contact: {
+      q: "Jaké jsou vaše kontaktní údaje?",
+      a: "Napište nám přes <contact>tento formulář</contact>.",
     },
   },
   footer: {

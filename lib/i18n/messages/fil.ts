@@ -205,7 +205,7 @@ export const fil: Messages = {
       a: "Malamang ay gumagamit ka ng Local Whisper, na tumatakbo sa loob ng browser mo, kaya nakadepende ang bilis nito sa iyong hardware. Sa luma o hindi gaanong malakas na machine, puwede itong mahuli sa audio. Para sa mabilis at live na transcription sa kahit anong machine, lumipat sa libreng Gemini o Groq key.",
     },
     wrongLanguage: {
-      q: "Mali ang wikang tina-transcribe nito.",
+      q: "Bakit mali ang wikang tina-transcribe nito?",
       a: "Sumubok ng ibang model sa <code>{model}</code>: mas magaling ang mas malalaking model sa pagkilala ng mga wika. Kung alam mo ang wikang sinasalita, piliin ito sa <code>{spokenLanguage}</code> sa halip na iwan sa <code>{auto}</code>. Puwede mo ring taasan ang <code>{chunkLength}</code>, para mas maraming pananalita ang mapakinggan ng model bago nito tukuyin ang wika.",
     },
     audio: {
@@ -226,6 +226,10 @@ export const fil: Messages = {
     unpacked: {
       q: "Puwede ko ba itong i-load nang walang Chrome Web Store?",
       a: "Oo. <download>I-download ang zip</download> at i-extract ito para makakuha ng folder na tinatawag na <code>typetarget</code>. Buksan ang <code>chrome://extensions</code> sa pamamagitan ng pag-paste nito sa address bar, dahil hindi ito puwedeng i-link ng mga web page (sa Edge ito ay <code>edge://extensions</code>, sa Brave <code>brave://extensions</code>). I-on ang Developer mode sa kanang itaas na sulok, i-click ang <code>I-load ang naka-unpack</code> at piliin ang na-extract na folder. Para mag-update sa ibang pagkakataon, i-download ang bagong zip, palitan ang folder at pindutin ang reload arrow sa card ng TypeTarget.",
+    },
+    contact: {
+      q: "Ano ang inyong contact information?",
+      a: "Magpadala ng mensahe sa pamamagitan ng <contact>form na ito</contact>.",
     },
   },
   footer: {

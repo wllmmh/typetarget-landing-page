@@ -203,7 +203,7 @@ export const de: Messages = {
       a: "Wahrscheinlich verwendest du lokales Whisper, das in deinem Browser läuft, daher hängt seine Geschwindigkeit von deiner Hardware ab. Auf einem älteren oder schwächeren Gerät kann es hinter dem Ton zurückbleiben. Für schnelle Live-Transkription auf jedem Gerät wechsle zu einem kostenlosen Gemini- oder Groq-Schlüssel.",
     },
     wrongLanguage: {
-      q: "Es transkribiert die falsche Sprache.",
+      q: "Warum transkribiert es die falsche Sprache?",
       a: "Probiere unter <code>{model}</code> ein anderes Modell: Größere Modelle unterscheiden Sprachen besser. Wenn du weißt, welche Sprache gesprochen wird, wähle sie unter <code>{spokenLanguage}</code>, statt <code>{auto}</code> zu lassen. Du kannst auch <code>{chunkLength}</code> erhöhen, damit das Modell mehr Sprache hat, um die Sprache zu erkennen.",
     },
     audio: {
@@ -224,6 +224,10 @@ export const de: Messages = {
     unpacked: {
       q: "Kann ich es ohne den Chrome Web Store laden?",
       a: "Ja. <download>Lade die ZIP-Datei herunter</download> und entpacke sie, um einen Ordner namens <code>typetarget</code> zu erhalten. Öffne <code>chrome://extensions</code>, indem du es in die Adressleiste einfügst, da Webseiten nicht dorthin verlinken können (in Edge ist es <code>edge://extensions</code>, in Brave <code>brave://extensions</code>). Aktiviere oben rechts den Entwicklermodus, klicke auf <code>Entpackte Erweiterung laden</code> und wähle den entpackten Ordner aus. Für ein späteres Update lade die neue ZIP-Datei herunter, ersetze den Ordner und klicke auf der Karte von TypeTarget auf den Pfeil zum Neuladen.",
+    },
+    contact: {
+      q: "Wie lauten eure Kontaktdaten?",
+      a: "Schreib uns über <contact>dieses Formular</contact>.",
     },
   },
   footer: {

@@ -204,7 +204,7 @@ export const pl: Messages = {
       a: "Najpewniej używasz lokalnego Whispera, który działa w przeglądarce, więc jego szybkość zależy od Twojego sprzętu. Na starszym lub słabszym komputerze może nie nadążać za dźwiękiem. Aby uzyskać szybką transkrypcję na żywo na każdym komputerze, przejdź na bezpłatny klucz Gemini lub Groq.",
     },
     wrongLanguage: {
-      q: "Transkrybuje w złym języku.",
+      q: "Dlaczego transkrybuje w złym języku?",
       a: "Wypróbuj inny model w sekcji <code>{model}</code>: większe modele lepiej rozróżniają języki. Jeśli wiesz, w jakim języku jest mowa, wybierz go w sekcji <code>{spokenLanguage}</code> zamiast zostawiać <code>{auto}</code>. Możesz też zwiększyć <code>{chunkLength}</code>, żeby model miał więcej mowy do rozpoznania języka.",
     },
     audio: {
@@ -225,6 +225,10 @@ export const pl: Messages = {
     unpacked: {
       q: "Czy mogę go wczytać bez Chrome Web Store?",
       a: "Tak. <download>Pobierz plik zip</download> i rozpakuj go, aby otrzymać folder <code>typetarget</code>. Otwórz <code>chrome://extensions</code>, wklejając adres do paska adresu, bo strony internetowe nie mogą do niego linkować (w Edge to <code>edge://extensions</code>, w Brave <code>brave://extensions</code>). Włącz Tryb dewelopera w prawym górnym rogu, kliknij <code>Załaduj rozpakowane</code> i wybierz rozpakowany folder. Aby później zaktualizować, pobierz nowy zip, podmień folder i kliknij strzałkę odświeżania na karcie TypeTarget.",
+    },
+    contact: {
+      q: "Jakie są dane kontaktowe?",
+      a: "Napisz do nas przez <contact>ten formularz</contact>.",
     },
   },
   footer: {

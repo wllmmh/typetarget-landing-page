@@ -204,7 +204,7 @@ export const fr: Messages = {
       a: "Vous utilisez sans doute Whisper en local, qui tourne dans votre navigateur : sa vitesse dépend donc de votre matériel. Sur un appareil ancien ou moins puissant, il peut prendre du retard sur le son. Pour une transcription rapide en direct sur n'importe quel appareil, passez à une clé Gemini ou Groq gratuite.",
     },
     wrongLanguage: {
-      q: "Il transcrit dans la mauvaise langue.",
+      q: "Pourquoi transcrit-il dans la mauvaise langue ?",
       a: "Essayez un autre modèle sous <code>{model}</code> : les modèles plus grands distinguent mieux les langues. Si vous connaissez la langue parlée, choisissez-la sous <code>{spokenLanguage}</code> au lieu de laisser <code>{auto}</code>. Vous pouvez aussi augmenter <code>{chunkLength}</code>, ce qui donne au modèle plus de parole pour reconnaître la langue.",
     },
     audio: {
@@ -225,6 +225,10 @@ export const fr: Messages = {
     unpacked: {
       q: "Puis-je le charger sans le Chrome Web Store ?",
       a: "Oui. <download>Téléchargez le zip</download> et extrayez-le pour obtenir un dossier nommé <code>typetarget</code>. Ouvrez <code>chrome://extensions</code> en le collant dans la barre d'adresse, car les pages web ne peuvent pas y renvoyer (dans Edge c'est <code>edge://extensions</code>, dans Brave <code>brave://extensions</code>). Activez le Mode développeur en haut à droite, cliquez sur <code>Charger l'extension non empaquetée</code> et sélectionnez le dossier extrait. Pour mettre à jour plus tard, téléchargez le nouveau zip, remplacez le dossier et cliquez sur la flèche d'actualisation de la carte de TypeTarget.",
+    },
+    contact: {
+      q: "Quelles sont vos coordonnées ?",
+      a: "Envoyez-nous un message via <contact>ce formulaire</contact>.",
     },
   },
   footer: {

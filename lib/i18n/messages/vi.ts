@@ -202,7 +202,7 @@ export const vi: Messages = {
       a: "Nhiều khả năng bạn đang dùng Whisper cục bộ, chạy ngay trong trình duyệt, nên tốc độ phụ thuộc vào phần cứng của bạn. Trên máy cũ hoặc yếu hơn, nó có thể bị chậm so với âm thanh. Để chép lời trực tiếp nhanh trên mọi máy, hãy chuyển sang khóa Gemini hoặc Groq miễn phí.",
     },
     wrongLanguage: {
-      q: "Nó chép lời sai ngôn ngữ.",
+      q: "Tại sao nó chép lời sai ngôn ngữ?",
       a: "Hãy thử một mô hình khác trong <code>{model}</code>: mô hình lớn hơn phân biệt ngôn ngữ tốt hơn. Nếu bạn biết ngôn ngữ đang được nói, hãy chọn nó trong <code>{spokenLanguage}</code> thay vì để <code>{auto}</code>. Bạn cũng có thể tăng <code>{chunkLength}</code> để mô hình có nhiều lời nói hơn mà nhận ra ngôn ngữ.",
     },
     audio: {
@@ -223,6 +223,10 @@ export const vi: Messages = {
     unpacked: {
       q: "Tôi có thể tải mà không cần Cửa hàng Chrome trực tuyến không?",
       a: "Có. <download>Tải tệp zip</download> và giải nén để có thư mục tên <code>typetarget</code>. Mở <code>chrome://extensions</code> bằng cách dán vào thanh địa chỉ, vì trang web không thể liên kết tới đó (trong Edge là <code>edge://extensions</code>, trong Brave là <code>brave://extensions</code>). Bật Chế độ dành cho nhà phát triển ở góc trên bên phải, nhấp <code>Tải tiện ích đã giải nén</code> và chọn thư mục đã giải nén. Để cập nhật sau này, tải tệp zip mới, thay thư mục và nhấn mũi tên tải lại trên thẻ của TypeTarget.",
+    },
+    contact: {
+      q: "Thông tin liên hệ của bạn là gì?",
+      a: "Hãy gửi tin nhắn qua <contact>biểu mẫu này</contact>.",
     },
   },
   footer: {

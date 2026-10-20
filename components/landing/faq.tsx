@@ -5,6 +5,7 @@ import { Code } from "@/components/landing/code"
 import { MockAiStudioKeys } from "@/components/landing/mock-ai-studio-keys"
 import { MockGroqCreateKey } from "@/components/landing/mock-groq-keys"
 import {
+  CONTACT_URL,
   DOWNLOAD_URL,
   GEMINI_KEYS_URL,
   GEMINI_LANGUAGES_URL,
@@ -98,6 +99,10 @@ const getQuestions = (
   {
     q: m.unpacked.q,
     a: rich(m.unpacked.a, { download: link(DOWNLOAD_URL), code }),
+  },
+  {
+    q: m.contact.q,
+    a: rich(m.contact.a, { contact: link(CONTACT_URL) }),
   },
 ]
 

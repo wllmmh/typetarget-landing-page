@@ -203,7 +203,7 @@ export const id: Messages = {
       a: "Kemungkinan besar Anda memakai Whisper lokal, yang berjalan di dalam browser, jadi kecepatannya bergantung pada perangkat keras Anda. Di komputer lama atau yang kurang bertenaga, ia bisa tertinggal dari audio. Untuk transkripsi langsung yang cepat di komputer mana pun, beralihlah ke kunci Gemini atau Groq gratis.",
     },
     wrongLanguage: {
-      q: "Transkripsinya dalam bahasa yang salah.",
+      q: "Mengapa transkripsinya dalam bahasa yang salah?",
       a: "Coba model lain di <code>{model}</code>: model yang lebih besar lebih baik dalam membedakan bahasa. Jika Anda tahu bahasa yang diucapkan, pilih bahasa itu di <code>{spokenLanguage}</code> alih-alih membiarkannya di <code>{auto}</code>. Anda juga bisa menaikkan <code>{chunkLength}</code>, sehingga model mendapat lebih banyak ucapan untuk mengenali bahasanya.",
     },
     audio: {
@@ -224,6 +224,10 @@ export const id: Messages = {
     unpacked: {
       q: "Bisakah saya memuatnya tanpa Chrome Web Store?",
       a: "Bisa. <download>Unduh file zip</download> dan ekstrak untuk mendapatkan folder bernama <code>typetarget</code>. Buka <code>chrome://extensions</code> dengan menempelkannya ke bilah alamat, karena halaman web tidak bisa menautkannya (di Edge alamatnya <code>edge://extensions</code>, di Brave <code>brave://extensions</code>). Aktifkan Mode developer di pojok kanan atas, klik <code>Muat yang belum dikemas</code>, lalu pilih folder hasil ekstrak. Untuk memperbarui nanti, unduh zip baru, ganti foldernya, dan tekan panah muat ulang pada kartu TypeTarget.",
+    },
+    contact: {
+      q: "Apa informasi kontak Anda?",
+      a: "Kirim pesan lewat <contact>formulir ini</contact>.",
     },
   },
   footer: {

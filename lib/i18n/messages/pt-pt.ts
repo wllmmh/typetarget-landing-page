@@ -204,7 +204,7 @@ export const ptPT: Messages = {
       a: "Muito provavelmente está a usar o Whisper local, que funciona dentro do navegador, pelo que a velocidade depende do seu hardware. Num computador mais antigo ou menos potente pode ficar atrasado em relação ao áudio. Para uma transcrição rápida em direto em qualquer computador, mude para uma chave gratuita da Gemini ou da Groq.",
     },
     wrongLanguage: {
-      q: "Está a transcrever no idioma errado.",
+      q: "Porque está a transcrever no idioma errado?",
       a: "Experimente outro modelo em <code>{model}</code>: os modelos maiores distinguem melhor os idiomas. Se souber que idioma está a ser falado, escolha-o em <code>{spokenLanguage}</code> em vez de o deixar em <code>{auto}</code>. Também pode aumentar a <code>{chunkLength}</code>, o que dá ao modelo mais fala para reconhecer o idioma.",
     },
     audio: {
@@ -225,6 +225,10 @@ export const ptPT: Messages = {
     unpacked: {
       q: "Posso carregá-lo sem a Chrome Web Store?",
       a: "Sim. <download>Transfira o zip</download> e extraia-o para obter uma pasta chamada <code>typetarget</code>. Abra <code>chrome://extensions</code> colando o endereço na barra de endereço, porque as páginas web não podem criar ligações para ele (no Edge é <code>edge://extensions</code>, no Brave <code>brave://extensions</code>). Ative o Modo de programador no canto superior direito, clique em <code>Carregar expandida</code> e selecione a pasta extraída. Para atualizar mais tarde, transfira o novo zip, substitua a pasta e clique na seta de recarregar no cartão do TypeTarget.",
+    },
+    contact: {
+      q: "Quais são as informações de contacto?",
+      a: "Envie uma mensagem através <contact>deste formulário</contact>.",
     },
   },
   footer: {

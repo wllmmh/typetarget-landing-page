@@ -203,7 +203,7 @@ export const ko: Messages = {
       a: "아마 로컬 Whisper를 사용하고 있을 겁니다. 브라우저 안에서 실행되므로 속도는 하드웨어에 따라 달라집니다. 오래되었거나 성능이 낮은 컴퓨터에서는 오디오를 따라가지 못할 수 있습니다. 어떤 컴퓨터에서든 빠른 실시간 받아쓰기를 원하면 무료 Gemini 또는 Groq 키로 바꾸세요.",
     },
     wrongLanguage: {
-      q: "다른 언어로 받아써요.",
+      q: "왜 다른 언어로 받아써요?",
       a: "<code>{model}</code>에서 다른 모델을 사용해 보세요. 큰 모델일수록 언어를 더 잘 구별합니다. 어떤 언어로 말하는지 알고 있다면 <code>{auto}</code>로 두지 말고 <code>{spokenLanguage}</code>에서 그 언어를 선택하세요. <code>{chunkLength}</code>를 늘리는 것도 방법입니다. 모델이 언어를 판단할 음성이 더 많아집니다.",
     },
     audio: {
@@ -224,6 +224,10 @@ export const ko: Messages = {
     unpacked: {
       q: "Chrome 웹 스토어 없이 로드할 수 있나요?",
       a: "네. <download>zip 파일을 다운로드</download>해 압축을 풀면 <code>typetarget</code> 폴더가 생깁니다. 웹 페이지에서는 링크할 수 없으므로 주소창에 <code>chrome://extensions</code>를 붙여 넣어 여세요(Edge에서는 <code>edge://extensions</code>, Brave에서는 <code>brave://extensions</code>). 오른쪽 위에서 개발자 모드를 켜고 <code>압축해제된 확장 프로그램을 로드합니다</code>를 클릭한 다음 압축을 푼 폴더를 선택하세요. 나중에 업데이트하려면 새 zip을 다운로드해 폴더를 바꾸고 TypeTarget 카드의 새로고침 화살표를 누르세요.",
+    },
+    contact: {
+      q: "연락처가 어떻게 되나요?",
+      a: "<contact>이 양식</contact>으로 메시지를 보내 주세요.",
     },
   },
   footer: {
