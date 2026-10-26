@@ -265,7 +265,6 @@ export type PopupStrings = Pick<
   | "showOutline"
   | "diagnosticsHeading"
   | "helpLink"
-  | "contactLink"
 >
 
 type MockPopupProps = {
@@ -383,7 +382,6 @@ export const MockPopup = ({
       <div className="mt-1 flex items-baseline gap-4 text-[12px] leading-[18px] text-(--tt-text-secondary)">
         <span>{strings.diagnosticsHeading}</span>
         <span>{strings.helpLink}</span>
-        <span>{strings.contactLink}</span>
         <span className="ms-auto text-[11px] leading-[16.5px]">v{VERSION}</span>
       </div>
     </Section>

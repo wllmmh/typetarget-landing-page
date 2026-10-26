@@ -9,7 +9,7 @@ export const WHISPER_LANGUAGES_URL =
   "https://github.com/openai/whisper#available-models-and-languages"
 export const GEMINI_LANGUAGES_URL =
   "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-transcribe#supported-languages"
-export const VERSION = "0.4.5"
+export const VERSION = "0.4.6"
 export const SITE_URL = "https://www.typetarget.com"
 /** The link preview image, built by `app/og.png/route.tsx`. */
 export const OG_IMAGE = {
