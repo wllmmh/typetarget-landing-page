@@ -4,7 +4,7 @@ import type { Locale } from "./locales"
 
 /**
  * The extension's own UI text, which the mock popup and context menu show.
- * Copied from the extension's `_locales/<lang>/messages.json` (v0.4.6) so the
+ * Copied from the extension's `_locales/<lang>/messages.json` so the
  * mocks match it word for word; `$NAME$` placeholders are written `{name}`.
  */
 export type ExtensionKey =
