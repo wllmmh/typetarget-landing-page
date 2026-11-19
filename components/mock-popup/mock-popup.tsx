@@ -7,7 +7,6 @@ import { motion, useTransform, type MotionValue } from "motion/react"
 import type { Point } from "@/components/mock-context-menu/layout"
 import type { ExtensionStrings } from "@/lib/i18n/extension-strings"
 import { format } from "@/lib/i18n/format"
-import { VERSION } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
 import { LANGUAGE_OPTION_COUNT, getEntryLabel } from "./default-entries"
@@ -39,6 +38,27 @@ const SHADOW = "shadow-[0_1px_3px_rgb(0_0_0/0.3),0_4px_8px_3px_rgb(0_0_0/0.15)]"
 const PlayIcon = () => (
   <svg viewBox="0 0 12 12" width={12} height={12} aria-hidden>
     <path d="M2 1.2 L10.5 6 L2 10.8 Z" fill="currentColor" />
+  </svg>
+)
+
+/** The About button's "i", as in the extension's popup. */
+const InfoIcon = () => (
+  <svg viewBox="0 0 16 16" width={16} height={16} aria-hidden>
+    <circle
+      cx="8"
+      cy="8"
+      r="6.5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.3}
+    />
+    <circle cx="8" cy="4.9" r="0.9" fill="currentColor" />
+    <path
+      d="M8 7.3 V11.6"
+      stroke="currentColor"
+      strokeWidth={1.4}
+      strokeLinecap="round"
+    />
   </svg>
 )
 
@@ -382,7 +402,9 @@ export const MockPopup = ({
       <div className="mt-1 flex items-baseline gap-4 text-[12px] leading-[18px] text-(--tt-text-secondary)">
         <span>{strings.diagnosticsHeading}</span>
         <span>{strings.helpLink}</span>
-        <span className="ms-auto text-[11px] leading-[16.5px]">v{VERSION}</span>
+        <span className="ms-auto inline-flex self-center">
+          <InfoIcon />
+        </span>
       </div>
     </Section>
   </div>
