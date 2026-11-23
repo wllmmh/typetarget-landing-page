@@ -40,77 +40,88 @@ const ZOOM = 2
 const VIEW_WIDTH = WIDTH / ZOOM
 const VIEW_HEIGHT = HEIGHT / ZOOM
 
-// Matches new-file-field.ts in the extension: fixed over the bottom third.
-const BOX_MARGIN = 12
+// Matches new-file-field.ts, highlight.ts and session-badge.ts in the extension: a box fixed
+// over the bottom third, a 2px frame 4px outside it, and two pill chips just above the frame.
+const BOX_MARGIN = 16
 const BOX_HEIGHT = VIEW_HEIGHT / 3
-const BOX_TOP = VIEW_HEIGHT - BOX_MARGIN - BOX_HEIGHT
-/** The badge and button tabs: a 16px line plus 1px padding each side. */
-const TAB_HEIGHT = 18
-/** Their bottom sits 1px inside the box's top edge, joining the outline. */
-const TAB_TOP = BOX_TOP + 1 - TAB_HEIGHT
-const BUTTON_WIDTH = 20
+const BOX_RADIUS = 8
+const FRAME_WIDTH = 2
+const FRAME_GAP = 4
+/** How far the frame's outer edge is from the box's; the chips line up with it. */
+const REACH = FRAME_WIDTH + FRAME_GAP
+const ROW_HEIGHT = 36
+const ROW_GAP = 4
+const BUTTON_SIZE = 32
 const CONTROLS_PADDING_X = 2
+/** The editor tab's page padding: room above the box for the frame and the chips' row. */
+const EDITOR_PADDING_TOP = 56
+
+const BOX_TOP = VIEW_HEIGHT - BOX_MARGIN - BOX_HEIGHT
+const ROW_TOP = BOX_TOP - REACH - ROW_GAP - ROW_HEIGHT
+const ROW_EDGE = BOX_MARGIN - REACH
+const EDITOR_ROW_TOP = EDITOR_PADDING_TOP - REACH - ROW_GAP - ROW_HEIGHT
 
 /** Middle of Open in new tab, the third of four buttons, in stage px. */
 const OPEN_IN_TAB = {
-  x: (VIEW_WIDTH - BOX_MARGIN - CONTROLS_PADDING_X - BUTTON_WIDTH * 1.5) * ZOOM,
-  y: (TAB_TOP + TAB_HEIGHT / 2) * ZOOM,
+  x: (VIEW_WIDTH - ROW_EDGE - CONTROLS_PADDING_X - BUTTON_SIZE * 1.5) * ZOOM,
+  y: (ROW_TOP + ROW_HEIGHT / 2) * ZOOM,
 }
 
 const GREEN = "#1f9d55"
 const FONT_STACK =
   "[font-family:system-ui,-apple-system,'Segoe_UI',Roboto,'Noto_Sans',Ubuntu,sans-serif]"
-// The extension's box and editor tab are Canvas and CanvasText under `color-scheme: light dark`,
-// so like native UI they follow the OS theme, not the page theme. These are Chrome's values.
+// The extension's box and editor tab use the popup's colors for the OS theme, not the page theme.
 const FIELD_THEME = cn(
-  "[--nf-bg:#fff] [--nf-fg:#000]",
-  "system-dark:[--nf-bg:#121212] system-dark:[--nf-fg:#fff]"
+  "[--nf-bg:#fff] [--nf-fg:#1f1f1f] [--nf-primary:#0b57d0]",
+  "system-dark:[--nf-bg:#1f1f1f] system-dark:[--nf-fg:#e3e3e3] system-dark:[--nf-primary:#a8c7fa]"
 )
 const FIELD_TEXT_STYLE =
   "text-[15px] leading-[1.5] font-normal tracking-normal text-(--nf-fg)"
-const DESTINATION_OUTLINE: CSSProperties = {
-  outline: `4px double ${GREEN}`,
-  outlineOffset: -4,
-}
+const CHIP =
+  "absolute flex items-center rounded-full bg-[rgb(16_16_16/0.8)] text-white backdrop-blur-[8px]"
+
+/** Material Icons' 24px paths, as in the extension. */
+const SAVE_PATH = "M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+const MINIMIZE_PATH = "M19 13H5v-2h14v2z"
+const OPEN_IN_TAB_PATH =
+  "M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+const MOVE_BACK_PATH =
+  "M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+const CLOSE_PATH =
+  "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+const PLAY_PATH = "M8 5v14l11-7z"
+
+const Icon = ({ path }: { path: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={20}
+    height={20}
+    aria-hidden
+    className="block shrink-0"
+  >
+    <path d={path} fill="currentColor" />
+  </svg>
+)
 
 const IconButton = ({
+  path,
   hovered = false,
-  children,
 }: {
+  path: string
   hovered?: boolean
-  children: ReactNode
 }) => (
   <span
     className={cn(
-      "flex h-4 w-5 items-center justify-center rounded-[2px]",
-      hovered && "bg-white/30"
+      "flex items-center justify-center rounded-full",
+      hovered && "bg-[color-mix(in_srgb,currentColor_14%,transparent)]"
     )}
+    style={{ width: BUTTON_SIZE, height: BUTTON_SIZE }}
   >
-    <svg viewBox="0 0 12 12" width={10} height={10} aria-hidden>
-      {children}
-    </svg>
+    <Icon path={path} />
   </span>
 )
 
-const SaveIcon = () => (
-  <path
-    d="M6 1 V8 M3 5 L6 8 L9 5 M1.5 10.75 H10.5"
-    stroke="currentColor"
-    strokeWidth={1.5}
-    fill="none"
-  />
-)
-
-const CloseIcon = () => (
-  <path
-    d="M2.5 2.5 L9.5 9.5 M9.5 2.5 L2.5 9.5"
-    stroke="currentColor"
-    strokeWidth={1.75}
-    fill="none"
-  />
-)
-
-const StatusTab = ({
+const StatusChip = ({
   seconds,
   style,
 }: {
@@ -118,23 +129,18 @@ const StatusTab = ({
   style: CSSProperties
 }) => (
   <div
-    style={{ ...style, backgroundColor: GREEN }}
-    className="absolute flex items-center rounded-t-[3px] px-[6px] py-px text-[11px] leading-4 font-semibold whitespace-nowrap text-white tabular-nums"
+    style={{ ...style, height: ROW_HEIGHT }}
+    className={cn(
+      CHIP,
+      "gap-2 pr-4 pl-3 text-[13px] leading-4 font-medium whitespace-nowrap tabular-nums"
+    )}
   >
-    <svg
-      viewBox="0 0 12 12"
-      width={10}
-      height={10}
-      aria-hidden
-      className="mr-1 shrink-0"
-    >
-      <path d="M2 1.2 L10.5 6 L2 10.8 Z" fill="currentColor" />
-    </svg>
+    <Icon path={PLAY_PATH} />
     TypeTarget 0:{String(seconds).padStart(2, "0")}
   </div>
 )
 
-const ControlsTab = ({
+const ControlsChip = ({
   style,
   children,
 }: {
@@ -142,10 +148,47 @@ const ControlsTab = ({
   children: ReactNode
 }) => (
   <div
-    style={{ ...style, backgroundColor: GREEN }}
-    className="absolute flex items-center rounded-t-[3px] px-[2px] py-px text-white"
+    style={{ ...style, height: ROW_HEIGHT, paddingInline: CONTROLS_PADDING_X }}
+    className={CHIP}
   >
     {children}
+  </div>
+)
+
+/**
+ * The text box and the frame around it. The wrapper is the box's rectangle, so the
+ * frame hangs outside it without being clipped by the box.
+ */
+const Field = ({
+  style,
+  floating,
+  children,
+}: {
+  style: CSSProperties
+  floating: boolean
+  children: ReactNode
+}) => (
+  <div style={style} className="absolute">
+    <div
+      style={{
+        inset: -REACH,
+        borderWidth: FRAME_WIDTH,
+        borderRadius: BOX_RADIUS + REACH,
+        borderColor: GREEN,
+      }}
+      className="pointer-events-none absolute border-solid"
+    />
+    <div
+      style={{ borderRadius: BOX_RADIUS }}
+      className={cn(
+        "absolute inset-0 overflow-hidden bg-(--nf-bg) px-4 py-3 whitespace-pre-wrap",
+        floating &&
+          "shadow-[0_1px_3px_rgb(0_0_0/0.3),0_4px_8px_3px_rgb(0_0_0/0.15)]",
+        FIELD_TEXT_STYLE
+      )}
+    >
+      {children}
+    </div>
   </div>
 )
 
@@ -187,7 +230,9 @@ const OutputStage = ({
     <>
       {FIELD_TEXT.slice(0, typed)}
       {typed < FIELD_TEXT.length && (
-        <span className="inline-block animate-blink-cursor">|</span>
+        <span className="inline-block animate-blink-cursor text-(--nf-primary)">
+          |
+        </span>
       )}
     </>
   )
@@ -200,78 +245,50 @@ const OutputStage = ({
       {inTab ? (
         // The editor tab: a full-page box with Move back to page instead of the window buttons.
         <div className="absolute inset-0 bg-(--nf-bg)">
-          <div
-            style={DESTINATION_OUTLINE}
-            className={cn(
-              "absolute top-[30px] right-[10px] -bottom-1 left-[10px] rounded-t-[4px] px-4 py-3",
-              FIELD_TEXT_STYLE
-            )}
+          <Field
+            floating={false}
+            style={{
+              top: EDITOR_PADDING_TOP,
+              right: BOX_MARGIN,
+              bottom: BOX_MARGIN,
+              left: BOX_MARGIN,
+            }}
           >
             {text}
-          </div>
-          <StatusTab seconds={seconds} style={{ top: 13, left: 10 }} />
-          <ControlsTab style={{ top: 13, right: 10 }}>
-            <IconButton>
-              <SaveIcon />
-            </IconButton>
-            <IconButton>
-              <path
-                d="M10 2 V7 H3 M5.5 4.5 L3 7 L5.5 9.5"
-                stroke="currentColor"
-                strokeWidth={1.5}
-                fill="none"
-              />
-            </IconButton>
-            <IconButton>
-              <CloseIcon />
-            </IconButton>
-          </ControlsTab>
+          </Field>
+          <StatusChip
+            seconds={seconds}
+            style={{ top: EDITOR_ROW_TOP, left: ROW_EDGE }}
+          />
+          <ControlsChip style={{ top: EDITOR_ROW_TOP, right: ROW_EDGE }}>
+            <IconButton path={SAVE_PATH} />
+            <IconButton path={MOVE_BACK_PATH} />
+            <IconButton path={CLOSE_PATH} />
+          </ControlsChip>
         </div>
       ) : (
         <>
-          <div
+          <Field
+            floating
             style={{
-              ...DESTINATION_OUTLINE,
               left: BOX_MARGIN,
               right: BOX_MARGIN,
               bottom: BOX_MARGIN,
               height: BOX_HEIGHT,
             }}
-            className={cn(
-              "absolute overflow-hidden rounded-[4px] bg-(--nf-bg) px-4 py-3 shadow-[0_0_16px_rgb(0_0_0/0.25)]",
-              FIELD_TEXT_STYLE
-            )}
           >
             {text}
-          </div>
-          <StatusTab
+          </Field>
+          <StatusChip
             seconds={seconds}
-            style={{ top: TAB_TOP, left: BOX_MARGIN }}
+            style={{ top: ROW_TOP, left: ROW_EDGE }}
           />
-          <ControlsTab style={{ top: TAB_TOP, right: BOX_MARGIN }}>
-            <IconButton>
-              <SaveIcon />
-            </IconButton>
-            <IconButton>
-              <path
-                d="M2 9.5 H10"
-                stroke="currentColor"
-                strokeWidth={1.75}
-                fill="none"
-              />
-            </IconButton>
-            <IconButton hovered={openInTabHovered}>
-              <path
-                d="M7 1.5 H10.5 V5 M10.5 1.5 L5.5 6.5 M9 7.5 V10.5 H1.5 V3 H4.5"
-                stroke="currentColor"
-                strokeWidth={1.5}
-                fill="none"
-              />
-            </IconButton>
-            <IconButton>
-              <CloseIcon />
-            </IconButton>
-          </ControlsTab>
+          <ControlsChip style={{ top: ROW_TOP, right: ROW_EDGE }}>
+            <IconButton path={SAVE_PATH} />
+            <IconButton path={MINIMIZE_PATH} />
+            <IconButton path={OPEN_IN_TAB_PATH} hovered={openInTabHovered} />
+            <IconButton path={CLOSE_PATH} />
+          </ControlsChip>
         </>
       )}
     </div>
